@@ -1,12 +1,18 @@
-const merge = require('webpack-merge');
-const yaml = require('js-yaml');
-const fs = require('fs');
-const common = require('./webpack.common.js');
-const { BASE_URL } = require('./constants');
+import { merge } from 'webpack-merge';
+import yaml from 'js-yaml';
+import fs from 'fs';
+import path from 'path';
+import ESLintPlugin from 'eslint-webpack-plugin';
+import { BASE_URL } from './constants.mjs';
+import common from './webpack.common.mjs';
 
 const ZERO_HOST = '0.0.0.0';
 const LOCALHOST = '127.0.0.1';
 const DEFAULT_PORT = 80;
+
+import * as url from 'url';
+// const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 /**
  * Get document, or throw exception on error
@@ -15,7 +21,10 @@ const DEFAULT_PORT = 80;
 const importConfig = () => {
     try {
         const doc = yaml.safeLoad(fs.readFileSync('../AdguardHome.yaml', 'utf8'));
-        const { bind_host, bind_port } = doc;
+        const {
+            bind_host,
+            bind_port
+        } = doc;
         return {
             bind_host,
             bind_port,
@@ -30,7 +39,10 @@ const importConfig = () => {
 };
 
 const getDevServerConfig = (proxyUrl = BASE_URL) => {
-    const { bind_host: host, bind_port: port } = importConfig();
+    const {
+        bind_host: host,
+        bind_port: port
+    } = importConfig();
     const { DEV_SERVER_PORT } = process.env;
 
     const devServerHost = host === ZERO_HOST ? LOCALHOST : host;
@@ -47,20 +59,10 @@ const getDevServerConfig = (proxyUrl = BASE_URL) => {
     };
 };
 
-module.exports = merge(common, {
+export default merge(common, {
     devtool: 'eval-source-map',
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: 'eslint-loader',
-                options: {
-                    emitWarning: true,
-                    configFile: 'dev.eslintrc',
-                },
-            },
-        ],
-    },
     ...(process.env.WEBPACK_DEV_SERVER ? { devServer: getDevServerConfig(BASE_URL) } : undefined),
+    plugins: [new ESLintPlugin({
+        overrideConfigFile: path.resolve(__dirname, 'dev.eslintrc'),
+    })]
 });

@@ -1,11 +1,13 @@
-const path = require('path');
-const autoprefixer = require('autoprefixer');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const flexBugsFixes = require('postcss-flexbugs-fixes');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { BUILD_ENVS } = require('./constants');
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import { BUILD_ENVS } from './constants.mjs';
+
+import * as url from 'url';
+// const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const RESOURCES_PATH = path.resolve(__dirname);
 const ENTRY_REACT = path.resolve(RESOURCES_PATH, 'src/index.js');
@@ -58,9 +60,6 @@ const config = {
                     'style-loader',
                     {
                         loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            hmr: isDev,
-                        },
                     },
                     {
                         loader: 'css-loader',
@@ -70,15 +69,6 @@ const config = {
                     },
                     {
                         loader: 'postcss-loader',
-                        options: {
-                            ident: 'postcss',
-                            plugins: () => [
-                                flexBugsFixes,
-                                autoprefixer({
-                                    flexbox: 'no-2009',
-                                }),
-                            ],
-                        },
                     },
                 ],
             },
@@ -146,4 +136,4 @@ const config = {
     ],
 };
 
-module.exports = config;
+export default config;
