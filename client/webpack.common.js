@@ -6,14 +6,12 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import * as url from 'url';
 import { BUILD_ENVS } from './constants.js';
 
-// const __filename = url.fileURLToPath(import.meta.url);
-// @ts-expect-error TS(1343): The 'import.meta' meta-property is only allowed wh... Remove this comment to see the full error message
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const RESOURCES_PATH = path.resolve(__dirname);
-const ENTRY_REACT = path.resolve(RESOURCES_PATH, 'src/index.js');
-const ENTRY_INSTALL = path.resolve(RESOURCES_PATH, 'src/install/index.js');
-const ENTRY_LOGIN = path.resolve(RESOURCES_PATH, 'src/login/index.js');
+const ENTRY_REACT = path.resolve(RESOURCES_PATH, 'src/index.tsx');
+const ENTRY_INSTALL = path.resolve(RESOURCES_PATH, 'src/install/index.tsx');
+const ENTRY_LOGIN = path.resolve(RESOURCES_PATH, 'src/login/index.tsx');
 const HTML_PATH = path.resolve(RESOURCES_PATH, 'public/index.html');
 const HTML_INSTALL_PATH = path.resolve(RESOURCES_PATH, 'public/install.html');
 const HTML_LOGIN_PATH = path.resolve(RESOURCES_PATH, 'public/login.html');
@@ -38,7 +36,7 @@ const config = {
     },
     output: {
         path: PUBLIC_PATH,
-        filename: '[name].[hash].js',
+        filename: '[name].[chunkhash].js',
     },
     resolve: {
         modules: ['node_modules'],

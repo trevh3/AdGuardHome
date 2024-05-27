@@ -1,9 +1,8 @@
 import { merge } from 'webpack-merge';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'js-y... Remove this comment to see the full error message
 import yaml from 'js-yaml';
 import fs from 'fs';
-import { BASE_URL } from './constants.js';
-import common from './webpack.common.js';
+import { BASE_URL } from './constants';
+import common from './webpack.common';
 
 const ZERO_HOST = '0.0.0.0';
 const LOCALHOST = '127.0.0.1';
