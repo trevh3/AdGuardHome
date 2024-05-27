@@ -3,7 +3,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { BUILD_ENVS } from './constants.mjs';
+import { BUILD_ENVS } from './constants.js';
 
 import * as url from 'url';
 // const __filename = url.fileURLToPath(import.meta.url);

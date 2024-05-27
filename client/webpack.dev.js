@@ -1,18 +1,12 @@
 import { merge } from 'webpack-merge';
 import yaml from 'js-yaml';
 import fs from 'fs';
-import path from 'path';
-import ESLintPlugin from 'eslint-webpack-plugin';
-import { BASE_URL } from './constants.mjs';
-import common from './webpack.common.mjs';
+import { BASE_URL } from './constants.js';
+import common from './webpack.common.js';
 
 const ZERO_HOST = '0.0.0.0';
 const LOCALHOST = '127.0.0.1';
 const DEFAULT_PORT = 80;
-
-import * as url from 'url';
-// const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 /**
  * Get document, or throw exception on error
@@ -61,8 +55,5 @@ const getDevServerConfig = (proxyUrl = BASE_URL) => {
 
 export default merge(common, {
     devtool: 'eval-source-map',
-    ...(process.env.WEBPACK_DEV_SERVER ? { devServer: getDevServerConfig(BASE_URL) } : undefined),
-    plugins: [new ESLintPlugin({
-        overrideConfigFile: path.resolve(__dirname, 'dev.eslintrc'),
-    })]
+    ...(process.env.WEBPACK_DEV_SERVER ? { devServer: getDevServerConfig(BASE_URL) } : undefined)
 });

@@ -4,7 +4,7 @@ import { getPathWithQueryString } from '../helpers/helpers';
 import {
     QUERY_LOGS_PAGE_LIMIT, HTML_PAGES, R_PATH_LAST_PART, THEMES,
 } from '../helpers/constants';
-import { BASE_URL } from 'constants.mjs';
+import { BASE_URL } from 'constants';
 import i18n from '../i18n';
 import { LANGUAGES } from '../helpers/twosky';
 
