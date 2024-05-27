@@ -1,8 +1,13 @@
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import React from 'react';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import { connect } from 'react-redux';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'prop... Remove this comment to see the full error message
 import PropTypes from 'prop-types';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { Trans, withTranslation } from 'react-i18next';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import flow from 'lodash/flow';
 
 import {
@@ -10,23 +15,28 @@ import {
     CheckboxField,
     renderRadioField,
     toNumber,
+// @ts-expect-error TS(6142): Module '../../../helpers/form' was resolved to '/U... Remove this comment to see the full error message
 } from '../../../helpers/form';
 import {
     validateServerName, validateIsSafePort, validatePort, validatePortQuic, validatePortTLS, validatePlainDns,
 } from '../../../helpers/validators';
 import i18n from '../../../i18n';
+// @ts-expect-error TS(6142): Module './KeyStatus' was resolved to '/Users/igorl... Remove this comment to see the full error message
 import KeyStatus from './KeyStatus';
+// @ts-expect-error TS(6142): Module './CertificateStatus' was resolved to '/Use... Remove this comment to see the full error message
 import CertificateStatus from './CertificateStatus';
 import {
     DNS_OVER_QUIC_PORT, DNS_OVER_TLS_PORT, FORM_NAME, STANDARD_HTTPS_PORT, ENCRYPTION_SOURCE,
 } from '../../../helpers/constants';
 
-const validate = (values) => {
+const validate = (values: any) => {
     const errors = {};
 
     if (values.port_dns_over_tls && values.port_https) {
         if (values.port_dns_over_tls === values.port_https) {
+            // @ts-expect-error TS(2339): Property 'port_dns_over_tls' does not exist on typ... Remove this comment to see the full error message
             errors.port_dns_over_tls = i18n.t('form_error_equal');
+            // @ts-expect-error TS(2339): Property 'port_https' does not exist on type '{}'.
             errors.port_https = i18n.t('form_error_equal');
         }
     }
@@ -34,7 +44,7 @@ const validate = (values) => {
     return errors;
 };
 
-const clearFields = (change, setTlsConfig, validateTlsConfig, t) => {
+const clearFields = (change: any, setTlsConfig: any, validateTlsConfig: any, t: any) => {
     const fields = {
         private_key: '',
         certificate_chain: '',
@@ -52,33 +62,40 @@ const clearFields = (change, setTlsConfig, validateTlsConfig, t) => {
     // eslint-disable-next-line no-alert
     if (window.confirm(t('encryption_reset'))) {
         Object.keys(fields)
+            // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             .forEach((field) => change(field, fields[field]));
         setTlsConfig(fields);
         validateTlsConfig(fields);
     }
 };
 
-const validationMessage = (warningValidation, isWarning) => {
+const validationMessage = (warningValidation: any, isWarning: any) => {
     if (!warningValidation) {
         return null;
     }
 
     if (isWarning) {
         return (
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="col-12">
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <p><Trans>encryption_warning</Trans>: {warningValidation}</p>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
         );
     }
 
     return (
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         <div className="col-12">
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <p className="text-danger">{warningValidation}</p>
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         </div>
     );
 };
 
-let Form = (props) => {
+let Form = (props: any) => {
     const {
         t,
         handleSubmit,
@@ -125,10 +142,15 @@ let Form = (props) => {
     const isWarning = valid_key && valid_cert && valid_pair;
 
     return (
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         <form onSubmit={handleSubmit}>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="row">
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <div className="col-12">
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="form__group form__group--settings mb-3">
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Field
                             name="enabled"
                             type="checkbox"
@@ -136,11 +158,17 @@ let Form = (props) => {
                             placeholder={t('encryption_enable')}
                             onChange={handleChange}
                         />
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="form__desc">
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Trans>encryption_enable_desc</Trans>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="form__group mb-3 mt-5">
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Field
                             name="serve_plain_dns"
                             type="checkbox"
@@ -149,19 +177,33 @@ let Form = (props) => {
                             onChange={handleChange}
                             validate={validatePlainDns}
                         />
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="form__desc">
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Trans>encryption_plain_dns_desc</Trans>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <hr />
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </div>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <div className="col-12">
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <label className="form__label" htmlFor="server_name">
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Trans>encryption_server</Trans>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </label>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </div>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <div className="col-lg-6">
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="form__group form__group--settings">
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Field
                             id="server_name"
                             name="server_name"
@@ -173,13 +215,21 @@ let Form = (props) => {
                             disabled={!isEnabled}
                             validate={validateServerName}
                         />
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div className="form__desc">
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Trans>encryption_server_desc</Trans>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </div>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </div>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <div className="col-lg-6">
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="form__group form__group--settings">
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Field
                             name="force_https"
                             type="checkbox"
@@ -188,18 +238,31 @@ let Form = (props) => {
                             onChange={handleChange}
                             disabled={!isEnabled}
                         />
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div className="form__desc">
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Trans>encryption_redirect_desc</Trans>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </div>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </div>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="row">
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <div className="col-lg-6">
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="form__group form__group--settings">
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <label className="form__label" htmlFor="port_https">
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Trans>encryption_https</Trans>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </label>
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Field
                             id="port_https"
                             name="port_https"
@@ -212,16 +275,27 @@ let Form = (props) => {
                             onChange={handleChange}
                             disabled={!isEnabled}
                         />
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div className="form__desc">
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Trans>encryption_https_desc</Trans>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </div>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </div>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <div className="col-lg-6">
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="form__group form__group--settings">
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <label className="form__label" htmlFor="port_dns_over_tls">
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Trans>encryption_dot</Trans>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </label>
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Field
                             id="port_dns_over_tls"
                             name="port_dns_over_tls"
@@ -234,16 +308,27 @@ let Form = (props) => {
                             onChange={handleChange}
                             disabled={!isEnabled}
                         />
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div className="form__desc">
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Trans>encryption_dot_desc</Trans>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </div>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </div>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <div className="col-lg-6">
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="form__group form__group--settings">
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <label className="form__label" htmlFor="port_dns_over_quic">
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Trans>encryption_doq</Trans>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </label>
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Field
                             id="port_dns_over_quic"
                             name="port_dns_over_quic"
@@ -256,36 +341,56 @@ let Form = (props) => {
                             onChange={handleChange}
                             disabled={!isEnabled}
                         />
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div className="form__desc">
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Trans>encryption_doq_desc</Trans>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </div>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </div>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="row">
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <div className="col-12">
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="form__group form__group--settings">
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <label
                             className="form__label form__label--with-desc form__label--bold"
                             htmlFor="certificate_chain"
                         >
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Trans>encryption_certificates</Trans>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </label>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div className="form__desc form__desc--top">
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Trans
                                 values={{ link: 'letsencrypt.org' }}
                                 components={[
+                                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                                     <a target="_blank" rel="noopener noreferrer" href="https://letsencrypt.org/" key="0">
                                         link
+                                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                                     </a>,
                                 ]}
                             >
                                 encryption_certificates_desc
                             </Trans>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </div>
 
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div className="form__inline mb-2">
+                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                             <div className="custom-controls-stacked">
+                                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                                 <Field
                                     name="certificate_source"
                                     component={renderRadioField}
@@ -295,6 +400,7 @@ let Form = (props) => {
                                     placeholder={t('encryption_certificates_source_path')}
                                     disabled={!isEnabled}
                                 />
+                                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                                 <Field
                                     name="certificate_source"
                                     component={renderRadioField}
@@ -304,10 +410,13 @@ let Form = (props) => {
                                     placeholder={t('encryption_certificates_source_content')}
                                     disabled={!isEnabled}
                                 />
+                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                             </div>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </div>
 
                         {certificateSource === ENCRYPTION_SOURCE.CONTENT && (
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Field
                                 id="certificate_chain"
                                 name="certificate_chain"
@@ -320,6 +429,7 @@ let Form = (props) => {
                             />
                         )}
                         {certificateSource === ENCRYPTION_SOURCE.PATH && (
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Field
                                 id="certificate_path"
                                 name="certificate_path"
@@ -331,9 +441,12 @@ let Form = (props) => {
                                 disabled={!isEnabled}
                             />
                         )}
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="form__status">
                         {(certificateChain || certificatePath) && (
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <CertificateStatus
                                 validChain={valid_chain}
                                 validCert={valid_cert}
@@ -343,18 +456,30 @@ let Form = (props) => {
                                 dnsNames={dns_names}
                             />
                         )}
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </div>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="row">
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <div className="col-12">
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="form__group form__group--settings mt-3">
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <label className="form__label form__label--bold" htmlFor="private_key">
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Trans>encryption_key</Trans>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </label>
 
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div className="form__inline mb-2">
+                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                             <div className="custom-controls-stacked">
+                                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                                 <Field
                                     name="key_source"
                                     component={renderRadioField}
@@ -364,6 +489,7 @@ let Form = (props) => {
                                     placeholder={t('encryption_key_source_path')}
                                     disabled={!isEnabled}
                                 />
+                                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                                 <Field
                                     name="key_source"
                                     component={renderRadioField}
@@ -373,10 +499,13 @@ let Form = (props) => {
                                     placeholder={t('encryption_key_source_content')}
                                     disabled={!isEnabled}
                                 />
+                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                             </div>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </div>
 
                         {privateKeySource === ENCRYPTION_SOURCE.PATH && (
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Field
                                 name="private_key_path"
                                 component={renderInputField}
@@ -388,6 +517,7 @@ let Form = (props) => {
                             />
                         )}
                         {privateKeySource === ENCRYPTION_SOURCE.CONTENT && [
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Field
                                 key="private_key_saved"
                                 name="private_key_saved"
@@ -396,7 +526,7 @@ let Form = (props) => {
                                 component={CheckboxField}
                                 disabled={!isEnabled}
                                 placeholder={t('use_saved_key')}
-                                onChange={(event) => {
+                                onChange={(event: any) => {
                                     if (event.target.checked) {
                                         change('private_key', '');
                                     }
@@ -405,6 +535,7 @@ let Form = (props) => {
                                     }
                                 }}
                             />,
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Field
                                 id="private_key"
                                 key="private_key"
@@ -417,37 +548,53 @@ let Form = (props) => {
                                 disabled={!isEnabled || privateKeySaved}
                             />,
                         ]}
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="form__status">
                         {(privateKey || privateKeyPath) && (
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <KeyStatus validKey={valid_key} keyType={key_type} />
                         )}
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </div>
                 {validationMessage(warning_validation, isWarning)}
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
 
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="btn-list mt-2">
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <button
                     type="submit"
                     disabled={isDisabled}
                     className="btn btn-success btn-standart"
                 >
+                    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                     <Trans>save_config</Trans>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </button>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <button
                     type="button"
                     className="btn btn-secondary btn-standart"
                     disabled={submitting || processingConfig}
                     onClick={() => clearFields(change, setTlsConfig, validateTlsConfig, t)}
                 >
+                    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                     <Trans>reset_settings</Trans>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </button>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         </form>
     );
 };
 
+// @ts-expect-error TS(2339): Property 'propTypes' does not exist on type '(prop... Remove this comment to see the full error message
 Form.propTypes = {
     handleSubmit: PropTypes.func.isRequired,
     handleChange: PropTypes.func,
@@ -484,7 +631,7 @@ Form.propTypes = {
 
 const selector = formValueSelector(FORM_NAME.ENCRYPTION);
 
-Form = connect((state) => {
+Form = connect((state: any) => {
     const isEnabled = selector(state, 'enabled');
     const servePlainDns = selector(state, 'serve_plain_dns');
     const certificateChain = selector(state, 'certificate_chain');

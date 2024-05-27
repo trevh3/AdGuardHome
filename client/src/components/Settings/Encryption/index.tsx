@@ -1,15 +1,24 @@
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import React, { Component } from 'react';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'prop... Remove this comment to see the full error message
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import debounce from 'lodash/debounce';
 
 import { DEBOUNCE_TIMEOUT, ENCRYPTION_SOURCE } from '../../../helpers/constants';
+// @ts-expect-error TS(6142): Module './Form' was resolved to '/Users/igorlobano... Remove this comment to see the full error message
 import Form from './Form';
+// @ts-expect-error TS(6142): Module '../../ui/Card' was resolved to '/Users/igo... Remove this comment to see the full error message
 import Card from '../../ui/Card';
+// @ts-expect-error TS(6142): Module '../../ui/PageTitle' was resolved to '/User... Remove this comment to see the full error message
 import PageTitle from '../../ui/PageTitle';
+// @ts-expect-error TS(6142): Module '../../ui/Loading' was resolved to '/Users/... Remove this comment to see the full error message
 import Loading from '../../ui/Loading';
 
 class Encryption extends Component {
+    props: any;
+
     componentDidMount() {
         const { validateTlsConfig, encryption } = this.props;
 
@@ -18,12 +27,12 @@ class Encryption extends Component {
         }
     }
 
-    handleFormSubmit = (values) => {
+    handleFormSubmit = (values: any) => {
         const submitValues = this.getSubmitValues(values);
         this.props.setTlsConfig(submitValues);
     };
 
-    handleFormChange = debounce((values) => {
+    handleFormChange = debounce((values: any) => {
         const submitValues = this.getSubmitValues(values);
 
         if (submitValues.enabled || submitValues.serve_plain_dns) {
@@ -31,7 +40,7 @@ class Encryption extends Component {
         }
     }, DEBOUNCE_TIMEOUT);
 
-    getInitialValues = (data) => {
+    getInitialValues = (data: any) => {
         const { certificate_chain, private_key, private_key_saved } = data;
         const certificate_source = certificate_chain
             ? ENCRYPTION_SOURCE.CONTENT
@@ -47,7 +56,7 @@ class Encryption extends Component {
         };
     };
 
-    getSubmitValues = (values) => {
+    getSubmitValues = (values: any) => {
         const {
             certificate_source, key_source, private_key_saved, ...config
         } = values;
@@ -105,15 +114,20 @@ class Encryption extends Component {
         });
 
         return (
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="encryption">
+                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <PageTitle title={t('encryption_settings')} />
+                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 {encryption.processing && <Loading />}
                 {!encryption.processing && (
+                    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                     <Card
                         title={t('encryption_title')}
                         subtitle={t('encryption_desc')}
                         bodyType="card-body box-body--settings"
                     >
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Form
                             initialValues={initialValues}
                             onSubmit={this.handleFormSubmit}
@@ -124,11 +138,13 @@ class Encryption extends Component {
                         />
                     </Card>
                 )}
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
         );
     }
 }
 
+// @ts-expect-error TS(2339): Property 'propTypes' does not exist on type 'typeo... Remove this comment to see the full error message
 Encryption.propTypes = {
     setTlsConfig: PropTypes.func.isRequired,
     validateTlsConfig: PropTypes.func.isRequired,

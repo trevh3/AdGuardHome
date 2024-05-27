@@ -1,6 +1,8 @@
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { createAction } from 'redux-actions';
 import i18next from 'i18next';
 import apiClient from '../api/Api';
+// @ts-expect-error TS(6142): Module './index' was resolved to '/Users/igorloban... Remove this comment to see the full error message
 import { getClients } from './index';
 import { addErrorToast, addSuccessToast } from './toasts';
 
@@ -10,7 +12,7 @@ export const addClientRequest = createAction('ADD_CLIENT_REQUEST');
 export const addClientFailure = createAction('ADD_CLIENT_FAILURE');
 export const addClientSuccess = createAction('ADD_CLIENT_SUCCESS');
 
-export const addClient = (config) => async (dispatch) => {
+export const addClient = (config: any) => async (dispatch: any) => {
     dispatch(addClientRequest());
     try {
         await apiClient.addClient(config);
@@ -28,7 +30,7 @@ export const deleteClientRequest = createAction('DELETE_CLIENT_REQUEST');
 export const deleteClientFailure = createAction('DELETE_CLIENT_FAILURE');
 export const deleteClientSuccess = createAction('DELETE_CLIENT_SUCCESS');
 
-export const deleteClient = (config) => async (dispatch) => {
+export const deleteClient = (config: any) => async (dispatch: any) => {
     dispatch(deleteClientRequest());
     try {
         await apiClient.deleteClient(config);
@@ -45,7 +47,7 @@ export const updateClientRequest = createAction('UPDATE_CLIENT_REQUEST');
 export const updateClientFailure = createAction('UPDATE_CLIENT_FAILURE');
 export const updateClientSuccess = createAction('UPDATE_CLIENT_SUCCESS');
 
-export const updateClient = (config, name) => async (dispatch) => {
+export const updateClient = (config: any, name: any) => async (dispatch: any) => {
     dispatch(updateClientRequest());
     try {
         const data = { name, data: { ...config } };

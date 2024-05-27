@@ -1,9 +1,14 @@
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+// @ts-expect-error TS(6142): Module '../../../ui/Card' was resolved to '/Users/... Remove this comment to see the full error message
 import Card from '../../../ui/Card';
+// @ts-expect-error TS(6142): Module './Form' was resolved to '/Users/igorlobano... Remove this comment to see the full error message
 import Form from './Form';
 import { setDnsConfig } from '../../../../actions/dnsConfig';
+// @ts-expect-error TS(6142): Module '../../../../helpers/helpers' was resolved ... Remove this comment to see the full error message
 import { replaceEmptyStringsWithZeroes, replaceZeroWithEmptyString } from '../../../../helpers/helpers';
 
 const CacheConfig = () => {
@@ -11,21 +16,24 @@ const CacheConfig = () => {
     const dispatch = useDispatch();
     const {
         cache_size, cache_ttl_max, cache_ttl_min, cache_optimistic,
-    } = useSelector((state) => state.dnsConfig, shallowEqual);
+    } = useSelector((state: any) => state.dnsConfig, shallowEqual);
 
-    const handleFormSubmit = (values) => {
+    const handleFormSubmit = (values: any) => {
         const completedFields = replaceEmptyStringsWithZeroes(values);
         dispatch(setDnsConfig(completedFields));
     };
 
     return (
+        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <Card
             title={t('dns_cache_config')}
             subtitle={t('dns_cache_config_desc')}
             bodyType="card-body box-body--settings"
             id="dns-config"
         >
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="form">
+                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <Form
                     initialValues={{
                         cache_size: replaceZeroWithEmptyString(cache_size),
@@ -35,6 +43,7 @@ const CacheConfig = () => {
                     }}
                     onSubmit={handleFormSubmit}
                 />
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
         </Card>
     );

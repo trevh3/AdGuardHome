@@ -1,16 +1,26 @@
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import React, { useState } from 'react';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'prop... Remove this comment to see the full error message
 import PropTypes from 'prop-types';
 import { Trans, useTranslation } from 'react-i18next';
 import i18next from 'i18next';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import { useSelector } from 'react-redux';
 
 import { MOBILE_CONFIG_LINKS } from '../../../helpers/constants';
 
+// @ts-expect-error TS(6142): Module '../Tabs' was resolved to '/Users/igorloban... Remove this comment to see the full error message
 import Tabs from '../Tabs';
+// @ts-expect-error TS(6142): Module './MobileConfigForm' was resolved to '/User... Remove this comment to see the full error message
 import MobileConfigForm from './MobileConfigForm';
 
-const renderLi = ({ label, components }) => <li key={label}>
-    <Trans components={components?.map((props) => {
+const renderLi = ({
+    label,
+    components,
+// @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
+}: any) => <li key={label}>
+    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
+    <Trans components={components?.map((props: any) => {
         if (React.isValidElement(props)) {
             return props;
         }
@@ -19,10 +29,12 @@ const renderLi = ({ label, components }) => <li key={label}>
             href, target = '_blank', rel = 'noopener noreferrer', key = '0',
         } = props;
 
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         return <a href={href} target={target} rel={rel} key={key}>link</a>;
     })}>
         {label}
     </Trans>
+// @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
 </li>;
 
 const getDnsPrivacyList = () => [
@@ -39,6 +51,7 @@ const getDnsPrivacyList = () => [
                         key: 0,
                         href: 'https://link.adtidy.org/forward.html?action=android&from=ui&app=home',
                     },
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <code key="1">text</code>,
                 ],
             },
@@ -49,6 +62,7 @@ const getDnsPrivacyList = () => [
                         key: 0,
                         href: 'https://getintra.org/',
                     },
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <code key="1">text</code>,
                 ],
             },
@@ -64,6 +78,7 @@ const getDnsPrivacyList = () => [
                         key: 0,
                         href: 'https://link.adtidy.org/forward.html?action=ios&from=ui&app=home',
                     },
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <code key="1">text</code>,
                 ],
             },
@@ -74,6 +89,7 @@ const getDnsPrivacyList = () => [
                         key: 0,
                         href: 'https://itunes.apple.com/app/id1452162351',
                     },
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <code key="1">text</code>,
                     {
                         key: 2,
@@ -106,6 +122,7 @@ const getDnsPrivacyList = () => [
                         key: 0,
                         href: 'https://github.com/jedisct1/dnscrypt-proxy',
                     },
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <code key="1">text</code>,
                 ],
             },
@@ -116,6 +133,7 @@ const getDnsPrivacyList = () => [
                         key: 0,
                         href: 'https://support.mozilla.org/kb/firefox-dns-over-https',
                     },
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <code key="1">text</code>,
                 ],
             },
@@ -136,16 +154,30 @@ const getDnsPrivacyList = () => [
     },
 ];
 
-const renderDnsPrivacyList = ({ title, list }) => (
+const renderDnsPrivacyList = ({
+    title,
+    list,
+}: any) => (
+    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
     <div className="tab__paragraph" key={title}>
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         <strong>
+            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
             <Trans>{title}</Trans>
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         </strong>
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         <ul>
-            {list.map(({ label, components, renderComponent = renderLi }) => (
+            {list.map(({
+                label,
+                components,
+                renderComponent = renderLi,
+            }: any) => (
                 renderComponent({ label, components })
             ))}
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         </ul>
+    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
     </div>
 );
 
@@ -156,20 +188,26 @@ const getTabs = ({
     serverName,
     portHttps,
     t,
-}) => ({
+}: any) => ({
     Router: {
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         // eslint-disable-next-line react/display-name
         getTitle: () => <p>
+            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
             <Trans>install_devices_router_desc</Trans>
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         </p>,
         title: 'Router',
         list: ['install_devices_router_list_1',
             'install_devices_router_list_2',
             'install_devices_router_list_3',
+            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
             // eslint-disable-next-line react/jsx-key
             <Trans components={[
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <a href="#dhcp" key="0">
                     link
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </a>,
             ]}>install_devices_router_list_4</Trans>,
         ],
@@ -208,38 +246,53 @@ const getTabs = ({
     dns_privacy: {
         title: 'dns_privacy',
         getTitle: function Title() {
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             return <div label="dns_privacy" title={t('dns_privacy')}>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="tab__text">
                 {tlsAddress?.length > 0 && (
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="tab__paragraph">
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Trans
                             values={{ address: tlsAddress[0] }}
                             components={[
+                                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                                 <strong key="0">text</strong>,
+                                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                                 <code key="1">text</code>,
                             ]}
                         >
                             setup_dns_privacy_1
                         </Trans>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
                 )}
                 {httpsAddress?.length > 0 && (
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="tab__paragraph">
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Trans
                             values={{ address: httpsAddress[0] }}
                             components={[
+                                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                                 <strong key="0">text</strong>,
+                                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                                 <code key="1">text</code>,
                             ]}
                         >
                             setup_dns_privacy_2
                         </Trans>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
                 )}
                 {showDnsPrivacyNotice ? (
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="tab__paragraph">
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Trans
                             components={[
+                                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                                 <a
                                     href="https://github.com/AdguardTeam/AdguardHome/wiki/Encryption"
                                     target="_blank"
@@ -247,33 +300,49 @@ const getTabs = ({
                                     key="0"
                                 >
                                     link
+                                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                                 </a>,
+                                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                                 <code key="1">text</code>,
                             ]}
                         >
                             setup_dns_notice
                         </Trans>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
                 ) : (
+                    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                     <>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div className="tab__paragraph">
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Trans components={[<p key="0">text</p>]}>
                                 setup_dns_privacy_3
                             </Trans>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </div>
                         {getDnsPrivacyList().map(renderDnsPrivacyList)}
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div>
+                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                             <strong>
+                                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                                 <Trans>
                                     setup_dns_privacy_ioc_mac
                                 </Trans>
+                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                             </strong>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </div>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div className="mb-3">
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Trans components={{ highlight: <code /> }}>
                                 setup_dns_privacy_4
                             </Trans>
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </div>
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <MobileConfigForm
                             initialValues={{
                                 host: serverName,
@@ -284,38 +353,55 @@ const getTabs = ({
                         />
                     </>
                 )}
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         </div>;
         },
     },
 });
 
-const renderContent = ({ title, list, getTitle }) => (
+const renderContent = ({
+    title,
+    list,
+    getTitle,
+}: any) => (
+    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
     <div key={title} label={i18next.t(title)}>
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         <div className="tab__title">
             {i18next.t(title)}
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         </div>
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         <div className="tab__text">
             {getTitle?.()}
             {list && (
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <ol>
-                    {list.map((item) => (
-                        <li key={item}>
-                            <Trans>{item}</Trans>
-                        </li>
-                    ))}
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
+                    {list.map((item: any) => <li key={item}>
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
+                        <Trans>{item}</Trans>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
+                    </li>)}
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </ol>
             )}
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         </div>
+    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
     </div>
 );
 
-const Guide = ({ dnsAddresses }) => {
+const Guide = ({
+    dnsAddresses,
+}: any) => {
     const { t } = useTranslation();
-    const serverName = useSelector((state) => state.encryption?.server_name);
-    const portHttps = useSelector((state) => state.encryption?.port_https);
-    const tlsAddress = dnsAddresses?.filter((item) => item.includes('tls://')) ?? '';
-    const httpsAddress = dnsAddresses?.filter((item) => item.includes('https://')) ?? '';
+    const serverName = useSelector((state: any) => state.encryption?.server_name);
+    const portHttps = useSelector((state: any) => state.encryption?.port_https);
+    const tlsAddress = dnsAddresses?.filter((item: any) => item.includes('tls://')) ?? '';
+    const httpsAddress = dnsAddresses?.filter((item: any) => item.includes('https://')) ?? '';
     const showDnsPrivacyNotice = httpsAddress.length < 1 && tlsAddress.length < 1;
 
     const [activeTabLabel, setActiveTabLabel] = useState('Router');
@@ -329,10 +415,13 @@ const Guide = ({ dnsAddresses }) => {
         t,
     });
 
+    // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     const activeTab = renderContent(tabs[activeTabLabel]);
 
     return (
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         <div>
+            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
             <Tabs
                 tabs={tabs}
                 activeTabLabel={activeTabLabel}
@@ -340,6 +429,7 @@ const Guide = ({ dnsAddresses }) => {
             >
                 {activeTab}
             </Tabs>
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         </div>
     );
 };

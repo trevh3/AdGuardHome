@@ -1,5 +1,7 @@
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { createAction } from 'redux-actions';
 import apiClient from '../api/Api';
+// @ts-expect-error TS(6142): Module '../helpers/helpers' was resolved to '/User... Remove this comment to see the full error message
 import { redirectToCurrentProtocol } from '../helpers/helpers';
 import { addErrorToast, addSuccessToast } from './toasts';
 
@@ -7,7 +9,7 @@ export const getTlsStatusRequest = createAction('GET_TLS_STATUS_REQUEST');
 export const getTlsStatusFailure = createAction('GET_TLS_STATUS_FAILURE');
 export const getTlsStatusSuccess = createAction('GET_TLS_STATUS_SUCCESS');
 
-export const getTlsStatus = () => async (dispatch) => {
+export const getTlsStatus = () => async (dispatch: any) => {
     dispatch(getTlsStatusRequest());
     try {
         const status = await apiClient.getTlsStatus();
@@ -26,7 +28,7 @@ export const setTlsConfigFailure = createAction('SET_TLS_CONFIG_FAILURE');
 export const setTlsConfigSuccess = createAction('SET_TLS_CONFIG_SUCCESS');
 export const dnsStatusSuccess = createAction('DNS_STATUS_SUCCESS');
 
-export const setTlsConfig = (config) => async (dispatch, getState) => {
+export const setTlsConfig = (config: any) => async (dispatch: any, getState: any) => {
     dispatch(setTlsConfigRequest());
     try {
         const { httpPort } = getState().dashboard;
@@ -67,7 +69,7 @@ export const validateTlsConfigRequest = createAction('VALIDATE_TLS_CONFIG_REQUES
 export const validateTlsConfigFailure = createAction('VALIDATE_TLS_CONFIG_FAILURE');
 export const validateTlsConfigSuccess = createAction('VALIDATE_TLS_CONFIG_SUCCESS');
 
-export const validateTlsConfig = (config) => async (dispatch) => {
+export const validateTlsConfig = (config: any) => async (dispatch: any) => {
     dispatch(validateTlsConfigRequest());
     try {
         const values = { ...config };

@@ -5,11 +5,12 @@ const middlewares = [
     thunk,
 ];
 
-export default function configureStore(reducer, initialState) {
+export default function configureStore(reducer: any, initialState: any) {
     /* eslint-disable no-underscore-dangle */
     const store = createStore(reducer, initialState, compose(
         applyMiddleware(...middlewares),
-        window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f) => f,
+        // @ts-expect-error TS(2339): Property '__REDUX_DEVTOOLS_EXTENSION__' does not e... Remove this comment to see the full error message
+        window.__REDUX_DEVTOOLS_EXTENSION__ ? window.__REDUX_DEVTOOLS_EXTENSION__() : (f: any) => f,
     ));
     /* eslint-enable */
     return store;

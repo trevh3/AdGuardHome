@@ -1,3 +1,4 @@
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { createAction } from 'redux-actions';
 import apiClient from '../api/Api';
 import { addErrorToast, addSuccessToast } from './toasts';
@@ -6,7 +7,7 @@ export const getBlockedServicesRequest = createAction('GET_BLOCKED_SERVICES_REQU
 export const getBlockedServicesFailure = createAction('GET_BLOCKED_SERVICES_FAILURE');
 export const getBlockedServicesSuccess = createAction('GET_BLOCKED_SERVICES_SUCCESS');
 
-export const getBlockedServices = () => async (dispatch) => {
+export const getBlockedServices = () => async (dispatch: any) => {
     dispatch(getBlockedServicesRequest());
     try {
         const data = await apiClient.getBlockedServices();
@@ -21,7 +22,7 @@ export const getAllBlockedServicesRequest = createAction('GET_ALL_BLOCKED_SERVIC
 export const getAllBlockedServicesFailure = createAction('GET_ALL_BLOCKED_SERVICES_FAILURE');
 export const getAllBlockedServicesSuccess = createAction('GET_ALL_BLOCKED_SERVICES_SUCCESS');
 
-export const getAllBlockedServices = () => async (dispatch) => {
+export const getAllBlockedServices = () => async (dispatch: any) => {
     dispatch(getAllBlockedServicesRequest());
     try {
         const data = await apiClient.getAllBlockedServices();
@@ -36,7 +37,7 @@ export const updateBlockedServicesRequest = createAction('UPDATE_BLOCKED_SERVICE
 export const updateBlockedServicesFailure = createAction('UPDATE_BLOCKED_SERVICES_FAILURE');
 export const updateBlockedServicesSuccess = createAction('UPDATE_BLOCKED_SERVICES_SUCCESS');
 
-export const updateBlockedServices = (values) => async (dispatch) => {
+export const updateBlockedServices = (values: any) => async (dispatch: any) => {
     dispatch(updateBlockedServicesRequest());
     try {
         await apiClient.updateBlockedServices(values);

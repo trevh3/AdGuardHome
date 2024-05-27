@@ -1,14 +1,18 @@
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { handleActions } from 'redux-actions';
 import { nanoid } from 'nanoid';
 
 import {
     addErrorToast, addNoticeToast, addSuccessToast,
 } from '../actions/toasts';
+// @ts-expect-error TS(6142): Module '../actions' was resolved to '/Users/igorlo... Remove this comment to see the full error message
 import { removeToast } from '../actions';
 import { TOAST_TYPES } from '../helpers/constants';
 
 const toasts = handleActions({
-    [addErrorToast]: (state, { payload }) => {
+    [addErrorToast]: (state: any, {
+        payload,
+    }: any) => {
         const message = payload.error.toString();
         console.error(payload.error);
 
@@ -22,7 +26,9 @@ const toasts = handleActions({
         const newState = { ...state, notices: [...state.notices, errorToast] };
         return newState;
     },
-    [addSuccessToast]: (state, { payload }) => {
+    [addSuccessToast]: (state: any, {
+        payload,
+    }: any) => {
         const successToast = {
             id: nanoid(),
             message: payload,
@@ -32,7 +38,9 @@ const toasts = handleActions({
         const newState = { ...state, notices: [...state.notices, successToast] };
         return newState;
     },
-    [addNoticeToast]: (state, { payload }) => {
+    [addNoticeToast]: (state: any, {
+        payload,
+    }: any) => {
         const noticeToast = {
             id: nanoid(),
             message: payload.error.toString(),
@@ -43,8 +51,10 @@ const toasts = handleActions({
         const newState = { ...state, notices: [...state.notices, noticeToast] };
         return newState;
     },
-    [removeToast]: (state, { payload }) => {
-        const filtered = state.notices.filter((notice) => notice.id !== payload);
+    [removeToast]: (state: any, {
+        payload,
+    }: any) => {
+        const filtered = state.notices.filter((notice: any) => notice.id !== payload);
         const newState = { ...state, notices: filtered };
         return newState;
     },

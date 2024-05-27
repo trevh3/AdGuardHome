@@ -1,25 +1,33 @@
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { handleActions } from 'redux-actions';
+// @ts-expect-error TS(6142): Module '../actions' was resolved to '/Users/igorlo... Remove this comment to see the full error message
 import * as actions from '../actions';
 import { areEqualVersions } from '../helpers/version';
 import { STANDARD_DNS_PORT, STANDARD_WEB_PORT } from '../helpers/constants';
 
 const dashboard = handleActions(
     {
-        [actions.setDnsRunningStatus]: (state, { payload }) => (
+        [actions.setDnsRunningStatus]: (
+            // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
+            state,
             {
-                ...state,
-                isCoreRunning: payload,
-            }
-        ),
-        [actions.dnsStatusRequest]: (state) => ({
+                payload,
+            }: any,
+        ) => ({
+            ...state,
+            isCoreRunning: payload,
+        }),
+        [actions.dnsStatusRequest]: (state: any) => ({
             ...state,
             processing: true,
         }),
-        [actions.dnsStatusFailure]: (state) => ({
+        [actions.dnsStatusFailure]: (state: any) => ({
             ...state,
             processing: false,
         }),
-        [actions.dnsStatusSuccess]: (state, { payload }) => {
+        [actions.dnsStatusSuccess]: (state: any, {
+            payload,
+        }: any) => {
             const {
                 version,
                 dns_port: dnsPort,
@@ -44,7 +52,9 @@ const dashboard = handleActions(
 
             return newState;
         },
-        [actions.timerStatusSuccess]: (state, { payload }) => {
+        [actions.timerStatusSuccess]: (state: any, {
+            payload,
+        }: any) => {
             const {
                 protection_enabled: protectionEnabled,
                 protection_disabled_duration: protectionDisabledDuration,
@@ -58,15 +68,17 @@ const dashboard = handleActions(
             return newState;
         },
 
-        [actions.getVersionRequest]: (state) => ({
+        [actions.getVersionRequest]: (state: any) => ({
             ...state,
             processingVersion: true,
         }),
-        [actions.getVersionFailure]: (state) => ({
+        [actions.getVersionFailure]: (state: any) => ({
             ...state,
             processingVersion: false,
         }),
-        [actions.getVersionSuccess]: (state, { payload }) => {
+        [actions.getVersionSuccess]: (state: any, {
+            payload,
+        }: any) => {
             const currentVersion = state.dnsVersion === 'undefined' ? 0 : state.dnsVersion;
 
             if (!payload.disabled && !areEqualVersions(currentVersion, payload.new_version)) {
@@ -95,15 +107,15 @@ const dashboard = handleActions(
             };
         },
 
-        [actions.getUpdateRequest]: (state) => ({
+        [actions.getUpdateRequest]: (state: any) => ({
             ...state,
             processingUpdate: true,
         }),
-        [actions.getUpdateFailure]: (state) => ({
+        [actions.getUpdateFailure]: (state: any) => ({
             ...state,
             processingUpdate: false,
         }),
-        [actions.getUpdateSuccess]: (state) => {
+        [actions.getUpdateSuccess]: (state: any) => {
             const newState = {
                 ...state,
                 processingUpdate: false,
@@ -111,15 +123,17 @@ const dashboard = handleActions(
             return newState;
         },
 
-        [actions.toggleProtectionRequest]: (state) => ({
+        [actions.toggleProtectionRequest]: (state: any) => ({
             ...state,
             processingProtection: true,
         }),
-        [actions.toggleProtectionFailure]: (state) => ({
+        [actions.toggleProtectionFailure]: (state: any) => ({
             ...state,
             processingProtection: false,
         }),
-        [actions.toggleProtectionSuccess]: (state, { payload }) => {
+        [actions.toggleProtectionSuccess]: (state: any, {
+            payload,
+        }: any) => {
             const newState = {
                 ...state,
                 protectionEnabled: !state.protectionEnabled,
@@ -130,20 +144,28 @@ const dashboard = handleActions(
             return newState;
         },
 
-        [actions.setDisableDurationTime]: (state, { payload }) => ({
+        [actions.setDisableDurationTime]: (
+            // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
+            state,
+            {
+                payload,
+            }: any,
+        ) => ({
             ...state,
             protectionDisabledDuration: payload.timeToEnableProtection,
         }),
 
-        [actions.getClientsRequest]: (state) => ({
+        [actions.getClientsRequest]: (state: any) => ({
             ...state,
             processingClients: true,
         }),
-        [actions.getClientsFailure]: (state) => ({
+        [actions.getClientsFailure]: (state: any) => ({
             ...state,
             processingClients: false,
         }),
-        [actions.getClientsSuccess]: (state, { payload }) => {
+        [actions.getClientsSuccess]: (state: any, {
+            payload,
+        }: any) => {
             const newState = {
                 ...state,
                 ...payload,
@@ -152,21 +174,33 @@ const dashboard = handleActions(
             return newState;
         },
 
-        [actions.getProfileRequest]: (state) => ({
+        [actions.getProfileRequest]: (state: any) => ({
             ...state,
             processingProfile: true,
         }),
-        [actions.getProfileFailure]: (state) => ({
+        [actions.getProfileFailure]: (state: any) => ({
             ...state,
             processingProfile: false,
         }),
-        [actions.getProfileSuccess]: (state, { payload }) => ({
+        [actions.getProfileSuccess]: (
+            // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
+            state,
+            {
+                payload,
+            }: any,
+        ) => ({
             ...state,
             name: payload.name,
             theme: payload.theme,
             processingProfile: false,
         }),
-        [actions.changeThemeSuccess]: (state, { payload }) => ({
+        [actions.changeThemeSuccess]: (
+            // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
+            state,
+            {
+                payload,
+            }: any,
+        ) => ({
             ...state,
             theme: payload.theme,
         }),

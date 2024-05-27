@@ -1,3 +1,4 @@
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { createAction } from 'redux-actions';
 import i18next from 'i18next';
 import apiClient from '../api/Api';
@@ -9,7 +10,7 @@ export const getRewritesListRequest = createAction('GET_REWRITES_LIST_REQUEST');
 export const getRewritesListFailure = createAction('GET_REWRITES_LIST_FAILURE');
 export const getRewritesListSuccess = createAction('GET_REWRITES_LIST_SUCCESS');
 
-export const getRewritesList = () => async (dispatch) => {
+export const getRewritesList = () => async (dispatch: any) => {
     dispatch(getRewritesListRequest());
     try {
         const data = await apiClient.getRewritesList();
@@ -24,7 +25,7 @@ export const addRewriteRequest = createAction('ADD_REWRITE_REQUEST');
 export const addRewriteFailure = createAction('ADD_REWRITE_FAILURE');
 export const addRewriteSuccess = createAction('ADD_REWRITE_SUCCESS');
 
-export const addRewrite = (config) => async (dispatch) => {
+export const addRewrite = (config: any) => async (dispatch: any) => {
     dispatch(addRewriteRequest());
     try {
         await apiClient.addRewrite(config);
@@ -47,7 +48,7 @@ export const updateRewriteSuccess = createAction('UPDATE_REWRITE_SUCCESS');
  * @param {string} config.target - current DNS rewrite value
  * @param {string} config.update - updated DNS rewrite value
  */
-export const updateRewrite = (config) => async (dispatch) => {
+export const updateRewrite = (config: any) => async (dispatch: any) => {
     dispatch(updateRewriteRequest());
     try {
         await apiClient.updateRewrite(config);
@@ -65,7 +66,7 @@ export const deleteRewriteRequest = createAction('DELETE_REWRITE_REQUEST');
 export const deleteRewriteFailure = createAction('DELETE_REWRITE_FAILURE');
 export const deleteRewriteSuccess = createAction('DELETE_REWRITE_SUCCESS');
 
-export const deleteRewrite = (config) => async (dispatch) => {
+export const deleteRewrite = (config: any) => async (dispatch: any) => {
     dispatch(deleteRewriteRequest());
     try {
         await apiClient.deleteRewrite(config);

@@ -1,4 +1,4 @@
-export const getFullDayName = (t, abbreviation) => {
+export const getFullDayName = (t: any, abbreviation: any) => {
     const dayMap = {
         sun: t('sunday'),
         mon: t('monday'),
@@ -9,10 +9,11 @@ export const getFullDayName = (t, abbreviation) => {
         sat: t('saturday'),
     };
 
+    // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     return dayMap[abbreviation] || '';
 };
 
-export const getShortDayName = (t, abbreviation) => {
+export const getShortDayName = (t: any, abbreviation: any) => {
     const dayMap = {
         sun: t('sunday_short'),
         mon: t('monday_short'),
@@ -23,10 +24,11 @@ export const getShortDayName = (t, abbreviation) => {
         sat: t('saturday_short'),
     };
 
+    // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
     return dayMap[abbreviation] || '';
 };
 
-export const getTimeFromMs = (value) => {
+export const getTimeFromMs = (value: any) => {
     const selectedTime = new Date(value);
     const hours = selectedTime.getUTCHours();
     const minutes = selectedTime.getUTCMinutes();
@@ -37,7 +39,7 @@ export const getTimeFromMs = (value) => {
     };
 };
 
-export const convertTimeToMs = (hours, minutes) => {
+export const convertTimeToMs = (hours: any, minutes: any) => {
     const selectedTime = new Date(0);
     selectedTime.setUTCHours(parseInt(hours, 10));
     selectedTime.setUTCMinutes(parseInt(minutes, 10));

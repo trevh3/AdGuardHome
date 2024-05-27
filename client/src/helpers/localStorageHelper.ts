@@ -8,28 +8,31 @@ export const LOCAL_STORAGE_KEYS = {
 };
 
 export const LocalStorageHelper = {
-    setItem(key, value) {
+    setItem(key: any, value: any) {
         try {
             localStorage.setItem(key, JSON.stringify(value));
         } catch (error) {
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
             console.error(`Error setting ${key} in local storage: ${error.message}`);
         }
     },
 
-    getItem(key) {
+    getItem(key: any) {
         try {
             const item = localStorage.getItem(key);
             return item ? JSON.parse(item) : null;
         } catch (error) {
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
             console.error(`Error getting ${key} from local storage: ${error.message}`);
             return null;
         }
     },
 
-    removeItem(key) {
+    removeItem(key: any) {
         try {
             localStorage.removeItem(key);
         } catch (error) {
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
             console.error(`Error removing ${key} from local storage: ${error.message}`);
         }
     },
@@ -38,6 +41,7 @@ export const LocalStorageHelper = {
         try {
             localStorage.clear();
         } catch (error) {
+            // @ts-expect-error TS(2571): Object is of type 'unknown'.
             console.error(`Error clearing local storage: ${error.message}`);
         }
     },

@@ -2,7 +2,7 @@ import i18next from 'i18next';
 
 export const BUTTON_PREFIX = 'btn_';
 
-export const getBlockClientInfo = (ip, disallowed, disallowed_rule, allowedСlients) => {
+export const getBlockClientInfo = (ip: any, disallowed: any, disallowed_rule: any, allowedСlients: any) => {
     let confirmMessage;
 
     if (disallowed) {

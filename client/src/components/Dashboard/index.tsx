@@ -1,13 +1,21 @@
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import React, { useEffect } from 'react';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'prop... Remove this comment to see the full error message
 import PropTypes from 'prop-types';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import { HashLink as Link } from 'react-router-hash-link';
 import { Trans, useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
+// @ts-expect-error TS(6142): Module './Statistics' was resolved to '/Users/igor... Remove this comment to see the full error message
 import Statistics from './Statistics';
+// @ts-expect-error TS(6142): Module './Counters' was resolved to '/Users/igorlo... Remove this comment to see the full error message
 import Counters from './Counters';
+// @ts-expect-error TS(6142): Module './Clients' was resolved to '/Users/igorlob... Remove this comment to see the full error message
 import Clients from './Clients';
+// @ts-expect-error TS(6142): Module './QueriedDomains' was resolved to '/Users/... Remove this comment to see the full error message
 import QueriedDomains from './QueriedDomains';
+// @ts-expect-error TS(6142): Module './BlockedDomains' was resolved to '/Users/... Remove this comment to see the full error message
 import BlockedDomains from './BlockedDomains';
 import {
     DISABLE_PROTECTION_TIMINGS,
@@ -20,13 +28,19 @@ import {
     msToMinutes,
     msToHours,
     msToDays,
+// @ts-expect-error TS(6142): Module '../../helpers/helpers' was resolved to '/U... Remove this comment to see the full error message
 } from '../../helpers/helpers';
 
+// @ts-expect-error TS(6142): Module '../ui/PageTitle' was resolved to '/Users/i... Remove this comment to see the full error message
 import PageTitle from '../ui/PageTitle';
+// @ts-expect-error TS(6142): Module '../ui/Loading' was resolved to '/Users/igo... Remove this comment to see the full error message
 import Loading from '../ui/Loading';
 import './Dashboard.css';
+// @ts-expect-error TS(6142): Module '../ui/Dropdown' was resolved to '/Users/ig... Remove this comment to see the full error message
 import Dropdown from '../ui/Dropdown';
+// @ts-expect-error TS(6142): Module './UpstreamResponses' was resolved to '/Use... Remove this comment to see the full error message
 import UpstreamResponses from './UpstreamResponses';
+// @ts-expect-error TS(6142): Module './UpstreamAvgTime' was resolved to '/Users... Remove this comment to see the full error message
 import UpstreamAvgTime from './UpstreamAvgTime';
 
 const Dashboard = ({
@@ -38,7 +52,7 @@ const Dashboard = ({
     toggleProtection,
     stats,
     access,
-}) => {
+}: any) => {
     const { t } = useTranslation();
 
     const getAllStats = () => {
@@ -71,15 +85,20 @@ const Dashboard = ({
         'btn-success': !protectionEnabled,
     });
 
+    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
     const refreshButton = <button
             type="button"
             className="btn btn-icon btn-outline-primary btn-sm"
             title={t('refresh_btn')}
             onClick={() => getAllStats()}
     >
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         <svg className="icons icon12">
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <use xlinkHref="#refresh" />
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         </svg>
+    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
     </button>;
 
     const statsProcessing = stats.processingStats
@@ -114,6 +133,7 @@ const Dashboard = ({
     const getDisableProtectionItems = () => (
         Object.values(DISABLE_PROTECTION_ITEMS)
             .map((item, index) => (
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <div
                     key={`disable_timings_${index}`}
                     className="dropdown-item"
@@ -122,11 +142,12 @@ const Dashboard = ({
                     }}
                 >
                     {item.text}
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </div>
             ))
     );
 
-    const getRemaningTimeText = (milliseconds) => {
+    const getRemaningTimeText = (milliseconds: any) => {
         if (!milliseconds) {
             return '';
         }
@@ -140,11 +161,15 @@ const Dashboard = ({
         return hh ? `${formattedHH}:${mm}:${ss}` : `${mm}:${ss}`;
     };
 
-    const getProtectionBtnText = (status) => (status ? t('disable_protection') : t('enable_protection'));
+    const getProtectionBtnText = (status: any) => (status ? t('disable_protection') : t('enable_protection'));
 
+    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
     return <>
+        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <PageTitle title={t('dashboard')} containerClass="page-title--dashboard">
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="page-title__protection">
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <button
                     type="button"
                     className={buttonClass}
@@ -157,8 +182,10 @@ const Dashboard = ({
                         ? `${t('enable_protection_timer')} ${getRemaningTimeText(protectionDisabledDuration)}`
                         : getProtectionBtnText(protectionEnabled)
                     }
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </button>
 
+                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 {protectionEnabled && <Dropdown
                     label=""
                     baseClassName="dropdown-protection"
@@ -168,21 +195,31 @@ const Dashboard = ({
                 >
                     {getDisableProtectionItems()}
                 </Dropdown>}
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <button
                 type="button"
                 className="btn btn-outline-primary btn-sm"
                 onClick={getAllStats}
             >
+                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <Trans>refresh_statics</Trans>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </button>
         </PageTitle>
+        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         {statsProcessing && <Loading />}
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         {!statsProcessing && <div className="row row-cards dashboard">
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="col-lg-12">
                 {stats.interval === 0 && (
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="alert alert-warning" role="alert">
+                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Trans components={[
+                            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                             <Link
                                 to={`${SETTINGS_URLS.settings}#stats-config`}
                                 key="0"
@@ -192,8 +229,10 @@ const Dashboard = ({
                         ]}>
                             stats_disabled
                         </Trans>
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
                 )}
+                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <Statistics
                     interval={msToDays(stats.interval)}
                     dnsQueries={stats.dnsQueries}
@@ -206,14 +245,20 @@ const Dashboard = ({
                     numReplacedParental={stats.numReplacedParental}
                     refreshButton={refreshButton}
                 />
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="col-lg-6">
+                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <Counters
                     subtitle={subtitle}
                     refreshButton={refreshButton}
                 />
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="col-lg-6">
+                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <Clients
                     subtitle={subtitle}
                     dnsQueries={stats.numDnsQueries}
@@ -224,16 +269,22 @@ const Dashboard = ({
                     processingAccessSet={access.processingSet}
                     disallowedClients={access.disallowed_clients}
                 />
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="col-lg-6">
+                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <QueriedDomains
                     subtitle={subtitle}
                     dnsQueries={stats.numDnsQueries}
                     topQueriedDomains={stats.topQueriedDomains}
                     refreshButton={refreshButton}
                 />
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="col-lg-6">
+                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <BlockedDomains
                     subtitle={subtitle}
                     topBlockedDomains={stats.topBlockedDomains}
@@ -243,21 +294,29 @@ const Dashboard = ({
                     replacedParental={stats.numReplacedParental}
                     refreshButton={refreshButton}
                 />
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="col-lg-6">
+                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <UpstreamResponses
                     subtitle={subtitle}
                     topUpstreamsResponses={stats.topUpstreamsResponses}
                     refreshButton={refreshButton}
                 />
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="col-lg-6">
+                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <UpstreamAvgTime
                     subtitle={subtitle}
                     topUpstreamsAvgTime={stats.topUpstreamsAvgTime}
                     refreshButton={refreshButton}
                 />
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         </div>}
     </>;
 };

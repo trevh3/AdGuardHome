@@ -1,4 +1,6 @@
+// @ts-expect-error TS(2732): Cannot find module './whotracksme_web.json'. Consi... Remove this comment to see the full error message
 import whotracksmeWebsites from './whotracksme_web.json';
+// @ts-expect-error TS(2732): Cannot find module './trackers.json'. Consider usi... Remove this comment to see the full error message
 import trackersDb from './trackers.json';
 import { REPOSITORY } from '../constants';
 
@@ -26,7 +28,7 @@ export const sources = {
  * @param trackerId
  * @return {string}
  */
-const getWhotracksmeUrl = (trackerId) => {
+const getWhotracksmeUrl = (trackerId: any) => {
     const websiteId = whotracksmeWebsites.websites[trackerId];
     if (websiteId) {
         // Overrides links to websites.
@@ -42,7 +44,7 @@ const getWhotracksmeUrl = (trackerId) => {
  * @param {TrackerData} trackerData tracker data
  * @returns {source} source metadata or null if no matching tracker found
  */
-export const getSourceData = (trackerData) => {
+export const getSourceData = (trackerData: any) => {
     if (!trackerData || !trackerData.source) {
         return null;
     }
@@ -69,7 +71,7 @@ export const getSourceData = (trackerData) => {
  * @param {TrackerData} trackerData tracker data
  * @returns {number} source number
  */
-const convertSource = (sourceStr) => {
+const convertSource = (sourceStr: any) => {
     if (!sourceStr || sourceStr !== 'AdGuard') {
         return sources.WHOTRACKSME;
     }
@@ -83,7 +85,7 @@ const convertSource = (sourceStr) => {
  * @param {String} domainName domain name to check
  * @returns {TrackerData} tracker data or null if no matching tracker found
  */
-export const getTrackerData = (domainName) => {
+export const getTrackerData = (domainName: any) => {
     if (!domainName) {
         return null;
     }

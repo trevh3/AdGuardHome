@@ -1,4 +1,5 @@
 import { merge } from 'webpack-merge';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'js-y... Remove this comment to see the full error message
 import yaml from 'js-yaml';
 import fs from 'fs';
 import { BASE_URL } from './constants.js';
@@ -17,7 +18,7 @@ const importConfig = () => {
         const doc = yaml.safeLoad(fs.readFileSync('../AdguardHome.yaml', 'utf8'));
         const {
             bind_host,
-            bind_port
+            bind_port,
         } = doc;
         return {
             bind_host,
@@ -35,7 +36,7 @@ const importConfig = () => {
 const getDevServerConfig = (proxyUrl = BASE_URL) => {
     const {
         bind_host: host,
-        bind_port: port
+        bind_port: port,
     } = importConfig();
     const { DEV_SERVER_PORT } = process.env;
 
@@ -54,6 +55,7 @@ const getDevServerConfig = (proxyUrl = BASE_URL) => {
 };
 
 export default merge(common, {
+    // @ts-expect-error TS(2345): Argument of type '{ devServer?: { hot: boolean; op... Remove this comment to see the full error message
     devtool: 'eval-source-map',
-    ...(process.env.WEBPACK_DEV_SERVER ? { devServer: getDevServerConfig(BASE_URL) } : undefined)
+    ...(process.env.WEBPACK_DEV_SERVER ? { devServer: getDevServerConfig(BASE_URL) } : undefined),
 });

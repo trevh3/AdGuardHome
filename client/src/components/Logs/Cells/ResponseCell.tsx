@@ -1,15 +1,20 @@
 import { useTranslation } from 'react-i18next';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import { shallowEqual, useSelector } from 'react-redux';
 import classNames from 'classnames';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import React from 'react';
+// @ts-expect-error TS(7016): Could not find a declaration file for module 'prop... Remove this comment to see the full error message
 import propTypes from 'prop-types';
 import {
     getRulesToFilterList,
     formatElapsedMs,
     getFilterNames,
     getServiceName,
+// @ts-expect-error TS(6142): Module '../../../helpers/helpers' was resolved to ... Remove this comment to see the full error message
 } from '../../../helpers/helpers';
 import { FILTERED_STATUS, FILTERED_STATUS_TO_META_MAP } from '../../../helpers/constants';
+// @ts-expect-error TS(6142): Module './IconTooltip' was resolved to '/Users/igo... Remove this comment to see the full error message
 import IconTooltip from './IconTooltip';
 
 const ResponseCell = ({
@@ -22,12 +27,12 @@ const ResponseCell = ({
     rules,
     service_name,
     cached,
-}) => {
+}: any) => {
     const { t } = useTranslation();
-    const filters = useSelector((state) => state.filtering.filters, shallowEqual);
-    const whitelistFilters = useSelector((state) => state.filtering.whitelistFilters, shallowEqual);
-    const isDetailed = useSelector((state) => state.queryLogs.isDetailed);
-    const services = useSelector((store) => store?.services);
+    const filters = useSelector((state: any) => state.filtering.filters, shallowEqual);
+    const whitelistFilters = useSelector((state: any) => state.filtering.whitelistFilters, shallowEqual);
+    const isDetailed = useSelector((state: any) => state.queryLogs.isDetailed);
+    const services = useSelector((store: any) => store?.services);
 
     const formattedElapsedMs = formatElapsedMs(elapsedMs, t);
 
@@ -37,20 +42,26 @@ const ResponseCell = ({
     const isBlockedByResponse = originalResponse.length > 0 && isBlocked;
 
     const statusLabel = t(isBlockedByResponse ? 'blocked_by_cname_or_ip' : FILTERED_STATUS_TO_META_MAP[reason]?.LABEL || reason);
+    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
     const boldStatusLabel = <span className="font-weight-bold">{statusLabel}</span>;
 
-    const renderResponses = (responseArr) => {
+    const renderResponses = (responseArr: any) => {
         if (!responseArr || responseArr.length === 0) {
             return '';
         }
 
-        return <div>{responseArr.map((response) => {
-            const className = classNames('white-space--nowrap', {
-                'overflow-break': response.length > 100,
-            });
+        return (
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
+            <div>{responseArr.map((response: any) => {
+                const className = classNames('white-space--nowrap', {
+                    'overflow-break': response.length > 100,
+                });
 
-            return <div key={response} className={className}>{`${response}\n`}</div>;
-        })}</div>;
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
+                return <div key={response} className={className}>{`${response}\n`}</div>;
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
+            })}</div>
+        );
     };
 
     const COMMON_CONTENT = {
@@ -59,8 +70,11 @@ const ResponseCell = ({
         ...(cached
             && {
                 served_from_cache_label: (
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <svg className="icons icon--20 icon--green mb-1">
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <use xlinkHref="#check" />
+                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </svg>
                 ),
             }
@@ -84,7 +98,7 @@ const ResponseCell = ({
             filter: '',
         });
 
-    const getDetailedInfo = (reason) => {
+    const getDetailedInfo = (reason: any) => {
         switch (reason) {
             case FILTERED_STATUS.FILTERED_BLOCKED_SERVICE:
                 if (!service_name || !services.allServices) {
@@ -102,7 +116,9 @@ const ResponseCell = ({
     const detailedInfo = getDetailedInfo(reason);
 
     return (
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         <div className="logs__cell logs__cell--response" role="gridcell">
+            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
             <IconTooltip
                 className={classNames('icons mr-4 icon--24 icon--lightgray logs__question', { 'my-3': isDetailed })}
                 columnClass='grid grid--limited'
@@ -113,12 +129,18 @@ const ResponseCell = ({
                 content={content}
                 placement='bottom'
             />
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             <div className="text-truncate">
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <div className="text-truncate" title={statusLabel}>{statusLabel}</div>
+                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 {isDetailed && <div
                         className="detailed-info d-none d-sm-block pt-1 text-truncate"
+                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         title={detailedInfo}>{detailedInfo}</div>}
+            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
+        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
         </div>
     );
 };
