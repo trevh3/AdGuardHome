@@ -3,6 +3,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import * as url from 'url';
 import { BUILD_ENVS } from './constants.js';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
@@ -41,8 +42,7 @@ const config = {
         alias: {
             MainRoot: path.resolve(__dirname, '../'),
             ClientRoot: path.resolve(__dirname, './src'),
-            // TODO: uncomment when v16.13.1 is released https://stackoverflow.com/a/62671689/12942752
-            // 'react-dom': '@hot-loader/react-dom',
+            'react-dom': '@hot-loader/react-dom',
         },
     },
     module: {

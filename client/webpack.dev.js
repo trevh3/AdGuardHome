@@ -1,8 +1,8 @@
 import { merge } from 'webpack-merge';
 import yaml from 'js-yaml';
 import fs from 'fs';
-import { BASE_URL } from './constants';
-import common from './webpack.common';
+import { BASE_URL } from './constants.js';
+import common from './webpack.common.js';
 
 const ZERO_HOST = '0.0.0.0';
 const LOCALHOST = '127.0.0.1';
@@ -17,7 +17,7 @@ const importConfig = () => {
         const doc = yaml.safeLoad(fs.readFileSync('../AdguardHome.yaml', 'utf8'));
         const {
             bind_host,
-            bind_port
+            bind_port,
         } = doc;
         return {
             bind_host,
@@ -35,7 +35,7 @@ const importConfig = () => {
 const getDevServerConfig = (proxyUrl = BASE_URL) => {
     const {
         bind_host: host,
-        bind_port: port
+        bind_port: port,
     } = importConfig();
     const { DEV_SERVER_PORT } = process.env;
 
@@ -55,5 +55,5 @@ const getDevServerConfig = (proxyUrl = BASE_URL) => {
 
 export default merge(common, {
     devtool: 'eval-source-map',
-    ...(process.env.WEBPACK_DEV_SERVER ? { devServer: getDevServerConfig(BASE_URL) } : undefined)
+    ...(process.env.WEBPACK_DEV_SERVER ? { devServer: getDevServerConfig(BASE_URL) } : undefined),
 });

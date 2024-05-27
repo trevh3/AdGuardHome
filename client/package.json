@@ -4,13 +4,14 @@
     "private": true,
     "scripts": {
         "build-dev": "cross-env NODE_ENV=development BUILD_ENV=dev webpack --config webpack.dev.js",
-        "build-prod": "cross-env BUILD_ENV=prod webpack --config webpack.prod.ts",
+        "build-prod": "cross-env BUILD_ENV=prod webpack --config webpack.prod.js",
         "watch": "cross-env BUILD_ENV=dev webpack --config webpack.dev.js --watch",
         "watch:hot": "cross-env BUILD_ENV=dev webpack-dev-server --config webpack.dev.js",
         "lint": "eslint src",
         "lint:fix": "eslint src --fix",
         "test": "jest",
-        "test:watch": "jest --watch"
+        "test:watch": "jest --watch",
+        "typecheck:watch": "tsc --noEmit --watch"
     },
     "type": "module",
     "dependencies": {
@@ -56,7 +57,9 @@
         "@babel/plugin-transform-runtime": "^7.24.3",
         "@babel/preset-env": "^7.24.5",
         "@babel/preset-react": "^7.24.1",
+        "@types/lodash": "^4.17.4",
         "@types/react": "^17.0.80",
+        "@types/react-dom": "^18.3.0",
         "@types/react-redux": "^7.1.33",
         "@typescript-eslint/parser": "^7.10.0",
         "babel-loader": "^9.1.3",

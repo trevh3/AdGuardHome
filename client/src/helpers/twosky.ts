@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import twosky from 'MainRoot/.twosky.json';
+import twosky from 'html-sanitizer/adguard-home/.twosky.json';
 
 export const {
     languages: LANGUAGES,
