@@ -1,7 +1,6 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import { useState, useEffect } from 'react';
 
-const useDebounce = (value: any, delay: any) => {
+const useDebounce = (value, delay) => {
     const [debouncedValue, setDebouncedValue] = useState(value);
 
     useEffect(

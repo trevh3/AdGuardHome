@@ -1,19 +1,17 @@
 import axios from 'axios';
 
-// @ts-expect-error TS(2305): Module '"constants"' has no exported member 'BASE_... Remove this comment to see the full error message
-import { BASE_URL } from 'constants';
-// @ts-expect-error TS(6142): Module '../helpers/helpers' was resolved to '/User... Remove this comment to see the full error message
 import { getPathWithQueryString } from '../helpers/helpers';
 import {
     QUERY_LOGS_PAGE_LIMIT, HTML_PAGES, R_PATH_LAST_PART, THEMES,
 } from '../helpers/constants';
+import { BASE_URL } from 'constants';
 import i18n from '../i18n';
 import { LANGUAGES } from '../helpers/twosky';
 
 class Api {
     baseUrl = BASE_URL;
 
-    async makeRequest(path: any, method = 'POST', config: any) {
+    async makeRequest(path, method = 'POST', config) {
         const url = `${this.baseUrl}/${path}`;
 
         const axiosConfig = config || {};
@@ -31,13 +29,11 @@ class Api {
             return response.data;
         } catch (error) {
             const errorPath = url;
-            // @ts-expect-error TS(2571): Object is of type 'unknown'.
             if (error.response) {
                 const { pathname } = document.location;
                 const shouldRedirect = pathname !== HTML_PAGES.LOGIN
                         && pathname !== HTML_PAGES.INSTALL;
 
-                // @ts-expect-error TS(2571): Object is of type 'unknown'.
                 if (error.response.status === 403 && shouldRedirect) {
                     const loginPageUrl = window.location.href
                         .replace(R_PATH_LAST_PART, HTML_PAGES.LOGIN);
@@ -45,10 +41,8 @@ class Api {
                     return false;
                 }
 
-                // @ts-expect-error TS(2571): Object is of type 'unknown'.
                 throw new Error(`${errorPath} | ${error.response.data} | ${error.response.status}`);
             }
-            // @ts-expect-error TS(2571): Object is of type 'unknown'.
             throw new Error(`${errorPath} | ${error.message || error}`);
         }
     }
@@ -64,11 +58,10 @@ class Api {
 
     getGlobalStatus() {
         const { path, method } = this.GLOBAL_STATUS;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
-    testUpstream(servers: any) {
+    testUpstream(servers) {
         const { path, method } = this.GLOBAL_TEST_UPSTREAM_DNS;
         const config = {
             data: servers,
@@ -76,7 +69,7 @@ class Api {
         return this.makeRequest(path, method, config);
     }
 
-    getGlobalVersion(data: any) {
+    getGlobalVersion(data) {
         const { path, method } = this.GLOBAL_VERSION;
         const config = {
             data,
@@ -86,7 +79,6 @@ class Api {
 
     getUpdate() {
         const { path, method } = this.GLOBAL_UPDATE;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
@@ -109,11 +101,10 @@ class Api {
 
     getFilteringStatus() {
         const { path, method } = this.FILTERING_STATUS;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
-    refreshFilters(config: any) {
+    refreshFilters(config) {
         const { path, method } = this.FILTERING_REFRESH;
         const parameters = {
             data: config,
@@ -122,7 +113,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    addFilter(config: any) {
+    addFilter(config) {
         const { path, method } = this.FILTERING_ADD_FILTER;
         const parameters = {
             data: config,
@@ -131,7 +122,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    removeFilter(config: any) {
+    removeFilter(config) {
         const { path, method } = this.FILTERING_REMOVE_FILTER;
         const parameters = {
             data: config,
@@ -140,7 +131,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    setRules(rules: any) {
+    setRules(rules) {
         const { path, method } = this.FILTERING_SET_RULES;
         const parameters = {
             data: rules,
@@ -148,7 +139,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    setFiltersConfig(config: any) {
+    setFiltersConfig(config) {
         const { path, method } = this.FILTERING_CONFIG;
         const parameters = {
             data: config,
@@ -156,7 +147,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    setFilterUrl(config: any) {
+    setFilterUrl(config) {
         const { path, method } = this.FILTERING_SET_URL;
         const parameters = {
             data: config,
@@ -164,10 +155,9 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    checkHost(params: any) {
+    checkHost(params) {
         const { path, method } = this.FILTERING_CHECK_HOST;
         const url = getPathWithQueryString(path, params);
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(url, method);
     }
 
@@ -180,19 +170,16 @@ class Api {
 
     getParentalStatus() {
         const { path, method } = this.PARENTAL_STATUS;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
     enableParentalControl() {
         const { path, method } = this.PARENTAL_ENABLE;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
     disableParentalControl() {
         const { path, method } = this.PARENTAL_DISABLE;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
@@ -205,19 +192,16 @@ class Api {
 
     getSafebrowsingStatus() {
         const { path, method } = this.SAFEBROWSING_STATUS;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
     enableSafebrowsing() {
         const { path, method } = this.SAFEBROWSING_ENABLE;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
     disableSafebrowsing() {
         const { path, method } = this.SAFEBROWSING_DISABLE;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
@@ -228,7 +212,6 @@ class Api {
 
     getSafesearchStatus() {
         const { path, method } = this.SAFESEARCH_STATUS;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
@@ -245,7 +228,7 @@ class Api {
      * @param {*} data - SafeSearchConfig
      * @returns 200 ok
      */
-    updateSafesearch(data: any) {
+    updateSafesearch(data) {
         const { path, method } = this.SAFESEARCH_UPDATE;
         return this.makeRequest(path, method, { data });
     }
@@ -262,7 +245,7 @@ class Api {
 
     // Language
 
-    async changeLanguage(config: any) {
+    async changeLanguage(config) {
         const profile = await this.getProfile();
         profile.language = config.language;
 
@@ -271,7 +254,7 @@ class Api {
 
     // Theme
 
-    async changeTheme(config: any) {
+    async changeTheme(config) {
         const profile = await this.getProfile();
         profile.theme = config.theme;
 
@@ -299,17 +282,15 @@ class Api {
 
     getDhcpStatus() {
         const { path, method } = this.DHCP_STATUS;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
     getDhcpInterfaces() {
         const { path, method } = this.DHCP_INTERFACES;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
-    setDhcpConfig(config: any) {
+    setDhcpConfig(config) {
         const { path, method } = this.DHCP_SET_CONFIG;
         const parameters = {
             data: config,
@@ -317,7 +298,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    findActiveDhcp(req: any) {
+    findActiveDhcp(req) {
         const { path, method } = this.DHCP_FIND_ACTIVE;
         const parameters = {
             data: req,
@@ -325,7 +306,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    addStaticLease(config: any) {
+    addStaticLease(config) {
         const { path, method } = this.DHCP_ADD_STATIC_LEASE;
         const parameters = {
             data: config,
@@ -333,7 +314,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    removeStaticLease(config: any) {
+    removeStaticLease(config) {
         const { path, method } = this.DHCP_REMOVE_STATIC_LEASE;
         const parameters = {
             data: config,
@@ -341,7 +322,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    updateStaticLease(config: any) {
+    updateStaticLease(config) {
         const { path, method } = this.DHCP_UPDATE_STATIC_LEASE;
         const parameters = {
             data: config,
@@ -351,13 +332,11 @@ class Api {
 
     resetDhcp() {
         const { path, method } = this.DHCP_RESET;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
     resetDhcpLeases() {
         const { path, method } = this.DHCP_LEASES_RESET;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
@@ -370,11 +349,10 @@ class Api {
 
     getDefaultAddresses() {
         const { path, method } = this.INSTALL_GET_ADDRESSES;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
-    setAllSettings(config: any) {
+    setAllSettings(config) {
         const { path, method } = this.INSTALL_CONFIGURE;
         const parameters = {
             data: config,
@@ -382,7 +360,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    checkConfig(config: any) {
+    checkConfig(config) {
         const { path, method } = this.INSTALL_CHECK_CONFIG;
         const parameters = {
             data: config,
@@ -399,11 +377,10 @@ class Api {
 
     getTlsStatus() {
         const { path, method } = this.TLS_STATUS;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
-    setTlsConfig(config: any) {
+    setTlsConfig(config) {
         const { path, method } = this.TLS_CONFIG;
         const parameters = {
             data: config,
@@ -411,7 +388,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    validateTlsConfig(config: any) {
+    validateTlsConfig(config) {
         const { path, method } = this.TLS_VALIDATE;
         const parameters = {
             data: config,
@@ -432,11 +409,10 @@ class Api {
 
     getClients() {
         const { path, method } = this.GET_CLIENTS;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
-    addClient(config: any) {
+    addClient(config) {
         const { path, method } = this.ADD_CLIENT;
         const parameters = {
             data: config,
@@ -444,7 +420,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    deleteClient(config: any) {
+    deleteClient(config) {
         const { path, method } = this.DELETE_CLIENT;
         const parameters = {
             data: config,
@@ -452,7 +428,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    updateClient(config: any) {
+    updateClient(config) {
         const { path, method } = this.UPDATE_CLIENT;
         const parameters = {
             data: config,
@@ -460,10 +436,9 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    findClients(params: any) {
+    findClients(params) {
         const { path, method } = this.FIND_CLIENTS;
         const url = getPathWithQueryString(path, params);
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(url, method);
     }
 
@@ -474,11 +449,10 @@ class Api {
 
     getAccessList() {
         const { path, method } = this.ACCESS_LIST;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
-    setAccessList(config: any) {
+    setAccessList(config) {
         const { path, method } = this.ACCESS_SET;
         const parameters = {
             data: config,
@@ -497,11 +471,10 @@ class Api {
 
     getRewritesList() {
         const { path, method } = this.REWRITES_LIST;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
-    addRewrite(config: any) {
+    addRewrite(config) {
         const { path, method } = this.REWRITE_ADD;
         const parameters = {
             data: config,
@@ -509,7 +482,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    updateRewrite(config: any) {
+    updateRewrite(config) {
         const { path, method } = this.REWRITE_UPDATE;
         const parameters = {
             data: config,
@@ -517,7 +490,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    deleteRewrite(config: any) {
+    deleteRewrite(config) {
         const { path, method } = this.REWRITE_DELETE;
         const parameters = {
             data: config,
@@ -534,17 +507,15 @@ class Api {
 
     getAllBlockedServices() {
         const { path, method } = this.BLOCKED_SERVICES_ALL;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
     getBlockedServices() {
         const { path, method } = this.BLOCKED_SERVICES_GET;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
-    updateBlockedServices(config: any) {
+    updateBlockedServices(config) {
         const { path, method } = this.BLOCKED_SERVICES_UPDATE;
         const parameters = {
             data: config,
@@ -563,17 +534,15 @@ class Api {
 
     getStats() {
         const { path, method } = this.GET_STATS;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
     getStatsConfig() {
         const { path, method } = this.GET_STATS_CONFIG;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
-    setStatsConfig(data: any) {
+    setStatsConfig(data) {
         const { path, method } = this.UPDATE_STATS_CONFIG;
         const config = {
             data,
@@ -583,7 +552,6 @@ class Api {
 
     resetStats() {
         const { path, method } = this.STATS_RESET;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
@@ -596,22 +564,20 @@ class Api {
 
     QUERY_LOG_CLEAR = { path: 'querylog_clear', method: 'POST' };
 
-    getQueryLog(params: any) {
+    getQueryLog(params) {
         const { path, method } = this.GET_QUERY_LOG;
         // eslint-disable-next-line no-param-reassign
         params.limit = QUERY_LOGS_PAGE_LIMIT;
         const url = getPathWithQueryString(path, params);
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(url, method);
     }
 
     getQueryLogConfig() {
         const { path, method } = this.GET_QUERY_LOG_CONFIG;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
-    setQueryLogConfig(data: any) {
+    setQueryLogConfig(data) {
         const { path, method } = this.UPDATE_QUERY_LOG_CONFIG;
         const config = {
             data,
@@ -621,14 +587,13 @@ class Api {
 
     clearQueryLog() {
         const { path, method } = this.QUERY_LOG_CLEAR;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
     // Login
     LOGIN = { path: 'login', method: 'POST' };
 
-    login(data: any) {
+    login(data) {
         const { path, method } = this.LOGIN;
         const config = {
             data,
@@ -643,11 +608,10 @@ class Api {
 
     getProfile() {
         const { path, method } = this.GET_PROFILE;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
-    setProfile(data: any) {
+    setProfile(data) {
         const theme = data.theme ? data.theme : THEMES.auto;
         const defaultLanguage = i18n.language ? i18n.language : LANGUAGES.en;
         const language = data.language ? data.language : defaultLanguage;
@@ -665,11 +629,10 @@ class Api {
 
     getDnsConfig() {
         const { path, method } = this.GET_DNS_CONFIG;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 
-    setDnsConfig(data: any) {
+    setDnsConfig(data) {
         const { path, method } = this.SET_DNS_CONFIG;
         const config = {
             data,
@@ -679,7 +642,7 @@ class Api {
 
     SET_PROTECTION = { path: 'protection', method: 'POST' };
 
-    setProtection(data: any) {
+    setProtection(data) {
         const { enabled, duration } = data;
         const { path, method } = this.SET_PROTECTION;
 
@@ -691,7 +654,6 @@ class Api {
 
     clearCache() {
         const { path, method } = this.CLEAR_CACHE;
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         return this.makeRequest(path, method);
     }
 }

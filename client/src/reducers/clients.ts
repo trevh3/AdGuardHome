@@ -1,18 +1,11 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { handleActions } from 'redux-actions';
 
 import * as actions from '../actions/clients';
 
 const clients = handleActions({
-    [actions.addClientRequest]: (state: any) => ({
-        ...state,
-        processingAdding: true,
-    }),
-    [actions.addClientFailure]: (state: any) => ({
-        ...state,
-        processingAdding: false,
-    }),
-    [actions.addClientSuccess]: (state: any) => {
+    [actions.addClientRequest]: (state) => ({ ...state, processingAdding: true }),
+    [actions.addClientFailure]: (state) => ({ ...state, processingAdding: false }),
+    [actions.addClientSuccess]: (state) => {
         const newState = {
             ...state,
             processingAdding: false,
@@ -20,15 +13,9 @@ const clients = handleActions({
         return newState;
     },
 
-    [actions.deleteClientRequest]: (state: any) => ({
-        ...state,
-        processingDeleting: true,
-    }),
-    [actions.deleteClientFailure]: (state: any) => ({
-        ...state,
-        processingDeleting: false,
-    }),
-    [actions.deleteClientSuccess]: (state: any) => {
+    [actions.deleteClientRequest]: (state) => ({ ...state, processingDeleting: true }),
+    [actions.deleteClientFailure]: (state) => ({ ...state, processingDeleting: false }),
+    [actions.deleteClientSuccess]: (state) => {
         const newState = {
             ...state,
             processingDeleting: false,
@@ -36,15 +23,9 @@ const clients = handleActions({
         return newState;
     },
 
-    [actions.updateClientRequest]: (state: any) => ({
-        ...state,
-        processingUpdating: true,
-    }),
-    [actions.updateClientFailure]: (state: any) => ({
-        ...state,
-        processingUpdating: false,
-    }),
-    [actions.updateClientSuccess]: (state: any) => {
+    [actions.updateClientRequest]: (state) => ({ ...state, processingUpdating: true }),
+    [actions.updateClientFailure]: (state) => ({ ...state, processingUpdating: false }),
+    [actions.updateClientSuccess]: (state) => {
         const newState = {
             ...state,
             processingUpdating: false,
@@ -52,9 +33,7 @@ const clients = handleActions({
         return newState;
     },
 
-    [actions.toggleClientModal]: (state: any, {
-        payload,
-    }: any) => {
+    [actions.toggleClientModal]: (state, { payload }) => {
         if (payload) {
             const newState = {
                 ...state,

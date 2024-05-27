@@ -1,21 +1,17 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { handleActions } from 'redux-actions';
-// @ts-expect-error TS(6142): Module '../actions' was resolved to '/Users/igorlo... Remove this comment to see the full error message
 import * as actions from '../actions';
 
 const settings = handleActions(
     {
-        [actions.initSettingsRequest]: (state: any) => ({
+        [actions.initSettingsRequest]: (state) => ({
             ...state,
             processing: true,
         }),
-        [actions.initSettingsFailure]: (state: any) => ({
+        [actions.initSettingsFailure]: (state) => ({
             ...state,
             processing: false,
         }),
-        [actions.initSettingsSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.initSettingsSuccess]: (state, { payload }) => {
             const { settingsList } = payload;
             const newState = {
                 ...state,
@@ -24,9 +20,7 @@ const settings = handleActions(
             };
             return newState;
         },
-        [actions.toggleSettingStatus]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.toggleSettingStatus]: (state, { payload }) => {
             const { settingsList } = state;
             const { settingKey, value } = payload;
 
@@ -45,15 +39,15 @@ const settings = handleActions(
                 settingsList: newSettingsList,
             };
         },
-        [actions.testUpstreamRequest]: (state: any) => ({
+        [actions.testUpstreamRequest]: (state) => ({
             ...state,
             processingTestUpstream: true,
         }),
-        [actions.testUpstreamFailure]: (state: any) => ({
+        [actions.testUpstreamFailure]: (state) => ({
             ...state,
             processingTestUpstream: false,
         }),
-        [actions.testUpstreamSuccess]: (state: any) => ({
+        [actions.testUpstreamSuccess]: (state) => ({
             ...state,
             processingTestUpstream: false,
         }),

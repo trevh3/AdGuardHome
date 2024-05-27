@@ -1,23 +1,18 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { handleActions } from 'redux-actions';
-// @ts-expect-error TS(6142): Module '../actions' was resolved to '/Users/igorlo... Remove this comment to see the full error message
 import * as actions from '../actions';
-// @ts-expect-error TS(6142): Module '../helpers/helpers' was resolved to '/User... Remove this comment to see the full error message
 import { enrichWithConcatenatedIpAddresses } from '../helpers/helpers';
 
 const dhcp = handleActions(
     {
-        [actions.getDhcpStatusRequest]: (state: any) => ({
+        [actions.getDhcpStatusRequest]: (state) => ({
             ...state,
             processing: true,
         }),
-        [actions.getDhcpStatusFailure]: (state: any) => ({
+        [actions.getDhcpStatusFailure]: (state) => ({
             ...state,
             processing: false,
         }),
-        [actions.getDhcpStatusSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.getDhcpStatusSuccess]: (state, { payload }) => {
             const { static_leases: staticLeases, ...values } = payload;
 
             const newState = {
@@ -30,17 +25,15 @@ const dhcp = handleActions(
             return newState;
         },
 
-        [actions.getDhcpInterfacesRequest]: (state: any) => ({
+        [actions.getDhcpInterfacesRequest]: (state) => ({
             ...state,
             processingInterfaces: true,
         }),
-        [actions.getDhcpInterfacesFailure]: (state: any) => ({
+        [actions.getDhcpInterfacesFailure]: (state) => ({
             ...state,
             processingInterfaces: false,
         }),
-        [actions.getDhcpInterfacesSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.getDhcpInterfacesSuccess]: (state, { payload }) => {
             const newState = {
                 ...state,
                 interfaces: enrichWithConcatenatedIpAddresses(payload),
@@ -49,17 +42,15 @@ const dhcp = handleActions(
             return newState;
         },
 
-        [actions.findActiveDhcpRequest]: (state: any) => ({
+        [actions.findActiveDhcpRequest]: (state) => ({
             ...state,
             processingStatus: true,
         }),
-        [actions.findActiveDhcpFailure]: (state: any) => ({
+        [actions.findActiveDhcpFailure]: (state) => ({
             ...state,
             processingStatus: false,
         }),
-        [actions.findActiveDhcpSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.findActiveDhcpSuccess]: (state, { payload }) => {
             const newState = {
                 ...state,
                 check: payload,
@@ -68,15 +59,15 @@ const dhcp = handleActions(
             return newState;
         },
 
-        [actions.toggleDhcpRequest]: (state: any) => ({
+        [actions.toggleDhcpRequest]: (state) => ({
             ...state,
             processingDhcp: true,
         }),
-        [actions.toggleDhcpFailure]: (state: any) => ({
+        [actions.toggleDhcpFailure]: (state) => ({
             ...state,
             processingDhcp: false,
         }),
-        [actions.toggleDhcpSuccess]: (state: any) => {
+        [actions.toggleDhcpSuccess]: (state) => {
             const { enabled } = state;
             const newState = {
                 ...state,
@@ -87,17 +78,15 @@ const dhcp = handleActions(
             return newState;
         },
 
-        [actions.setDhcpConfigRequest]: (state: any) => ({
+        [actions.setDhcpConfigRequest]: (state) => ({
             ...state,
             processingConfig: true,
         }),
-        [actions.setDhcpConfigFailure]: (state: any) => ({
+        [actions.setDhcpConfigFailure]: (state) => ({
             ...state,
             processingConfig: false,
         }),
-        [actions.setDhcpConfigSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.setDhcpConfigSuccess]: (state, { payload }) => {
             const { v4, v6 } = state;
             const newConfigV4 = { ...v4, ...payload.v4 };
             const newConfigV6 = { ...v6, ...payload.v6 };
@@ -113,15 +102,15 @@ const dhcp = handleActions(
             return newState;
         },
 
-        [actions.resetDhcpRequest]: (state: any) => ({
+        [actions.resetDhcpRequest]: (state) => ({
             ...state,
             processingReset: true,
         }),
-        [actions.resetDhcpFailure]: (state: any) => ({
+        [actions.resetDhcpFailure]: (state) => ({
             ...state,
             processingReset: false,
         }),
-        [actions.resetDhcpSuccess]: (state: any) => ({
+        [actions.resetDhcpSuccess]: (state) => ({
             ...state,
             processingReset: false,
             enabled: false,
@@ -129,15 +118,13 @@ const dhcp = handleActions(
             v6: {},
             interface_name: '',
         }),
-        [actions.resetDhcpLeasesSuccess]: (state: any) => ({
+        [actions.resetDhcpLeasesSuccess]: (state) => ({
             ...state,
             leases: [],
             staticLeases: [],
         }),
 
-        [actions.toggleLeaseModal]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.toggleLeaseModal]: (state, { payload }) => {
             const newState = {
                 ...state,
                 isModalOpen: !state.isModalOpen,
@@ -147,17 +134,15 @@ const dhcp = handleActions(
             return newState;
         },
 
-        [actions.addStaticLeaseRequest]: (state: any) => ({
+        [actions.addStaticLeaseRequest]: (state) => ({
             ...state,
             processingAdding: true,
         }),
-        [actions.addStaticLeaseFailure]: (state: any) => ({
+        [actions.addStaticLeaseFailure]: (state) => ({
             ...state,
             processingAdding: false,
         }),
-        [actions.addStaticLeaseSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.addStaticLeaseSuccess]: (state, { payload }) => {
             const { ip, mac, hostname } = payload;
             const newLease = {
                 ip,
@@ -173,19 +158,17 @@ const dhcp = handleActions(
             return newState;
         },
 
-        [actions.removeStaticLeaseRequest]: (state: any) => ({
+        [actions.removeStaticLeaseRequest]: (state) => ({
             ...state,
             processingDeleting: true,
         }),
-        [actions.removeStaticLeaseFailure]: (state: any) => ({
+        [actions.removeStaticLeaseFailure]: (state) => ({
             ...state,
             processingDeleting: false,
         }),
-        [actions.removeStaticLeaseSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.removeStaticLeaseSuccess]: (state, { payload }) => {
             const leaseToRemove = payload.ip;
-            const leases = state.staticLeases.filter((item: any) => item.ip !== leaseToRemove);
+            const leases = state.staticLeases.filter((item) => item.ip !== leaseToRemove);
             const newState = {
                 ...state,
                 staticLeases: leases,
@@ -194,15 +177,9 @@ const dhcp = handleActions(
             return newState;
         },
 
-        [actions.updateStaticLeaseRequest]: (state: any) => ({
-            ...state,
-            processingUpdating: true,
-        }),
-        [actions.updateStaticLeaseFailure]: (state: any) => ({
-            ...state,
-            processingUpdating: false,
-        }),
-        [actions.updateStaticLeaseSuccess]: (state: any) => {
+        [actions.updateStaticLeaseRequest]: (state) => ({ ...state, processingUpdating: true }),
+        [actions.updateStaticLeaseFailure]: (state) => ({ ...state, processingUpdating: false }),
+        [actions.updateStaticLeaseSuccess]: (state) => {
             const newState = {
                 ...state,
                 processingUpdating: false,

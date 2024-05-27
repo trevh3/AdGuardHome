@@ -3,7 +3,6 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import * as url from 'url';
 import { BUILD_ENVS } from './constants.js';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
@@ -20,7 +19,6 @@ const ASSETS_PATH = path.resolve(RESOURCES_PATH, 'public/assets');
 const PUBLIC_PATH = path.resolve(__dirname, '../build/static');
 const PUBLIC_ASSETS_PATH = path.resolve(PUBLIC_PATH, 'assets');
 
-// @ts-expect-error TS(2538): Type 'undefined' cannot be used as an index type.
 const BUILD_ENV = BUILD_ENVS[process.env.BUILD_ENV];
 
 const isDev = BUILD_ENV === BUILD_ENVS.dev;
@@ -97,7 +95,6 @@ const config = {
     },
     plugins: [
         new CleanWebpackPlugin({
-            // @ts-expect-error TS(2345): Argument of type '{ root: string; verbose: false; ... Remove this comment to see the full error message
             root: PUBLIC_PATH,
             verbose: false,
             dry: false,

@@ -1,21 +1,12 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { handleActions } from 'redux-actions';
 
 import * as actions from '../actions/rewrites';
 
 const rewrites = handleActions(
     {
-        [actions.getRewritesListRequest]: (state: any) => ({
-            ...state,
-            processing: true,
-        }),
-        [actions.getRewritesListFailure]: (state: any) => ({
-            ...state,
-            processing: false,
-        }),
-        [actions.getRewritesListSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.getRewritesListRequest]: (state) => ({ ...state, processing: true }),
+        [actions.getRewritesListFailure]: (state) => ({ ...state, processing: false }),
+        [actions.getRewritesListSuccess]: (state, { payload }) => {
             const newState = {
                 ...state,
                 list: payload,
@@ -24,17 +15,9 @@ const rewrites = handleActions(
             return newState;
         },
 
-        [actions.addRewriteRequest]: (state: any) => ({
-            ...state,
-            processingAdd: true,
-        }),
-        [actions.addRewriteFailure]: (state: any) => ({
-            ...state,
-            processingAdd: false,
-        }),
-        [actions.addRewriteSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.addRewriteRequest]: (state) => ({ ...state, processingAdd: true }),
+        [actions.addRewriteFailure]: (state) => ({ ...state, processingAdd: false }),
+        [actions.addRewriteSuccess]: (state, { payload }) => {
             const newState = {
                 ...state,
                 list: [...state.list, payload],
@@ -43,28 +26,13 @@ const rewrites = handleActions(
             return newState;
         },
 
-        [actions.deleteRewriteRequest]: (state: any) => ({
-            ...state,
-            processingDelete: true,
-        }),
-        [actions.deleteRewriteFailure]: (state: any) => ({
-            ...state,
-            processingDelete: false,
-        }),
-        [actions.deleteRewriteSuccess]: (state: any) => ({
-            ...state,
-            processingDelete: false,
-        }),
+        [actions.deleteRewriteRequest]: (state) => ({ ...state, processingDelete: true }),
+        [actions.deleteRewriteFailure]: (state) => ({ ...state, processingDelete: false }),
+        [actions.deleteRewriteSuccess]: (state) => ({ ...state, processingDelete: false }),
 
-        [actions.updateRewriteRequest]: (state: any) => ({
-            ...state,
-            processingUpdate: true,
-        }),
-        [actions.updateRewriteFailure]: (state: any) => ({
-            ...state,
-            processingUpdate: false,
-        }),
-        [actions.updateRewriteSuccess]: (state: any) => {
+        [actions.updateRewriteRequest]: (state) => ({ ...state, processingUpdate: true }),
+        [actions.updateRewriteFailure]: (state) => ({ ...state, processingUpdate: false }),
+        [actions.updateRewriteSuccess]: (state) => {
             const newState = {
                 ...state,
                 processingUpdate: false,
@@ -72,9 +40,7 @@ const rewrites = handleActions(
             return newState;
         },
 
-        [actions.toggleRewritesModal]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.toggleRewritesModal]: (state, { payload }) => {
             if (payload) {
                 const newState = {
                     ...state,

@@ -1,13 +1,11 @@
 import 'url-polyfill';
 import dateParse from 'date-fns/parse';
 import dateFormat from 'date-fns/format';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import round from 'lodash/round';
 import axios from 'axios';
 import i18n from 'i18next';
 import ipaddr from 'ipaddr.js';
 import queryString from 'query-string';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import React from 'react';
 import { getTrackerData } from './trackers/trackers';
 
@@ -36,7 +34,7 @@ import { LOCAL_STORAGE_KEYS, LocalStorageHelper } from './localStorageHelper';
  * @param options {string}
  * @returns {string} Returns the time in the format HH:mm:ss
  */
-export const formatTime = (time: any, options = DEFAULT_TIME_FORMAT) => {
+export const formatTime = (time, options = DEFAULT_TIME_FORMAT) => {
     const parsedTime = dateParse(time);
     return dateFormat(parsedTime, options);
 };
@@ -46,9 +44,8 @@ export const formatTime = (time: any, options = DEFAULT_TIME_FORMAT) => {
  * @param [options] {object} Date.prototype.toLocaleString([locales[, options]]) options argument
  * @returns {string} Returns the date and time in the specified format
  */
-export const formatDateTime = (dateTime: any, options = DEFAULT_DATE_FORMAT_OPTIONS) => {
+export const formatDateTime = (dateTime, options = DEFAULT_DATE_FORMAT_OPTIONS) => {
     const parsedTime = new Date(dateTime);
-    // @ts-expect-error TS(2345): Argument of type '{ year: string; month: string; d... Remove this comment to see the full error message
     return parsedTime.toLocaleString(navigator.language, options);
 };
 
@@ -56,9 +53,11 @@ export const formatDateTime = (dateTime: any, options = DEFAULT_DATE_FORMAT_OPTI
  * @param dateTime {string} The date to format
  * @returns {string} Returns the date and time in the format with the full month name
  */
-export const formatDetailedDateTime = (dateTime: any) => formatDateTime(dateTime, DETAILED_DATE_FORMAT_OPTIONS);
+export const formatDetailedDateTime = (dateTime) => formatDateTime(
+    dateTime, DETAILED_DATE_FORMAT_OPTIONS,
+);
 
-export const normalizeLogs = (logs: any) => logs.map((log: any) => {
+export const normalizeLogs = (logs) => logs.map((log) => {
     const {
         answer,
         answer_dnssec,
@@ -83,7 +82,7 @@ export const normalizeLogs = (logs: any) => logs.map((log: any) => {
 
     const { name: domain, unicode_name: unicodeName, type } = question;
 
-    const processResponse = (data: any) => (data ? data.map((response: any) => {
+    const processResponse = (data) => (data ? data.map((response) => {
         const { value, type, ttl } = response;
         return `${type}: ${value} (ttl=${ttl})`;
     }) : []);
@@ -125,23 +124,24 @@ export const normalizeLogs = (logs: any) => logs.map((log: any) => {
     };
 });
 
-// @ts-expect-error TS(7006): Parameter 'item' implicitly has an 'any' type.
-export const normalizeHistory = (history: any) => history.map((item, idx) => ({
+export const normalizeHistory = (history) => history.map((item, idx) => ({
     x: idx,
     y: item,
 }));
 
-export const normalizeTopStats = (stats: any) => stats.map((item: any) => ({
-    name: Object.keys(item)[0],
-    count: Object.values(item)[0],
-}));
+export const normalizeTopStats = (stats) => (
+    stats.map((item) => ({
+        name: Object.keys(item)[0],
+        count: Object.values(item)[0],
+    }))
+);
 
-export const addClientInfo = (data: any, clients: any, ...params: any[]) => data.map((row: any) => {
+export const addClientInfo = (data, clients, ...params) => data.map((row) => {
     let info = '';
     params.find((param) => {
         const id = row[param];
         if (id) {
-            const client = clients.find((item: any) => item[id]) || '';
+            const client = clients.find((item) => item[id]) || '';
             info = client?.[id] ?? '';
         }
 
@@ -154,27 +154,29 @@ export const addClientInfo = (data: any, clients: any, ...params: any[]) => data
     };
 });
 
-export const normalizeFilters = (filters: any) => (filters ? filters.map((filter: any) => {
-    const {
-        id,
-        url,
-        enabled,
-        last_updated,
-        name = 'Default name',
-        rules_count = 0,
-    } = filter;
+export const normalizeFilters = (filters) => (
+    filters ? filters.map((filter) => {
+        const {
+            id,
+            url,
+            enabled,
+            last_updated,
+            name = 'Default name',
+            rules_count = 0,
+        } = filter;
 
-    return {
-        id,
-        url,
-        enabled,
-        lastUpdated: last_updated,
-        name,
-        rulesCount: rules_count,
-    };
-}) : []);
+        return {
+            id,
+            url,
+            enabled,
+            lastUpdated: last_updated,
+            name,
+            rulesCount: rules_count,
+        };
+    }) : []
+);
 
-export const normalizeFilteringStatus = (filteringStatus: any) => {
+export const normalizeFilteringStatus = (filteringStatus) => {
     const {
         enabled, filters, user_rules: userRules, interval, whitelist_filters,
     } = filteringStatus;
@@ -189,24 +191,24 @@ export const normalizeFilteringStatus = (filteringStatus: any) => {
     };
 };
 
-export const getPercent = (amount: any, number: any) => {
+export const getPercent = (amount, number) => {
     if (amount > 0 && number > 0) {
         return round(100 / (amount / number), 2);
     }
     return 0;
 };
 
-export const captitalizeWords = (text: any) => text.split(/[ -_]/g)
-    .map((str: any) => str.charAt(0)
+export const captitalizeWords = (text) => text.split(/[ -_]/g)
+    .map((str) => str.charAt(0)
         .toUpperCase() + str.substr(1))
     .join(' ');
 
-export const getInterfaceIp = (option: any) => {
-    const onlyIPv6 = option.ip_addresses.every((ip: any) => ip.includes(':'));
+export const getInterfaceIp = (option) => {
+    const onlyIPv6 = option.ip_addresses.every((ip) => ip.includes(':'));
     let [interfaceIP] = option.ip_addresses;
 
     if (!onlyIPv6) {
-        option.ip_addresses.forEach((ip: any) => {
+        option.ip_addresses.forEach((ip) => {
             if (!ip.includes(':')) {
                 interfaceIP = ip;
             }
@@ -216,9 +218,7 @@ export const getInterfaceIp = (option: any) => {
     return interfaceIP;
 };
 
-// @ts-expect-error TS(2571): Object is of type 'unknown'.
-export const getIpList = (interfaces: any) => Object.values(interfaces)
-    // @ts-expect-error TS(2571): Object is of type 'unknown'.
+export const getIpList = (interfaces) => Object.values(interfaces)
     .reduce((acc, curr) => acc.concat(curr.ip_addresses), [])
     .sort();
 
@@ -227,7 +227,7 @@ export const getIpList = (interfaces: any) => Object.values(interfaces)
  * @param {number} [port]
  * @returns {string}
  */
-export const getDnsAddress = (ip: any, port = 0) => {
+export const getDnsAddress = (ip, port = 0) => {
     const isStandardDnsPort = port === STANDARD_DNS_PORT;
     let address = ip;
 
@@ -247,7 +247,7 @@ export const getDnsAddress = (ip: any, port = 0) => {
  * @param {number} [port]
  * @returns {string}
  */
-export const getWebAddress = (ip: any, port = 0) => {
+export const getWebAddress = (ip, port = 0) => {
     const isStandardWebPort = port === STANDARD_WEB_PORT;
     let address = `http://${ip}`;
 
@@ -262,7 +262,7 @@ export const getWebAddress = (ip: any, port = 0) => {
     return address;
 };
 
-export const checkRedirect = (url: any, attempts: any) => {
+export const checkRedirect = (url, attempts) => {
     let count = attempts || 1;
 
     if (count > 10) {
@@ -270,14 +270,14 @@ export const checkRedirect = (url: any, attempts: any) => {
         return false;
     }
 
-    const rmTimeout = (t: any) => t && clearTimeout(t);
-    const setRecursiveTimeout = (time: any, ...args: any[]) => setTimeout(
+    const rmTimeout = (t) => t && clearTimeout(t);
+    const setRecursiveTimeout = (time, ...args) => setTimeout(
         checkRedirect,
         time,
         ...args,
     );
 
-    let timeout: any;
+    let timeout;
 
     axios.get(url)
         .then((response) => {
@@ -300,7 +300,7 @@ export const checkRedirect = (url: any, attempts: any) => {
     return false;
 };
 
-export const redirectToCurrentProtocol = (values: any, httpPort = 80) => {
+export const redirectToCurrentProtocol = (values, httpPort = 80) => {
     const {
         protocol, hostname, hash, port,
     } = window.location;
@@ -308,10 +308,8 @@ export const redirectToCurrentProtocol = (values: any, httpPort = 80) => {
     const httpsPort = port_https !== STANDARD_HTTPS_PORT ? `:${port_https}` : '';
 
     if (protocol !== 'https:' && enabled && force_https && port_https) {
-        // @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
         checkRedirect(`https://${hostname}${httpsPort}/${hash}`);
     } else if (protocol === 'https:' && enabled && port_https && port_https !== parseInt(port, 10)) {
-        // @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
         checkRedirect(`https://${hostname}${httpsPort}/${hash}`);
     } else if (protocol === 'https:' && (!enabled || !port_https)) {
         window.location.replace(`http://${hostname}:${httpPort}/${hash}`);
@@ -322,29 +320,29 @@ export const redirectToCurrentProtocol = (values: any, httpPort = 80) => {
  * @param {string} text
  * @returns []string
  */
-export const splitByNewLine = (text: any) => text.split('\n')
-    .filter((n: any) => n.trim());
+export const splitByNewLine = (text) => text.split('\n')
+    .filter((n) => n.trim());
 
 /**
  * @param {string} text
  * @returns {string}
  */
-export const trimMultilineString = (text: any) => splitByNewLine(text)
-    .map((line: any) => line.trim())
+export const trimMultilineString = (text) => splitByNewLine(text)
+    .map((line) => line.trim())
     .join('\n');
 
 /**
  * @param {string} text
  * @returns {string}
  */
-export const removeEmptyLines = (text: any) => splitByNewLine(text)
+export const removeEmptyLines = (text) => splitByNewLine(text)
     .join('\n');
 
 /**
  * @param {string} input
  * @returns {string}
  */
-export const trimLinesAndRemoveEmpty = (input: any) => input.split('\n').map((line: any) => line.trim()).filter(Boolean).join('\n');
+export const trimLinesAndRemoveEmpty = (input) => input.split('\n').map((line) => line.trim()).filter(Boolean).join('\n');
 
 /**
  * Normalizes the topClients array
@@ -358,18 +356,20 @@ export const trimLinesAndRemoveEmpty = (input: any) => input.split('\n').map((li
  * @returns {Object.<string, number>} normalizedTopClients.auto - auto clients
  * @returns {Object.<string, number>} normalizedTopClients.configured - configured clients
  */
-export const normalizeTopClients = (topClients: any) => topClients.reduce((acc: any, clientObj: any) => {
-    const { name, count, info: { name: infoName } } = clientObj;
-    acc.auto[name] = count;
-    acc.configured[infoName] = count;
-    return acc;
-}, {
-    auto: {},
-    configured: {},
-});
+export const normalizeTopClients = (topClients) => topClients.reduce(
+    (acc, clientObj) => {
+        const { name, count, info: { name: infoName } } = clientObj;
+        acc.auto[name] = count;
+        acc.configured[infoName] = count;
+        return acc;
+    }, {
+        auto: {},
+        configured: {},
+    },
+);
 
-export const sortClients = (clients: any) => {
-    const compare = (a: any, b: any) => {
+export const sortClients = (clients) => {
+    const compare = (a, b) => {
         const nameA = a.name.toUpperCase();
         const nameB = b.name.toUpperCase();
 
@@ -386,17 +386,17 @@ export const sortClients = (clients: any) => {
     return clients.sort(compare);
 };
 
-export const toggleAllServices = (services: any, change: any, isSelected: any) => {
-    services.forEach((service: any) => change(`blocked_services.${service.id}`, isSelected));
+export const toggleAllServices = (services, change, isSelected) => {
+    services.forEach((service) => change(`blocked_services.${service.id}`, isSelected));
 };
 
-export const msToSeconds = (milliseconds: any) => Math.floor(milliseconds / 1000);
+export const msToSeconds = (milliseconds) => Math.floor(milliseconds / 1000);
 
-export const msToMinutes = (milliseconds: any) => Math.floor(milliseconds / 1000 / 60);
+export const msToMinutes = (milliseconds) => Math.floor(milliseconds / 1000 / 60);
 
-export const msToHours = (milliseconds: any) => Math.floor(milliseconds / 1000 / 60 / 60);
+export const msToHours = (milliseconds) => Math.floor(milliseconds / 1000 / 60 / 60);
 
-export const secondsToMilliseconds = (seconds: any) => {
+export const secondsToMilliseconds = (seconds) => {
     if (seconds) {
         return seconds * 1000;
     }
@@ -404,12 +404,12 @@ export const secondsToMilliseconds = (seconds: any) => {
     return seconds;
 };
 
-export const msToDays = (milliseconds: any) => Math.floor(milliseconds / 1000 / 60 / 60 / 24);
+export const msToDays = (milliseconds) => Math.floor(milliseconds / 1000 / 60 / 60 / 24);
 
-export const normalizeRulesTextarea = (text: any) => text?.replace(/^\n/g, '')
+export const normalizeRulesTextarea = (text) => text?.replace(/^\n/g, '')
     .replace(/\n\s*\n/g, '\n');
 
-export const normalizeWhois = (whois: any) => {
+export const normalizeWhois = (whois) => {
     if (Object.keys(whois).length > 0) {
         const {
             city, country, ...values
@@ -435,15 +435,15 @@ export const normalizeWhois = (whois: any) => {
     return whois;
 };
 
-export const getPathWithQueryString = (path: any, params: any) => {
+export const getPathWithQueryString = (path, params) => {
     const searchParams = new URLSearchParams(params);
 
     return `${path}?${searchParams.toString()}`;
 };
 
-export const getParamsForClientsSearch = (data: any, param: any, additionalParam: any) => {
+export const getParamsForClientsSearch = (data, param, additionalParam) => {
     const clients = new Set();
-    data.forEach((e: any) => {
+    data.forEach((e) => {
         clients.add(e[param]);
         if (e[additionalParam]) {
             clients.add(e[additionalParam]);
@@ -452,7 +452,6 @@ export const getParamsForClientsSearch = (data: any, param: any, additionalParam
     const params = {};
     const ids = Array.from(clients.values());
     ids.forEach((id, i) => {
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         params[`ip${i}`] = id;
     });
 
@@ -470,25 +469,25 @@ export const getParamsForClientsSearch = (data: any, param: any, additionalParam
  * @param {function} [normalizeOnBlur]
  * @returns {function}
  */
-export const createOnBlurHandler = (event: any, input: any, normalizeOnBlur: any) => (
+export const createOnBlurHandler = (event, input, normalizeOnBlur) => (
     normalizeOnBlur
         ? input.onBlur(normalizeOnBlur(event.target.value))
         : input.onBlur());
 
-export const checkFiltered = (reason: any) => reason.indexOf(FILTERED) === 0;
-export const checkRewrite = (reason: any) => reason === FILTERED_STATUS.REWRITE;
-export const checkRewriteHosts = (reason: any) => reason === FILTERED_STATUS.REWRITE_HOSTS;
-export const checkBlackList = (reason: any) => reason === FILTERED_STATUS.FILTERED_BLACK_LIST;
-export const checkWhiteList = (reason: any) => reason === FILTERED_STATUS.NOT_FILTERED_WHITE_LIST;
+export const checkFiltered = (reason) => reason.indexOf(FILTERED) === 0;
+export const checkRewrite = (reason) => reason === FILTERED_STATUS.REWRITE;
+export const checkRewriteHosts = (reason) => reason === FILTERED_STATUS.REWRITE_HOSTS;
+export const checkBlackList = (reason) => reason === FILTERED_STATUS.FILTERED_BLACK_LIST;
+export const checkWhiteList = (reason) => reason === FILTERED_STATUS.NOT_FILTERED_WHITE_LIST;
 // eslint-disable-next-line max-len
-export const checkNotFilteredNotFound = (reason: any) => reason === FILTERED_STATUS.NOT_FILTERED_NOT_FOUND;
-export const checkSafeSearch = (reason: any) => reason === FILTERED_STATUS.FILTERED_SAFE_SEARCH;
-export const checkSafeBrowsing = (reason: any) => reason === FILTERED_STATUS.FILTERED_SAFE_BROWSING;
-export const checkParental = (reason: any) => reason === FILTERED_STATUS.FILTERED_PARENTAL;
-export const checkBlockedService = (reason: any) => reason === FILTERED_STATUS.FILTERED_BLOCKED_SERVICE;
+export const checkNotFilteredNotFound = (reason) => reason === FILTERED_STATUS.NOT_FILTERED_NOT_FOUND;
+export const checkSafeSearch = (reason) => reason === FILTERED_STATUS.FILTERED_SAFE_SEARCH;
+export const checkSafeBrowsing = (reason) => reason === FILTERED_STATUS.FILTERED_SAFE_BROWSING;
+export const checkParental = (reason) => reason === FILTERED_STATUS.FILTERED_PARENTAL;
+export const checkBlockedService = (reason) => reason === FILTERED_STATUS.FILTERED_BLOCKED_SERVICE;
 
-export const getCurrentFilter = (url: any, filters: any) => {
-    const filter = filters?.find((item: any) => url === item.url);
+export const getCurrentFilter = (url, filters) => {
+    const filter = filters?.find((item) => url === item.url);
 
     if (filter) {
         const { enabled, name, url } = filter;
@@ -510,10 +509,9 @@ export const getCurrentFilter = (url: any, filters: any) => {
  * @param {object} values
  * @returns {object} Returns different values of objects
  */
-export const getObjDiff = (initialValues: any, values: any) => Object.entries(values)
+export const getObjDiff = (initialValues, values) => Object.entries(values)
     .reduce((acc, [key, value]) => {
         if (value !== initialValues[key]) {
-            // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             acc[key] = value;
         }
         return acc;
@@ -523,7 +521,7 @@ export const getObjDiff = (initialValues: any, values: any) => Object.entries(va
  * @param num {number} to format
  * @returns {string} Returns a string with a language-sensitive representation of this number
  */
-export const formatNumber = (num: any) => {
+export const formatNumber = (num) => {
     const currentLanguage = i18n.languages[0] || DEFAULT_LANGUAGE;
     return num.toLocaleString(currentLanguage);
 };
@@ -534,7 +532,7 @@ export const formatNumber = (num: any) => {
  * @param value {string}
  * @returns {object}
  */
-export const getMap = (arr: any, key: any, value: any) => arr.reduce((acc: any, curr: any) => {
+export const getMap = (arr, key, value) => arr.reduce((acc, curr) => {
     acc[curr[key]] = curr[value];
     return acc;
 }, {});
@@ -544,7 +542,7 @@ export const getMap = (arr: any, key: any, value: any) => arr.reduce((acc: any, 
  * @param parsedCidr {array} ipaddr.js CIDR array
  * @returns {boolean}
  */
-const isIpMatchCidr = (parsedIp: any, parsedCidr: any) => {
+const isIpMatchCidr = (parsedIp, parsedCidr) => {
     try {
         const cidrIpVersion = parsedCidr[0].kind();
         const ipVersion = parsedIp.kind();
@@ -555,7 +553,7 @@ const isIpMatchCidr = (parsedIp: any, parsedCidr: any) => {
     }
 };
 
-export const isIpInCidr = (ip: any, cidr: any) => {
+export const isIpInCidr = (ip, cidr) => {
     try {
         const parsedIp = ipaddr.parse(ip);
         const parsedCidr = ipaddr.parseCIDR(cidr);
@@ -572,7 +570,7 @@ export const isIpInCidr = (ip: any, cidr: any) => {
  * @param {string} subnetMask
  * @returns {IPv4 | null}
  */
-export const parseSubnetMask = (subnetMask: any) => {
+export const parseSubnetMask = (subnetMask) => {
     try {
         return ipaddr.parse(subnetMask).prefixLengthFromSubnetMask();
     } catch (e) {
@@ -586,9 +584,9 @@ export const parseSubnetMask = (subnetMask: any) => {
  * @param {string} subnetMask
  * @returns {*}
  */
-export const subnetMaskToBitMask = (subnetMask: any) => subnetMask
+export const subnetMaskToBitMask = (subnetMask) => subnetMask
     .split('.')
-    .reduce((acc: any, cur: any) => acc - Math.log2(256 - Number(cur)), 32);
+    .reduce((acc, cur) => acc - Math.log2(256 - Number(cur)), 32);
 
 /**
  *
@@ -596,7 +594,7 @@ export const subnetMaskToBitMask = (subnetMask: any) => subnetMask
  * @returns {'IP' | 'CIDR' | 'CLIENT_ID' | 'UNKNOWN'}
  *
  */
-export const findAddressType = (address: any) => {
+export const findAddressType = (address) => {
     try {
         const cidrMaybe = address.includes('/');
 
@@ -620,7 +618,7 @@ export const findAddressType = (address: any) => {
  * @param ids {string[]}
  * @returns {Object}
  */
-export const separateIpsAndCidrs = (ids: any) => ids.reduce((acc: any, curr: any) => {
+export const separateIpsAndCidrs = (ids) => ids.reduce((acc, curr) => {
     const addressType = findAddressType(curr);
 
     if (addressType === ADDRESS_TYPES.IP) {
@@ -635,28 +633,26 @@ export const separateIpsAndCidrs = (ids: any) => ids.reduce((acc: any, curr: any
     return acc;
 }, { ips: [], cidrs: [], clientIds: [] });
 
-export const countClientsStatistics = (ids: any, autoClients: any) => {
+export const countClientsStatistics = (ids, autoClients) => {
     const { ips, cidrs, clientIds } = separateIpsAndCidrs(ids);
 
-    const ipsCount = ips.reduce((acc: any, curr: any) => {
+    const ipsCount = ips.reduce((acc, curr) => {
         const count = autoClients[curr] || 0;
         return acc + count;
     }, 0);
 
-    const clientIdsCount = clientIds.reduce((acc: any, curr: any) => {
+    const clientIdsCount = clientIds.reduce((acc, curr) => {
         const count = autoClients[curr] || 0;
         return acc + count;
     }, 0);
 
     const cidrsCount = Object.entries(autoClients)
-        // @ts-expect-error TS(2769): No overload matches this call.
         .reduce((acc, curr) => {
             const [id, count] = curr;
             if (!ipaddr.isValid(id)) {
                 return false;
             }
-            if (cidrs.some((cidr: any) => isIpInCidr(id, cidr))) {
-            // @ts-expect-error TS(2571): Object is of type 'unknown'.
+            if (cidrs.some((cidr) => isIpInCidr(id, cidr))) {
             // eslint-disable-next-line no-param-reassign
                 acc += count;
             }
@@ -671,7 +667,7 @@ export const countClientsStatistics = (ids: any, autoClients: any) => {
  * @param {function} t translate
  * @returns {string}
  */
-export const formatElapsedMs = (elapsedMs: any, t: any) => {
+export const formatElapsedMs = (elapsedMs, t) => {
     const formattedElapsedMs = parseInt(elapsedMs, 10) || parseFloat(elapsedMs)
         .toFixed(2);
     return `${formattedElapsedMs} ${t('milliseconds_abbreviation')}`;
@@ -680,7 +676,7 @@ export const formatElapsedMs = (elapsedMs: any, t: any) => {
 /**
  * @param language {string}
  */
-export const setHtmlLangAttr = (language: any) => {
+export const setHtmlLangAttr = (language) => {
     window.document.documentElement.lang = language;
 };
 
@@ -689,7 +685,7 @@ export const setHtmlLangAttr = (language: any) => {
  *
  * @param {string} theme
  */
-export const setTheme = (theme: any) => {
+export const setTheme = (theme) => {
     LocalStorageHelper.setItem(LOCAL_STORAGE_KEYS.THEME, theme);
 };
 
@@ -706,7 +702,7 @@ export const getTheme = () => LocalStorageHelper.getItem(LOCAL_STORAGE_KEYS.THEM
  *
  * @param theme
  */
-export const setUITheme = (theme: any) => {
+export const setUITheme = (theme) => {
     let currentTheme = theme || getTheme();
 
     if (currentTheme === THEMES.auto) {
@@ -721,9 +717,8 @@ export const setUITheme = (theme: any) => {
  * @param values {object}
  * @returns {object}
  */
-export const replaceEmptyStringsWithZeroes = (values: any) => Object.entries(values)
+export const replaceEmptyStringsWithZeroes = (values) => Object.entries(values)
     .reduce((acc, [key, value]) => {
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         acc[key] = value === '' ? 0 : value;
         return acc;
     }, {});
@@ -732,19 +727,21 @@ export const replaceEmptyStringsWithZeroes = (values: any) => Object.entries(val
  * @param value {number || string}
  * @returns {string}
  */
-export const replaceZeroWithEmptyString = (value: any) => (parseInt(value, 10) === 0 ? '' : value);
+export const replaceZeroWithEmptyString = (value) => (parseInt(value, 10) === 0 ? '' : value);
 
 /**
  * @param {string} search
  * @param {string} [response_status]
  * @returns {string}
  */
-export const getLogsUrlParams = (search: any, response_status: any) => `?${queryString.stringify({
+export const getLogsUrlParams = (search, response_status) => `?${queryString.stringify({
     search: search || undefined,
     response_status: response_status || undefined,
 })}`;
 
-export const processContent = (content: any) => (Array.isArray(content)
+export const processContent = (
+    content,
+) => (Array.isArray(content)
     ? content.filter(([, value]) => value)
         .reduce((acc, val) => acc.concat(val), [])
     : content);
@@ -753,8 +750,7 @@ export const processContent = (content: any) => (Array.isArray(content)
  * @param sortKey {string}
  * @returns {string[]}
  */
-export const getObjectKeysSorted = (object: any, sortKey: any) => Object.entries(object)
-    // @ts-expect-error TS(2538): Type 'any' cannot be used as an index type.
+export const getObjectKeysSorted = (object, sortKey) => Object.entries(object)
     .sort(([, { [sortKey]: order1 }], [, { [sortKey]: order2 }]) => order1 - order2)
     .map(([key]) => key);
 
@@ -762,7 +758,7 @@ export const getObjectKeysSorted = (object: any, sortKey: any) => Object.entries
  * @param ip
  * @returns {[IPv4|IPv6, 33|129]}
  */
-const getParsedIpWithPrefixLength = (ip: any) => {
+const getParsedIpWithPrefixLength = (ip) => {
     const MAX_PREFIX_LENGTH_V4 = 32;
     const MAX_PREFIX_LENGTH_V6 = 128;
 
@@ -778,7 +774,7 @@ const getParsedIpWithPrefixLength = (ip: any) => {
  * @param item - ip or cidr
  * @returns {number[]}
  */
-const getAddressesComparisonBytes = (item: any) => {
+const getAddressesComparisonBytes = (item) => {
     // Sort ipv4 before ipv6
     const IP_V4_COMPARISON_CODE = 0;
     const IP_V6_COMPARISON_CODE = 1;
@@ -787,11 +783,8 @@ const getAddressesComparisonBytes = (item: any) => {
         ? getParsedIpWithPrefixLength(item)
         : ipaddr.parseCIDR(item);
 
-    // @ts-expect-error TS(2339): Property 'kind' does not exist on type 'number | I... Remove this comment to see the full error message
     const [normalizedBytes, ipVersionComparisonCode] = parsedIp.kind() === 'ipv4'
-        // @ts-expect-error TS(2339): Property 'toIPv4MappedAddress' does not exist on t... Remove this comment to see the full error message
         ? [parsedIp.toIPv4MappedAddress().parts, IP_V4_COMPARISON_CODE]
-        // @ts-expect-error TS(2339): Property 'parts' does not exist on type 'number | ... Remove this comment to see the full error message
         : [parsedIp.parts, IP_V6_COMPARISON_CODE];
 
     return [ipVersionComparisonCode, ...normalizedBytes, cidr];
@@ -803,7 +796,7 @@ const getAddressesComparisonBytes = (item: any) => {
  * @param b
  * @returns {number} -1 | 0 | 1
  */
-export const sortIp = (a: any, b: any) => {
+export const sortIp = (a, b) => {
     try {
         const comparisonBytesA = Array.isArray(a)
             ? getAddressesComparisonBytes(a[0]) : getAddressesComparisonBytes(a);
@@ -832,7 +825,7 @@ export const sortIp = (a: any, b: any) => {
  * @param {number} filterId
  * @returns {string}
  */
-export const getSpecialFilterName = (filterId: any) => {
+export const getSpecialFilterName = (filterId) => {
     switch (filterId) {
         case SPECIAL_FILTER_ID.CUSTOM_FILTERING_RULES:
             return i18n.t('custom_filter_rules');
@@ -859,17 +852,17 @@ export const getSpecialFilterName = (filterId: any) => {
  * @returns {string}
  */
 export const getFilterName = (
-    filters: any,
-    whitelistFilters: any,
-    filterId: any,
-    resolveFilterName = (filter: any) => (filter ? filter.name : i18n.t('unknown_filter', { filterId })),
+    filters,
+    whitelistFilters,
+    filterId,
+    resolveFilterName = (filter) => (filter ? filter.name : i18n.t('unknown_filter', { filterId })),
 ) => {
     const specialFilterIds = Object.values(SPECIAL_FILTER_ID);
     if (specialFilterIds.includes(filterId)) {
         return getSpecialFilterName(filterId);
     }
 
-    const matchIdPredicate = (filter: any) => filter.id === filterId;
+    const matchIdPredicate = (filter) => filter.id === filterId;
     const filter = filters.find(matchIdPredicate) || whitelistFilters.find(matchIdPredicate);
     return resolveFilterName(filter);
 };
@@ -880,19 +873,15 @@ export const getFilterName = (
  * @param {array} whitelistFilters
  * @returns {string[]}
  */
-export const getFilterNames = (rules: any, filters: any, whitelistFilters: any) => rules.map(
-    ({
-        filter_list_id,
-    }: any) => getFilterName(filters, whitelistFilters, filter_list_id),
+export const getFilterNames = (rules, filters, whitelistFilters) => rules.map(
+    ({ filter_list_id }) => getFilterName(filters, whitelistFilters, filter_list_id),
 );
 
 /**
  * @param {array} rules
  * @returns {string[]}
  */
-export const getRuleNames = (rules: any) => rules.map(({
-    text,
-}: any) => text);
+export const getRuleNames = (rules) => rules.map(({ text }) => text);
 
 /**
  * @param {array} rules
@@ -900,15 +889,14 @@ export const getRuleNames = (rules: any) => rules.map(({
  * @param {array} whitelistFilters
  * @returns {object}
  */
-export const getFilterNameToRulesMap = (rules: any, filters: any, whitelistFilters: any) => rules.reduce((acc: any, {
-    text,
-    filter_list_id,
-}: any) => {
-    const filterName = getFilterName(filters, whitelistFilters, filter_list_id);
+export const getFilterNameToRulesMap = (rules, filters, whitelistFilters) => rules.reduce(
+    (acc, { text, filter_list_id }) => {
+        const filterName = getFilterName(filters, whitelistFilters, filter_list_id);
 
-    acc[filterName] = (acc[filterName] || []).concat(text);
-    return acc;
-}, {});
+        acc[filterName] = (acc[filterName] || []).concat(text);
+        return acc;
+    }, {},
+);
 
 /**
  * @param {array} rules
@@ -917,27 +905,21 @@ export const getFilterNameToRulesMap = (rules: any, filters: any, whitelistFilte
  * @param {object} classes
  * @returns {JSXElement}
  */
-export const getRulesToFilterList = (rules: any, filters: any, whitelistFilters: any, classes = {
+export const getRulesToFilterList = (rules, filters, whitelistFilters, classes = {
     list: 'filteringRules',
     rule: 'filteringRules__rule font-monospace',
     filter: 'filteringRules__filter',
 }) => {
     const filterNameToRulesMap = getFilterNameToRulesMap(rules, filters, whitelistFilters);
 
-    return (
-        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
-        <dl className={classes.list}>
-            {Object.entries(filterNameToRulesMap).reduce(
-                (acc, [filterName, rulesArr]) => acc
-                    // @ts-expect-error TS(2571): Object is of type 'unknown'.
-                    .concat(rulesArr.map((rule: any, i: any) => <dd key={i} className={classes.rule}>{rule}</dd>))
-                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
-                    .concat(<dt className={classes.filter} key={classes.filter}>{filterName}</dt>),
-                [],
-            )}
-    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
-    </dl>
-    );
+    return <dl className={classes.list}>
+        {Object.entries(filterNameToRulesMap).reduce(
+            (acc, [filterName, rulesArr]) => acc
+                .concat(rulesArr.map((rule, i) => <dd key={i} className={classes.rule}>{rule}</dd>))
+                .concat(<dt className={classes.filter} key={classes.filter}>{filterName}</dt>),
+            [],
+        )}
+</dl>;
 };
 
 /**
@@ -946,11 +928,10 @@ export const getRulesToFilterList = (rules: any, filters: any, whitelistFilters:
 * @param {array} whitelistFilters
 * @returns {string}
 */
-export const getRulesAndFilterNames = (rules: any, filters: any, whitelistFilters: any) => {
+export const getRulesAndFilterNames = (rules, filters, whitelistFilters) => {
     const filterNameToRulesMap = getFilterNameToRulesMap(rules, filters, whitelistFilters);
 
     return Object.entries(filterNameToRulesMap).map(
-        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         ([filterName, filterRules]) => filterRules.concat(filterName).join('\n'),
     ).join('\n\n');
 };
@@ -961,17 +942,15 @@ export const getRulesAndFilterNames = (rules: any, filters: any, whitelistFilter
  * @returns {{range_end: string, subnet_mask: string, range_start: string,
  * lease_duration: string, gateway_ip: string}}
  */
-export const calculateDhcpPlaceholdersIpv4 = (ip: any, gateway_ip: any) => {
+export const calculateDhcpPlaceholdersIpv4 = (ip, gateway_ip) => {
     const LAST_OCTET_IDX = 3;
     const LAST_OCTET_RANGE_START = 100;
     const LAST_OCTET_RANGE_END = 200;
 
     const addr = ipaddr.parse(ip);
-    // @ts-expect-error TS(2339): Property 'octets' does not exist on type 'IPv4 | I... Remove this comment to see the full error message
     addr.octets[LAST_OCTET_IDX] = LAST_OCTET_RANGE_START;
     const range_start = addr.toString();
 
-    // @ts-expect-error TS(2339): Property 'octets' does not exist on type 'IPv4 | I... Remove this comment to see the full error message
     addr.octets[LAST_OCTET_IDX] = LAST_OCTET_RANGE_END;
     const range_end = addr.toString();
 
@@ -1010,18 +989,16 @@ export const calculateDhcpPlaceholdersIpv6 = () => {
  * @param interfaces.ipv6_addresses {string[]}
  * @returns interfaces Interfaces enriched with ip_addresses property
  */
-export const enrichWithConcatenatedIpAddresses = (interfaces: any) => Object.entries(interfaces)
+export const enrichWithConcatenatedIpAddresses = (interfaces) => Object.entries(interfaces)
     .reduce((acc, [k, v]) => {
-        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         const ipv4_addresses = v.ipv4_addresses ?? [];
-        // @ts-expect-error TS(2571): Object is of type 'unknown'.
         const ipv6_addresses = v.ipv6_addresses ?? [];
 
         acc[k].ip_addresses = ipv4_addresses.concat(ipv6_addresses);
         return acc;
     }, interfaces);
 
-export const isScrolledIntoView = (el: any) => {
+export const isScrolledIntoView = (el) => {
     const rect = el.getBoundingClientRect();
     const elemTop = rect.top;
     const elemBottom = rect.bottom;
@@ -1036,7 +1013,7 @@ export const isScrolledIntoView = (el: any) => {
  * @param ip {string}
  * @returns {string}
  */
-export const getBlockingClientName = (clients: any, ip: any) => {
+export const getBlockingClientName = (clients, ip) => {
     for (let i = 0; i < clients.length; i += 1) {
         const client = clients[i];
 
@@ -1051,26 +1028,26 @@ export const getBlockingClientName = (clients: any, ip: any) => {
  * @param {string[]} lines
  * @returns {string[]}
  */
-export const filterOutComments = (lines: any) => lines
-    .filter((line: any) => !line.startsWith(COMMENT_LINE_DEFAULT_TOKEN));
+export const filterOutComments = (lines) => lines
+    .filter((line) => !line.startsWith(COMMENT_LINE_DEFAULT_TOKEN));
 
 /**
  * @param {array} services
  * @param {string} id
  * @returns {string}
  */
-export const getService = (services: any, id: any) => services.find((s: any) => s.id === id);
+export const getService = (services, id) => services.find((s) => s.id === id);
 
 /**
  * @param {array} services
  * @param {string} id
  * @returns {string}
  */
-export const getServiceName = (services: any, id: any) => getService(services, id)?.name;
+export const getServiceName = (services, id) => getService(services, id)?.name;
 
 /**
  * @param {array} services
  * @param {string} id
  * @returns {string}
  */
-export const getServiceIcon = (services: any, id: any) => getService(services, id)?.icon_svg;
+export const getServiceIcon = (services, id) => getService(services, id)?.icon_svg;

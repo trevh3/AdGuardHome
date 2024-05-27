@@ -1,7 +1,5 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import React from 'react';
 import TooltipTrigger from 'react-popper-tooltip';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'prop... Remove this comment to see the full error message
 import propTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
@@ -24,7 +22,7 @@ const Tooltip = ({
     delayHide = HIDE_TOOLTIP_DELAY,
     onVisibilityChange,
     defaultTooltipShown,
-}: any) => {
+}) => {
     const { t } = useTranslation();
     const touchEventsAvailable = 'ontouchstart' in window;
 
@@ -38,11 +36,7 @@ const Tooltip = ({
         delayShowValue = 0;
     }
 
-    const renderTooltip = ({
-        tooltipRef,
-        getTooltipProps,
-    }: any) => (
-            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
+    const renderTooltip = ({ tooltipRef, getTooltipProps }) => (
             <div
                     {...getTooltipProps({
                         ref: tooltipRef,
@@ -50,15 +44,10 @@ const Tooltip = ({
                     })}
             >
                 {typeof content === 'string' ? t(content) : content}
-            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
             </div>
     );
 
-    const renderTrigger = ({
-        getTriggerProps,
-        triggerRef,
-    }: any) => (
-            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
+    const renderTrigger = ({ getTriggerProps, triggerRef }) => (
             <span
                     {...getTriggerProps({
                         ref: triggerRef,
@@ -66,7 +55,6 @@ const Tooltip = ({
                     })}
             >
                     {children}
-                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </span>
     );
 
@@ -81,7 +69,6 @@ const Tooltip = ({
     };
 
     return (
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <TooltipTrigger
             placement={placement}
             trigger={triggerValue}

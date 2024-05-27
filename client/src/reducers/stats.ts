@@ -1,6 +1,4 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { handleActions } from 'redux-actions';
-// @ts-expect-error TS(6142): Module '../helpers/helpers' was resolved to '/User... Remove this comment to see the full error message
 import { normalizeTopClients } from '../helpers/helpers';
 import {
     DAY,
@@ -30,62 +28,28 @@ const defaultStats = {
 
 const stats = handleActions(
     {
-        [actions.getStatsConfigRequest]: (state: any) => ({
-            ...state,
-            processingGetConfig: true,
-        }),
-        [actions.getStatsConfigFailure]: (state: any) => ({
-            ...state,
-            processingGetConfig: false,
-        }),
-        [actions.getStatsConfigSuccess]: (
-            // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.getStatsConfigRequest]: (state) => ({ ...state, processingGetConfig: true }),
+        [actions.getStatsConfigFailure]: (state) => ({ ...state, processingGetConfig: false }),
+        [actions.getStatsConfigSuccess]: (state, { payload }) => ({
             ...state,
             ...payload,
-
             customInterval: !STATS_INTERVALS_DAYS.includes(payload.interval)
                 ? payload.interval / HOUR
                 : null,
-
             processingGetConfig: false,
         }),
 
-        [actions.setStatsConfigRequest]: (state: any) => ({
-            ...state,
-            processingSetConfig: true,
-        }),
-        [actions.setStatsConfigFailure]: (state: any) => ({
-            ...state,
-            processingSetConfig: false,
-        }),
-        [actions.setStatsConfigSuccess]: (
-            // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.setStatsConfigRequest]: (state) => ({ ...state, processingSetConfig: true }),
+        [actions.setStatsConfigFailure]: (state) => ({ ...state, processingSetConfig: false }),
+        [actions.setStatsConfigSuccess]: (state, { payload }) => ({
             ...state,
             ...payload,
             processingSetConfig: false,
         }),
 
-        [actions.getStatsRequest]: (state: any) => ({
-            ...state,
-            processingStats: true,
-        }),
-        [actions.getStatsFailure]: (state: any) => ({
-            ...state,
-            processingStats: false,
-        }),
-        [actions.getStatsSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.getStatsRequest]: (state) => ({ ...state, processingStats: true }),
+        [actions.getStatsFailure]: (state) => ({ ...state, processingStats: false }),
+        [actions.getStatsSuccess]: (state, { payload }) => {
             const {
                 dns_queries: dnsQueries,
                 blocked_filtering: blockedFiltering,
@@ -130,15 +94,9 @@ const stats = handleActions(
             return newState;
         },
 
-        [actions.resetStatsRequest]: (state: any) => ({
-            ...state,
-            processingReset: true,
-        }),
-        [actions.resetStatsFailure]: (state: any) => ({
-            ...state,
-            processingReset: false,
-        }),
-        [actions.resetStatsSuccess]: (state: any) => ({
+        [actions.resetStatsRequest]: (state) => ({ ...state, processingReset: true }),
+        [actions.resetStatsFailure]: (state) => ({ ...state, processingReset: false }),
+        [actions.resetStatsSuccess]: (state) => ({
             ...state,
             ...defaultStats,
             processingReset: false,

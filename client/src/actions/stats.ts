@@ -1,10 +1,8 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { createAction } from 'redux-actions';
 
 import apiClient from '../api/Api';
 import {
     normalizeTopStats, secondsToMilliseconds, getParamsForClientsSearch, addClientInfo,
-// @ts-expect-error TS(6142): Module '../helpers/helpers' was resolved to '/User... Remove this comment to see the full error message
 } from '../helpers/helpers';
 import { addErrorToast, addSuccessToast } from './toasts';
 
@@ -12,7 +10,7 @@ export const getStatsConfigRequest = createAction('GET_STATS_CONFIG_REQUEST');
 export const getStatsConfigFailure = createAction('GET_STATS_CONFIG_FAILURE');
 export const getStatsConfigSuccess = createAction('GET_STATS_CONFIG_SUCCESS');
 
-export const getStatsConfig = () => async (dispatch: any) => {
+export const getStatsConfig = () => async (dispatch) => {
     dispatch(getStatsConfigRequest());
     try {
         const data = await apiClient.getStatsConfig();
@@ -27,7 +25,7 @@ export const setStatsConfigRequest = createAction('SET_STATS_CONFIG_REQUEST');
 export const setStatsConfigFailure = createAction('SET_STATS_CONFIG_FAILURE');
 export const setStatsConfigSuccess = createAction('SET_STATS_CONFIG_SUCCESS');
 
-export const setStatsConfig = (config: any) => async (dispatch: any) => {
+export const setStatsConfig = (config) => async (dispatch) => {
     dispatch(setStatsConfigRequest());
     try {
         await apiClient.setStatsConfig(config);
@@ -43,12 +41,11 @@ export const getStatsRequest = createAction('GET_STATS_REQUEST');
 export const getStatsFailure = createAction('GET_STATS_FAILURE');
 export const getStatsSuccess = createAction('GET_STATS_SUCCESS');
 
-export const getStats = () => async (dispatch: any) => {
+export const getStats = () => async (dispatch) => {
     dispatch(getStatsRequest());
     try {
         const stats = await apiClient.getStats();
         const normalizedTopClients = normalizeTopStats(stats.top_clients);
-        // @ts-expect-error TS(2554): Expected 3 arguments, but got 2.
         const clientsParams = getParamsForClientsSearch(normalizedTopClients, 'name');
         const clients = await apiClient.findClients(clientsParams);
         const topClientsWithInfo = addClientInfo(normalizedTopClients, clients, 'name');
@@ -74,7 +71,7 @@ export const resetStatsRequest = createAction('RESET_STATS_REQUEST');
 export const resetStatsFailure = createAction('RESET_STATS_FAILURE');
 export const resetStatsSuccess = createAction('RESET_STATS_SUCCESS');
 
-export const resetStats = () => async (dispatch: any) => {
+export const resetStats = () => async (dispatch) => {
     dispatch(getStatsRequest());
     try {
         await apiClient.resetStats();

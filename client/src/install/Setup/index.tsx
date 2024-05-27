@@ -1,14 +1,9 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import React, { Component, Fragment } from 'react';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import { connect } from 'react-redux';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'prop... Remove this comment to see the full error message
 import PropTypes from 'prop-types';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import debounce from 'lodash/debounce';
 
 import * as actionCreators from '../../actions/install';
-// @ts-expect-error TS(6142): Module '../../helpers/helpers' was resolved to '/U... Remove this comment to see the full error message
 import { getWebAddress } from '../../helpers/helpers';
 import {
     INSTALL_FIRST_STEP,
@@ -17,57 +12,44 @@ import {
     DEBOUNCE_TIMEOUT,
 } from '../../helpers/constants';
 
-// @ts-expect-error TS(6142): Module '../../components/ui/Loading' was resolved ... Remove this comment to see the full error message
 import Loading from '../../components/ui/Loading';
-// @ts-expect-error TS(6142): Module './Greeting' was resolved to '/Users/igorlo... Remove this comment to see the full error message
 import Greeting from './Greeting';
-// @ts-expect-error TS(6142): Module './Settings' was resolved to '/Users/igorlo... Remove this comment to see the full error message
 import Settings from './Settings';
-// @ts-expect-error TS(6142): Module './Auth' was resolved to '/Users/igorlobano... Remove this comment to see the full error message
 import Auth from './Auth';
-// @ts-expect-error TS(6142): Module './Devices' was resolved to '/Users/igorlob... Remove this comment to see the full error message
 import Devices from './Devices';
-// @ts-expect-error TS(6142): Module './Submit' was resolved to '/Users/igorloba... Remove this comment to see the full error message
 import Submit from './Submit';
-// @ts-expect-error TS(6142): Module './Progress' was resolved to '/Users/igorlo... Remove this comment to see the full error message
 import Progress from './Progress';
 
-// @ts-expect-error TS(6142): Module '../../components/Toasts' was resolved to '... Remove this comment to see the full error message
 import Toasts from '../../components/Toasts';
-// @ts-expect-error TS(6142): Module '../../components/ui/Footer' was resolved t... Remove this comment to see the full error message
 import Footer from '../../components/ui/Footer';
-// @ts-expect-error TS(6142): Module '../../components/ui/Icons' was resolved to... Remove this comment to see the full error message
 import Icons from '../../components/ui/Icons';
-// @ts-expect-error TS(2307): Cannot find module '../../components/ui/svg/logo.s... Remove this comment to see the full error message
 import logo from '../../components/ui/svg/logo.svg';
 
 import './Setup.css';
 import '../../components/ui/Tabler.css';
 
 class Setup extends Component {
-    props: any;
-
     componentDidMount() {
         this.props.getDefaultAddresses();
     }
 
-    handleFormSubmit = (values: any) => {
+    handleFormSubmit = (values) => {
         const { staticIp, ...config } = values;
         this.props.setAllSettings(config);
     };
 
-    handleFormChange = debounce((values: any) => {
+    handleFormChange = debounce((values) => {
         const { web, dns } = values;
         if (values && web.port && dns.port) {
             this.props.checkConfig({ web, dns, set_static_ip: false });
         }
     }, DEBOUNCE_TIMEOUT);
 
-    handleFix = (web: any, dns: any, set_static_ip: any) => {
+    handleFix = (web, dns, set_static_ip) => {
         this.props.checkConfig({ web, dns, set_static_ip });
     };
 
-    openDashboard = (ip: any, port: any) => {
+    openDashboard = (ip, port) => {
         let address = getWebAddress(ip, port);
 
         if (ip === ALL_INTERFACES_IP) {
@@ -89,14 +71,12 @@ class Setup extends Component {
         }
     }
 
-    renderPage(step: any, config: any, interfaces: any) {
+    renderPage(step, config, interfaces) {
         switch (step) {
             case 1:
-                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 return <Greeting />;
             case 2:
                 return (
-                    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                     <Settings
                         config={config}
                         initialValues={config}
@@ -109,14 +89,11 @@ class Setup extends Component {
                 );
             case 3:
                 return (
-                    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                     <Auth onSubmit={this.handleFormSubmit} />
                 );
             case 4:
-                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 return <Devices interfaces={interfaces} />;
             case 5:
-                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 return <Submit openDashboard={this.openDashboard} />;
             default:
                 return false;
@@ -134,31 +111,19 @@ class Setup extends Component {
         } = this.props.install;
 
         return (
-            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
             <Fragment>
-                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 {processingDefault && <Loading />}
                 {!processingDefault
-                    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                     && <Fragment>
-                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div className="setup">
-                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                             <div className="setup__container">
-                                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                                 <img src={logo} className="setup__logo" alt="logo" />
                                 {this.renderPage(step, { web, dns, staticIp }, interfaces)}
-                                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                                 <Progress step={step} />
-                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                             </div>
-                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </div>
-                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Footer />
-                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Toasts />
-                        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                         <Icons />
                     </Fragment>
                 }
@@ -167,7 +132,6 @@ class Setup extends Component {
     }
 }
 
-// @ts-expect-error TS(2339): Property 'propTypes' does not exist on type 'typeo... Remove this comment to see the full error message
 Setup.propTypes = {
     getDefaultAddresses: PropTypes.func.isRequired,
     setAllSettings: PropTypes.func.isRequired,
@@ -180,7 +144,7 @@ Setup.propTypes = {
     dns: PropTypes.object,
 };
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state) => {
     const { install, toasts } = state;
     const props = { install, toasts };
     return props;

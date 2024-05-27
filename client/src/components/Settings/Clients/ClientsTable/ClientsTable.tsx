@@ -1,35 +1,24 @@
 /* eslint-disable react/display-name */
 /* eslint-disable react/prop-types */
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import React, { useEffect } from 'react';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'prop... Remove this comment to see the full error message
 import PropTypes from 'prop-types';
 import { Trans, useTranslation } from 'react-i18next';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import { useDispatch, useSelector } from 'react-redux';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import { useHistory, useLocation } from 'react-router-dom';
-// @ts-expect-error TS(2306): File '/Users/igorlobanov/Work/AdGuard/adguard-home... Remove this comment to see the full error message
 import ReactTable from 'react-table';
 
 import { getAllBlockedServices, getBlockedServices } from '../../../../actions/services';
-// @ts-expect-error TS(6142): Module '../../../../actions' was resolved to '/Use... Remove this comment to see the full error message
 import { initSettings } from '../../../../actions';
 import {
     splitByNewLine,
     countClientsStatistics,
     sortIp,
     getService,
-// @ts-expect-error TS(6142): Module '../../../../helpers/helpers' was resolved ... Remove this comment to see the full error message
 } from '../../../../helpers/helpers';
 import { MODAL_TYPE, LOCAL_TIMEZONE_VALUE, TABLES_MIN_ROWS } from '../../../../helpers/constants';
-// @ts-expect-error TS(6142): Module '../../../ui/Card' was resolved to '/Users/... Remove this comment to see the full error message
 import Card from '../../../ui/Card';
-// @ts-expect-error TS(6142): Module '../../../ui/CellWrap' was resolved to '/Us... Remove this comment to see the full error message
 import CellWrap from '../../../ui/CellWrap';
-// @ts-expect-error TS(6142): Module '../../../ui/LogsSearchLink' was resolved t... Remove this comment to see the full error message
 import LogsSearchLink from '../../../ui/LogsSearchLink';
-// @ts-expect-error TS(6142): Module '../Modal' was resolved to '/Users/igorloba... Remove this comment to see the full error message
 import Modal from '../Modal';
 import { LocalStorageHelper, LOCAL_STORAGE_KEYS } from '../../../../helpers/localStorageHelper';
 
@@ -48,13 +37,13 @@ const ClientsTable = ({
     processingUpdating,
     getStats,
     supportedTags,
-}: any) => {
+}) => {
     const [t] = useTranslation();
     const dispatch = useDispatch();
     const location = useLocation();
     const history = useHistory();
-    const services = useSelector((store: any) => store?.services);
-    const globalSettings = useSelector((store: any) => store?.settings.settingsList) || {};
+    const services = useSelector((store) => store?.services);
+    const globalSettings = useSelector((store) => store?.settings.settingsList) || {};
     const params = new URLSearchParams(location.search);
     const clientId = params.get('clientId');
 
@@ -72,15 +61,15 @@ const ClientsTable = ({
         }
     }, []);
 
-    const handleFormAdd = (values: any) => {
+    const handleFormAdd = (values) => {
         addClient(values);
     };
 
-    const handleFormUpdate = (values: any, name: any) => {
+    const handleFormUpdate = (values, name) => {
         updateClient(values, name);
     };
 
-    const handleSubmit = (values: any) => {
+    const handleSubmit = (values) => {
         const config = { ...values };
 
         if (values) {
@@ -97,7 +86,7 @@ const ClientsTable = ({
             }
 
             if (values.tags) {
-                config.tags = values.tags.map((tag: any) => tag.value);
+                config.tags = values.tags.map((tag) => tag.value);
             } else {
                 config.tags = [];
             }
@@ -118,13 +107,15 @@ const ClientsTable = ({
         }
     };
 
-    const getOptionsWithLabels = (options: any) => options.map((option: any) => ({
-        value: option,
-        label: option,
-    }));
+    const getOptionsWithLabels = (options) => (
+        options.map((option) => ({
+            value: option,
+            label: option,
+        }))
+    );
 
-    const getClient = (name: any, clients: any) => {
-        const client = clients.find((item: any) => name === item.name);
+    const getClient = (name, clients) => {
+        const client = clients.find((item) => name === item.name);
 
         if (client) {
             const {
@@ -149,7 +140,7 @@ const ClientsTable = ({
         };
     };
 
-    const handleDelete = (data: any) => {
+    const handleDelete = (data) => {
         // eslint-disable-next-line no-alert
         if (window.confirm(t('client_confirm_delete', { key: data.name }))) {
             deleteClient(data);
@@ -170,22 +161,18 @@ const ClientsTable = ({
             Header: t('table_client'),
             accessor: 'ids',
             minWidth: 150,
-            Cell: (row: any) => {
+            Cell: (row) => {
                 const { value } = row;
 
                 return (
-                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="logs__row o-hidden">
-                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <span className="logs__text">
-                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
-                            {value.map((address: any) => <div key={address} title={address}>
-                                {address}
-                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
-                            </div>)}
-                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
+                            {value.map((address) => (
+                                <div key={address} title={address}>
+                                    {address}
+                                </div>
+                            ))}
                         </span>
-                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
                 );
             },
@@ -201,23 +188,16 @@ const ClientsTable = ({
             Header: t('settings'),
             accessor: 'use_global_settings',
             minWidth: 120,
-            Cell: ({
-                value,
-            }: any) => {
+            Cell: ({ value }) => {
                 const title = value ? (
-                    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                     <Trans>settings_global</Trans>
                 ) : (
-                    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                     <Trans>settings_custom</Trans>
                 );
 
                 return (
-                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="logs__row o-hidden">
-                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div className="logs__text">{title}</div>
-                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
                 );
             },
@@ -226,24 +206,21 @@ const ClientsTable = ({
             Header: t('blocked_services'),
             accessor: 'blocked_services',
             minWidth: 180,
-            Cell: (row: any) => {
+            Cell: (row) => {
                 const { value, original } = row;
 
                 if (original.use_global_blocked_services) {
-                    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                     return <Trans>settings_global</Trans>;
                 }
 
                 if (value && services.allServices) {
                     return (
-                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div className="logs__row logs__row--icons">
-                            {value.map((service: any) => {
+                            {value.map((service) => {
                                 const serviceInfo = getService(services.allServices, service);
 
                                 if (serviceInfo?.icon_svg) {
                                     return (
-                                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                                         <div
                                             key={serviceInfo.name}
                                             dangerouslySetInnerHTML={{
@@ -257,16 +234,13 @@ const ClientsTable = ({
 
                                 return null;
                             })}
-                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </div>
                     );
                 }
 
                 return (
-                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="logs__row logs__row--icons">
                         –
-                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
                 );
             },
@@ -275,23 +249,16 @@ const ClientsTable = ({
             Header: t('upstreams'),
             accessor: 'upstreams',
             minWidth: 120,
-            Cell: ({
-                value,
-            }: any) => {
+            Cell: ({ value }) => {
                 const title = value && value.length > 0 ? (
-                    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                     <Trans>settings_custom</Trans>
                 ) : (
-                    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                     <Trans>settings_global</Trans>
                 );
 
                 return (
-                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="logs__row o-hidden">
-                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <div className="logs__text">{title}</div>
-                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
                 );
             },
@@ -300,7 +267,7 @@ const ClientsTable = ({
             Header: t('tags_title'),
             accessor: 'tags',
             minWidth: 140,
-            Cell: (row: any) => {
+            Cell: (row) => {
                 const { value } = row;
 
                 if (!value || value.length < 1) {
@@ -308,18 +275,14 @@ const ClientsTable = ({
                 }
 
                 return (
-                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="logs__row o-hidden">
-                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <span className="logs__text">
-                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
-                            {value.map((tag: any) => <div key={tag} title={tag} className="logs__tag small">
-                                {tag}
-                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
-                            </div>)}
-                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
+                            {value.map((tag) => (
+                                <div key={tag} title={tag} className="logs__tag small">
+                                    {tag}
+                                </div>
+                            ))}
                         </span>
-                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
                 );
             },
@@ -327,21 +290,19 @@ const ClientsTable = ({
         {
             Header: t('requests_count'),
             id: 'statistics',
-            accessor: (row: any) => countClientsStatistics(
+            accessor: (row) => countClientsStatistics(
                 row.ids,
                 normalizedTopClients.auto,
             ),
-            sortMethod: (a: any, b: any) => b - a,
+            sortMethod: (a, b) => b - a,
             minWidth: 120,
-            Cell: (row: any) => {
-                // @ts-expect-error TS(2554): Expected 2-3 arguments, but got 1.
+            Cell: (row) => {
                 const content = CellWrap(row);
 
                 if (!row.value) {
                     return content;
                 }
 
-                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 return <LogsSearchLink search={row.original.ids[0]}>{content}</LogsSearchLink>;
             },
         },
@@ -351,13 +312,11 @@ const ClientsTable = ({
             maxWidth: 100,
             sortable: false,
             resizable: false,
-            Cell: (row: any) => {
+            Cell: (row) => {
                 const clientName = row.original.name;
 
                 return (
-                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     <div className="logs__row logs__row--center">
-                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <button
                             type="button"
                             className="btn btn-icon btn-outline-primary btn-sm mr-2"
@@ -369,15 +328,10 @@ const ClientsTable = ({
                             disabled={processingUpdating}
                             title={t('edit_table_action')}
                         >
-                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                             <svg className="icons icon12">
-                                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                                 <use xlinkHref="#edit" />
-                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                             </svg>
-                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </button>
-                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         <button
                             type="button"
                             className="btn btn-icon btn-outline-secondary btn-sm"
@@ -385,15 +339,10 @@ const ClientsTable = ({
                             disabled={processingDeleting}
                             title={t('delete_table_action')}
                         >
-                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                             <svg className="icons icon12">
-                                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                                 <use xlinkHref="#delete" />
-                            // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                             </svg>
-                        // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                         </button>
-                    // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                     </div>
                 );
             },
@@ -404,15 +353,12 @@ const ClientsTable = ({
     const tagsOptions = getOptionsWithLabels(supportedTags);
 
     return (
-        // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
         <Card
             title={t('clients_title')}
             subtitle={t('clients_desc')}
             bodyType="card-body box-body--settings"
         >
-            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
             <>
-                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <ReactTable
                     data={clients || []}
                     columns={columns}
@@ -425,7 +371,9 @@ const ClientsTable = ({
                     className="-striped -highlight card-table-overflow"
                     showPagination
                     defaultPageSize={LocalStorageHelper.getItem(LOCAL_STORAGE_KEYS.CLIENTS_PAGE_SIZE) || 10}
-                    onPageSizeChange={(size: any) => LocalStorageHelper.setItem(LOCAL_STORAGE_KEYS.CLIENTS_PAGE_SIZE, size)}
+                    onPageSizeChange={(size) => (
+                        LocalStorageHelper.setItem(LOCAL_STORAGE_KEYS.CLIENTS_PAGE_SIZE, size)
+                    )}
                     minRows={TABLES_MIN_ROWS}
                     ofText="/"
                     previousText={t('previous_btn')}
@@ -435,18 +383,14 @@ const ClientsTable = ({
                     loadingText={t('loading_table_status')}
                     noDataText={t('clients_not_found')}
                 />
-                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <button
                     type="button"
                     className="btn btn-success btn-standard mt-3"
                     onClick={() => toggleClientModal(MODAL_TYPE.ADD_FILTERS)}
                     disabled={processingAdding}
                 >
-                    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                     <Trans>client_add</Trans>
-                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </button>
-                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <Modal
                     isModalOpen={isModalOpen}
                     modalType={modalType}

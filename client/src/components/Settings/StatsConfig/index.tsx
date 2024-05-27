@@ -1,24 +1,15 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import React, { Component } from 'react';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'prop... Remove this comment to see the full error message
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 
-// @ts-expect-error TS(6142): Module '../../ui/Card' was resolved to '/Users/igo... Remove this comment to see the full error message
 import Card from '../../ui/Card';
-// @ts-expect-error TS(6142): Module './Form' was resolved to '/Users/igorlobano... Remove this comment to see the full error message
 import Form from './Form';
 import { HOUR } from '../../../helpers/constants';
 
 class StatsConfig extends Component {
-    props: any;
-
     handleFormSubmit = ({
-        enabled,
-        interval,
-        ignored,
-        customInterval,
-    }: any) => {
+        enabled, interval, ignored, customInterval,
+    }) => {
         const { t, interval: prevInterval } = this.props;
         const newInterval = customInterval ? customInterval * HOUR : interval;
 
@@ -57,15 +48,12 @@ class StatsConfig extends Component {
         } = this.props;
 
         return (
-            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
             <Card
                 title={t('statistics_configuration')}
                 bodyType="card-body box-body--settings"
                 id="stats-config"
             >
-                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 <div className="form">
-                    // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                     <Form
                         initialValues={{
                             interval,
@@ -78,14 +66,12 @@ class StatsConfig extends Component {
                         processingReset={processingReset}
                         handleReset={this.handleReset}
                     />
-                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 </div>
             </Card>
         );
     }
 }
 
-// @ts-expect-error TS(2339): Property 'propTypes' does not exist on type 'typeo... Remove this comment to see the full error message
 StatsConfig.propTypes = {
     interval: PropTypes.number.isRequired,
     customInterval: PropTypes.number,

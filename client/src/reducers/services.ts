@@ -1,59 +1,28 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { handleActions } from 'redux-actions';
 
 import * as actions from '../actions/services';
 
 const services = handleActions(
     {
-        [actions.getBlockedServicesRequest]: (state: any) => ({
-            ...state,
-            processing: true,
-        }),
-        [actions.getBlockedServicesFailure]: (state: any) => ({
-            ...state,
-            processing: false,
-        }),
-        [actions.getBlockedServicesSuccess]: (
-            // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.getBlockedServicesRequest]: (state) => ({ ...state, processing: true }),
+        [actions.getBlockedServicesFailure]: (state) => ({ ...state, processing: false }),
+        [actions.getBlockedServicesSuccess]: (state, { payload }) => ({
             ...state,
             list: payload,
             processing: false,
         }),
 
-        [actions.getAllBlockedServicesRequest]: (state: any) => ({
-            ...state,
-            processingAll: true,
-        }),
-        [actions.getAllBlockedServicesFailure]: (state: any) => ({
-            ...state,
-            processingAll: false,
-        }),
-        [actions.getAllBlockedServicesSuccess]: (
-            // @ts-expect-error TS(7006): Parameter 'state' implicitly has an 'any' type.
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.getAllBlockedServicesRequest]: (state) => ({ ...state, processingAll: true }),
+        [actions.getAllBlockedServicesFailure]: (state) => ({ ...state, processingAll: false }),
+        [actions.getAllBlockedServicesSuccess]: (state, { payload }) => ({
             ...state,
             allServices: payload.blocked_services,
             processingAll: false,
         }),
 
-        [actions.updateBlockedServicesRequest]: (state: any) => ({
-            ...state,
-            processingSet: true,
-        }),
-        [actions.updateBlockedServicesFailure]: (state: any) => ({
-            ...state,
-            processingSet: false,
-        }),
-        [actions.updateBlockedServicesSuccess]: (state: any) => ({
+        [actions.updateBlockedServicesRequest]: (state) => ({ ...state, processingSet: true }),
+        [actions.updateBlockedServicesFailure]: (state) => ({ ...state, processingSet: false }),
+        [actions.updateBlockedServicesSuccess]: (state) => ({
             ...state,
             processingSet: false,
         }),

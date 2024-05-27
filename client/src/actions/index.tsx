@@ -1,13 +1,9 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { createAction } from 'redux-actions';
 import i18next from 'i18next';
 import axios from 'axios';
 
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import endsWith from 'lodash/endsWith';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'loda... Remove this comment to see the full error message
 import escapeRegExp from 'lodash/escapeRegExp';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import React from 'react';
 import { compose } from 'redux';
 import {
@@ -17,7 +13,6 @@ import {
     msToSeconds,
     msToMinutes,
     msToHours,
-// @ts-expect-error TS(6142): Module '../helpers/helpers' was resolved to '/User... Remove this comment to see the full error message
 } from '../helpers/helpers';
 import {
     BLOCK_ACTIONS,
@@ -43,7 +38,7 @@ export const showSettingsFailure = createAction('SETTINGS_FAILURE_SHOW');
  * @param {*} status: boolean | SafeSearchConfig
  * @returns
  */
-export const toggleSetting = (settingKey: any, status: any) => async (dispatch: any) => {
+export const toggleSetting = (settingKey, status) => async (dispatch) => {
     let successMessage = '';
     try {
         switch (settingKey) {
@@ -87,7 +82,7 @@ export const initSettingsSuccess = createAction('SETTINGS_INIT_SUCCESS');
 
 export const initSettings = (settingsList = {
     safebrowsing: {}, parental: {},
-}) => async (dispatch: any) => {
+}) => async (dispatch) => {
     dispatch(initSettingsRequest());
     try {
         const safebrowsingStatus = await apiClient.getSafebrowsingStatus();
@@ -121,7 +116,7 @@ export const toggleProtectionRequest = createAction('TOGGLE_PROTECTION_REQUEST')
 export const toggleProtectionFailure = createAction('TOGGLE_PROTECTION_FAILURE');
 export const toggleProtectionSuccess = createAction('TOGGLE_PROTECTION_SUCCESS');
 
-const getDisabledMessage = (time: any) => {
+const getDisabledMessage = (time) => {
     switch (time) {
         case DISABLE_PROTECTION_TIMINGS.HALF_MINUTE:
             return i18next.t(
@@ -150,7 +145,7 @@ const getDisabledMessage = (time: any) => {
     }
 };
 
-export const toggleProtection = (status: any, time = null) => async (dispatch: any) => {
+export const toggleProtection = (status, time = null) => async (dispatch) => {
     dispatch(toggleProtectionRequest());
     try {
         const successMessage = status ? getDisabledMessage(time) : 'enabled_protection';
@@ -165,7 +160,7 @@ export const toggleProtection = (status: any, time = null) => async (dispatch: a
 
 export const setDisableDurationTime = createAction('SET_DISABLED_DURATION_TIME');
 
-export const setProtectionTimerTime = (updatedTime: any) => async (dispatch: any) => {
+export const setProtectionTimerTime = (updatedTime) => async (dispatch) => {
     dispatch(setDisableDurationTime({ timeToEnableProtection: updatedTime }));
 };
 
@@ -173,7 +168,7 @@ export const getVersionRequest = createAction('GET_VERSION_REQUEST');
 export const getVersionFailure = createAction('GET_VERSION_FAILURE');
 export const getVersionSuccess = createAction('GET_VERSION_SUCCESS');
 
-export const getVersion = (recheck = false) => async (dispatch: any, getState: any) => {
+export const getVersion = (recheck = false) => async (dispatch, getState) => {
     dispatch(getVersionRequest());
     try {
         const data = await apiClient.getGlobalVersion({ recheck_now: recheck });
@@ -199,14 +194,14 @@ export const getUpdateRequest = createAction('GET_UPDATE_REQUEST');
 export const getUpdateFailure = createAction('GET_UPDATE_FAILURE');
 export const getUpdateSuccess = createAction('GET_UPDATE_SUCCESS');
 
-const checkStatus = async (handleRequestSuccess: any, handleRequestError: any, attempts = 60) => {
+const checkStatus = async (handleRequestSuccess, handleRequestError, attempts = 60) => {
     let timeout;
 
     if (attempts === 0) {
         handleRequestError();
     }
 
-    const rmTimeout = (t: any) => t && clearTimeout(t);
+    const rmTimeout = (t) => t && clearTimeout(t);
 
     try {
         const response = await axios.get(`${apiClient.baseUrl}/status`);
@@ -235,14 +230,13 @@ const checkStatus = async (handleRequestSuccess: any, handleRequestError: any, a
     }
 };
 
-export const getUpdate = () => async (dispatch: any, getState: any) => {
+export const getUpdate = () => async (dispatch, getState) => {
     const { dnsVersion } = getState().dashboard;
 
     dispatch(getUpdateRequest());
     const handleRequestError = () => {
         const options = {
             components: {
-                // @ts-expect-error TS(7026): JSX element implicitly has type 'any' because no i... Remove this comment to see the full error message
                 a: <a href={MANUAL_UPDATE_LINK} target="_blank"
                       rel="noopener noreferrer" />,
             },
@@ -252,12 +246,11 @@ export const getUpdate = () => async (dispatch: any, getState: any) => {
         dispatch(getUpdateFailure());
     };
 
-    const handleRequestSuccess = (response: any) => {
+    const handleRequestSuccess = (response) => {
         const responseVersion = response.data?.version;
 
         if (dnsVersion !== responseVersion) {
             dispatch(getUpdateSuccess());
-            // @ts-expect-error TS(2554): Expected 0 arguments, but got 1.
             window.location.reload(true);
         }
     };
@@ -274,7 +267,7 @@ export const getClientsRequest = createAction('GET_CLIENTS_REQUEST');
 export const getClientsFailure = createAction('GET_CLIENTS_FAILURE');
 export const getClientsSuccess = createAction('GET_CLIENTS_SUCCESS');
 
-export const getClients = () => async (dispatch: any) => {
+export const getClients = () => async (dispatch) => {
     dispatch(getClientsRequest());
     try {
         const data = await apiClient.getClients();
@@ -296,7 +289,7 @@ export const getProfileRequest = createAction('GET_PROFILE_REQUEST');
 export const getProfileFailure = createAction('GET_PROFILE_FAILURE');
 export const getProfileSuccess = createAction('GET_PROFILE_SUCCESS');
 
-export const getProfile = () => async (dispatch: any) => {
+export const getProfile = () => async (dispatch) => {
     dispatch(getProfileRequest());
     try {
         const profile = await apiClient.getProfile();
@@ -312,17 +305,16 @@ export const dnsStatusFailure = createAction('DNS_STATUS_FAILURE');
 export const dnsStatusSuccess = createAction('DNS_STATUS_SUCCESS');
 export const setDnsRunningStatus = createAction('SET_DNS_RUNNING_STATUS');
 
-export const getDnsStatus = () => async (dispatch: any) => {
+export const getDnsStatus = () => async (dispatch) => {
     dispatch(dnsStatusRequest());
 
     const handleRequestError = () => {
         dispatch(addErrorToast({ error: 'dns_status_error' }));
         dispatch(dnsStatusFailure());
-        // @ts-expect-error TS(2554): Expected 0 arguments, but got 1.
         window.location.reload(true);
     };
 
-    const handleRequestSuccess = (response: any) => {
+    const handleRequestSuccess = (response) => {
         const dnsStatus = response.data;
         if (dnsStatus.protection_disabled_duration === 0) {
             dnsStatus.protection_disabled_duration = null;
@@ -350,17 +342,16 @@ export const timerStatusRequest = createAction('TIMER_STATUS_REQUEST');
 export const timerStatusFailure = createAction('TIMER_STATUS_FAILURE');
 export const timerStatusSuccess = createAction('TIMER_STATUS_SUCCESS');
 
-export const getTimerStatus = () => async (dispatch: any) => {
+export const getTimerStatus = () => async (dispatch) => {
     dispatch(timerStatusRequest());
 
     const handleRequestError = () => {
         dispatch(addErrorToast({ error: 'dns_status_error' }));
         dispatch(dnsStatusFailure());
-        // @ts-expect-error TS(2554): Expected 0 arguments, but got 1.
         window.location.reload(true);
     };
 
-    const handleRequestSuccess = (response: any) => {
+    const handleRequestSuccess = (response) => {
         const dnsStatus = response.data;
         if (dnsStatus.protection_disabled_duration === 0) {
             dnsStatus.protection_disabled_duration = null;
@@ -385,12 +376,14 @@ export const testUpstreamRequest = createAction('TEST_UPSTREAM_REQUEST');
 export const testUpstreamFailure = createAction('TEST_UPSTREAM_FAILURE');
 export const testUpstreamSuccess = createAction('TEST_UPSTREAM_SUCCESS');
 
-export const testUpstream = ({
-    bootstrap_dns,
-    upstream_dns,
-    local_ptr_upstreams,
-    fallback_dns,
-}: any, upstream_dns_file: any) => async (dispatch: any) => {
+export const testUpstream = (
+    {
+        bootstrap_dns,
+        upstream_dns,
+        local_ptr_upstreams,
+        fallback_dns,
+    }, upstream_dns_file,
+) => async (dispatch) => {
     dispatch(testUpstreamRequest());
     try {
         const removeComments = compose(filterOutComments, splitByNewLine);
@@ -432,7 +425,7 @@ export const testUpstream = ({
     }
 };
 
-export const testUpstreamWithFormValues = () => async (dispatch: any, getState: any) => {
+export const testUpstreamWithFormValues = () => async (dispatch, getState) => {
     const { upstream_dns_file } = getState().dnsConfig;
     const {
         bootstrap_dns,
@@ -453,7 +446,7 @@ export const changeLanguageRequest = createAction('CHANGE_LANGUAGE_REQUEST');
 export const changeLanguageFailure = createAction('CHANGE_LANGUAGE_FAILURE');
 export const changeLanguageSuccess = createAction('CHANGE_LANGUAGE_SUCCESS');
 
-export const changeLanguage = (lang: any) => async (dispatch: any) => {
+export const changeLanguage = (lang) => async (dispatch) => {
     dispatch(changeLanguageRequest());
     try {
         await apiClient.changeLanguage({ language: lang });
@@ -468,7 +461,7 @@ export const changeThemeRequest = createAction('CHANGE_THEME_REQUEST');
 export const changeThemeFailure = createAction('CHANGE_THEME_FAILURE');
 export const changeThemeSuccess = createAction('CHANGE_THEME_SUCCESS');
 
-export const changeTheme = (theme: any) => async (dispatch: any) => {
+export const changeTheme = (theme) => async (dispatch) => {
     dispatch(changeThemeRequest());
     try {
         await apiClient.changeTheme({ theme });
@@ -483,7 +476,7 @@ export const getDhcpStatusRequest = createAction('GET_DHCP_STATUS_REQUEST');
 export const getDhcpStatusSuccess = createAction('GET_DHCP_STATUS_SUCCESS');
 export const getDhcpStatusFailure = createAction('GET_DHCP_STATUS_FAILURE');
 
-export const getDhcpStatus = () => async (dispatch: any) => {
+export const getDhcpStatus = () => async (dispatch) => {
     dispatch(getDhcpStatusRequest());
     try {
         const globalStatus = await apiClient.getGlobalStatus();
@@ -504,7 +497,7 @@ export const getDhcpInterfacesRequest = createAction('GET_DHCP_INTERFACES_REQUES
 export const getDhcpInterfacesSuccess = createAction('GET_DHCP_INTERFACES_SUCCESS');
 export const getDhcpInterfacesFailure = createAction('GET_DHCP_INTERFACES_FAILURE');
 
-export const getDhcpInterfaces = () => async (dispatch: any) => {
+export const getDhcpInterfaces = () => async (dispatch) => {
     dispatch(getDhcpInterfacesRequest());
     try {
         const interfaces = await apiClient.getDhcpInterfaces();
@@ -519,7 +512,7 @@ export const findActiveDhcpRequest = createAction('FIND_ACTIVE_DHCP_REQUEST');
 export const findActiveDhcpSuccess = createAction('FIND_ACTIVE_DHCP_SUCCESS');
 export const findActiveDhcpFailure = createAction('FIND_ACTIVE_DHCP_FAILURE');
 
-export const findActiveDhcp = (name: any) => async (dispatch: any, getState: any) => {
+export const findActiveDhcp = (name) => async (dispatch, getState) => {
     dispatch(findActiveDhcpRequest());
     try {
         const req = {
@@ -594,7 +587,7 @@ export const setDhcpConfigRequest = createAction('SET_DHCP_CONFIG_REQUEST');
 export const setDhcpConfigSuccess = createAction('SET_DHCP_CONFIG_SUCCESS');
 export const setDhcpConfigFailure = createAction('SET_DHCP_CONFIG_FAILURE');
 
-export const setDhcpConfig = (values: any) => async (dispatch: any) => {
+export const setDhcpConfig = (values) => async (dispatch) => {
     dispatch(setDhcpConfigRequest());
     try {
         await apiClient.setDhcpConfig(values);
@@ -610,7 +603,7 @@ export const toggleDhcpRequest = createAction('TOGGLE_DHCP_REQUEST');
 export const toggleDhcpFailure = createAction('TOGGLE_DHCP_FAILURE');
 export const toggleDhcpSuccess = createAction('TOGGLE_DHCP_SUCCESS');
 
-export const toggleDhcp = (values: any) => async (dispatch: any) => {
+export const toggleDhcp = (values) => async (dispatch) => {
     dispatch(toggleDhcpRequest());
     let config = {
         ...values,
@@ -640,7 +633,7 @@ export const resetDhcpRequest = createAction('RESET_DHCP_REQUEST');
 export const resetDhcpSuccess = createAction('RESET_DHCP_SUCCESS');
 export const resetDhcpFailure = createAction('RESET_DHCP_FAILURE');
 
-export const resetDhcp = () => async (dispatch: any) => {
+export const resetDhcp = () => async (dispatch) => {
     dispatch(resetDhcpRequest());
     try {
         const status = await apiClient.resetDhcp();
@@ -656,7 +649,7 @@ export const resetDhcpLeasesRequest = createAction('RESET_DHCP_LEASES_REQUEST');
 export const resetDhcpLeasesSuccess = createAction('RESET_DHCP_LEASES_SUCCESS');
 export const resetDhcpLeasesFailure = createAction('RESET_DHCP_LEASES_FAILURE');
 
-export const resetDhcpLeases = () => async (dispatch: any) => {
+export const resetDhcpLeases = () => async (dispatch) => {
     dispatch(resetDhcpLeasesRequest());
     try {
         const status = await apiClient.resetDhcpLeases();
@@ -674,7 +667,7 @@ export const addStaticLeaseRequest = createAction('ADD_STATIC_LEASE_REQUEST');
 export const addStaticLeaseFailure = createAction('ADD_STATIC_LEASE_FAILURE');
 export const addStaticLeaseSuccess = createAction('ADD_STATIC_LEASE_SUCCESS');
 
-export const addStaticLease = (config: any) => async (dispatch: any) => {
+export const addStaticLease = (config) => async (dispatch) => {
     dispatch(addStaticLeaseRequest());
     try {
         const name = config.hostname || config.ip;
@@ -693,7 +686,7 @@ export const removeStaticLeaseRequest = createAction('REMOVE_STATIC_LEASE_REQUES
 export const removeStaticLeaseFailure = createAction('REMOVE_STATIC_LEASE_FAILURE');
 export const removeStaticLeaseSuccess = createAction('REMOVE_STATIC_LEASE_SUCCESS');
 
-export const removeStaticLease = (config: any) => async (dispatch: any) => {
+export const removeStaticLease = (config) => async (dispatch) => {
     dispatch(removeStaticLeaseRequest());
     try {
         const name = config.hostname || config.ip;
@@ -710,7 +703,7 @@ export const updateStaticLeaseRequest = createAction('UPDATE_STATIC_LEASE_REQUES
 export const updateStaticLeaseFailure = createAction('UPDATE_STATIC_LEASE_FAILURE');
 export const updateStaticLeaseSuccess = createAction('UPDATE_STATIC_LEASE_SUCCESS');
 
-export const updateStaticLease = (config: any) => async (dispatch: any) => {
+export const updateStaticLease = (config) => async (dispatch) => {
     dispatch(updateStaticLeaseRequest());
     try {
         await apiClient.updateStaticLease(config);
@@ -726,7 +719,9 @@ export const updateStaticLease = (config: any) => async (dispatch: any) => {
 
 export const removeToast = createAction('REMOVE_TOAST');
 
-export const toggleBlocking = (type: any, domain: any, baseRule: any, baseUnblocking: any) => async (dispatch: any, getState: any) => {
+export const toggleBlocking = (
+    type, domain, baseRule, baseUnblocking,
+) => async (dispatch, getState) => {
     const baseBlockingRule = baseRule || `||${domain}^$important`;
     const baseUnblockingRule = baseUnblocking || `@@${baseBlockingRule}`;
     const { userRules } = getState().filtering;
@@ -758,7 +753,7 @@ export const toggleBlocking = (type: any, domain: any, baseRule: any, baseUnbloc
     dispatch(getFilteringStatus());
 };
 
-export const toggleBlockingForClient = (type: any, domain: any, client: any) => {
+export const toggleBlockingForClient = (type, domain, client) => {
     const escapedClientName = client.replace(/'/g, '\\\'')
         .replace(/"/g, '\\"')
         .replace(/,/g, '\\,')

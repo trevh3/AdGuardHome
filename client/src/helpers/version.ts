@@ -6,7 +6,7 @@
  * @param right {string} - right version
  * @return {boolean} true if versions are equal
  */
-export const areEqualVersions = (left: any, right: any) => {
+export const areEqualVersions = (left, right) => {
     if (!left || !right) {
         return false;
     }

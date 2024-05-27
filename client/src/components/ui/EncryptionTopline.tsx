@@ -1,11 +1,8 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import React from 'react';
 import { Trans } from 'react-i18next';
 import isAfter from 'date-fns/is_after';
 import addDays from 'date-fns/add_days';
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'reac... Remove this comment to see the full error message
 import { useSelector } from 'react-redux';
-// @ts-expect-error TS(6142): Module './Topline' was resolved to '/Users/igorlob... Remove this comment to see the full error message
 import Topline from './Topline';
 import { EMPTY_DATE } from '../../helpers/constants';
 
@@ -26,7 +23,7 @@ const EXPIRATION_STATE = {
     },
 };
 
-const getExpirationFlags = (not_after: any) => {
+const getExpirationFlags = (not_after) => {
     const DAYS_BEFORE_EXPIRATION = 5;
 
     const now = Date.now();
@@ -39,7 +36,7 @@ const getExpirationFlags = (not_after: any) => {
     };
 };
 
-const getExpirationEnumKey = (not_after: any) => {
+const getExpirationEnumKey = (not_after) => {
     const { isExpiring, isExpired } = getExpirationFlags(not_after);
 
     if (isExpired) {
@@ -54,7 +51,7 @@ const getExpirationEnumKey = (not_after: any) => {
 };
 
 const EncryptionTopline = () => {
-    const not_after = useSelector((state: any) => state.encryption.not_after);
+    const not_after = useSelector((state) => state.encryption.not_after);
 
     if (not_after === EMPTY_DATE) {
         return null;
@@ -69,9 +66,7 @@ const EncryptionTopline = () => {
     const { toplineType, i18nKey } = EXPIRATION_STATE[expirationStateKey];
 
     return (
-            // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
             <Topline type={toplineType}>
-                // @ts-expect-error TS(17004): Cannot use JSX unless the '--jsx' flag is provided... Remove this comment to see the full error message
                 <Trans components={[<a href="#encryption" key="0">link</a>]}>
                     {i18nKey}
                 </Trans>

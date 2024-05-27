@@ -1,4 +1,4 @@
-export default (api: any) => {
+export default (api) => {
     api.cache(false);
     return {
         presets: [

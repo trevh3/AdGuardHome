@@ -1,21 +1,12 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module 'redu... Remove this comment to see the full error message
 import { handleActions } from 'redux-actions';
 
 import * as actions from '../actions/access';
 
 const access = handleActions(
     {
-        [actions.getAccessListRequest]: (state: any) => ({
-            ...state,
-            processing: true,
-        }),
-        [actions.getAccessListFailure]: (state: any) => ({
-            ...state,
-            processing: false,
-        }),
-        [actions.getAccessListSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.getAccessListRequest]: (state) => ({ ...state, processing: true }),
+        [actions.getAccessListFailure]: (state) => ({ ...state, processing: false }),
+        [actions.getAccessListSuccess]: (state, { payload }) => {
             const {
                 allowed_clients,
                 disallowed_clients,
@@ -31,30 +22,13 @@ const access = handleActions(
             return newState;
         },
 
-        [actions.setAccessListRequest]: (state: any) => ({
-            ...state,
-            processingSet: true,
-        }),
-        [actions.setAccessListFailure]: (state: any) => ({
-            ...state,
-            processingSet: false,
-        }),
-        [actions.setAccessListSuccess]: (state: any) => ({
-            ...state,
-            processingSet: false,
-        }),
+        [actions.setAccessListRequest]: (state) => ({ ...state, processingSet: true }),
+        [actions.setAccessListFailure]: (state) => ({ ...state, processingSet: false }),
+        [actions.setAccessListSuccess]: (state) => ({ ...state, processingSet: false }),
 
-        [actions.toggleClientBlockRequest]: (state: any) => ({
-            ...state,
-            processingSet: true,
-        }),
-        [actions.toggleClientBlockFailure]: (state: any) => ({
-            ...state,
-            processingSet: false,
-        }),
-        [actions.toggleClientBlockSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.toggleClientBlockRequest]: (state) => ({ ...state, processingSet: true }),
+        [actions.toggleClientBlockFailure]: (state) => ({ ...state, processingSet: false }),
+        [actions.toggleClientBlockSuccess]: (state, { payload }) => {
             const {
                 allowed_clients,
                 disallowed_clients,
