@@ -1,16 +1,18 @@
 import React from 'react';
+
 import ReactTable from 'react-table';
-import PropTypes from 'prop-types';
 import { withTranslation, Trans } from 'react-i18next';
 
 import Card from '../ui/Card';
+
 import Cell from '../ui/Cell';
+
 import DomainCell from './DomainCell';
 
 import { getPercent } from '../../helpers/helpers';
 import { DASHBOARD_TABLES_DEFAULT_PAGE_SIZE, STATUS_COLORS, TABLES_MIN_ROWS } from '../../helpers/constants';
 
-const CountCell = (totalBlocked) => function cell(row) {
+const CountCell = (totalBlocked: any) => (function cell(row: any) {
     const { value } = row;
     const percent = getPercent(totalBlocked, value);
 
@@ -19,7 +21,18 @@ const CountCell = (totalBlocked) => function cell(row) {
                  color={STATUS_COLORS.red}
                  search={row.original.domain}
     />;
-};
+});
+
+interface BlockedDomainsProps {
+    topBlockedDomains: unknown[];
+    blockedFiltering: number;
+    replacedSafebrowsing: number;
+    replacedSafesearch: number;
+    replacedParental: number;
+    refreshButton: React.ReactNode;
+    subtitle: string;
+    t: (...args: unknown[]) => unknown;
+}
 
 const BlockedDomains = ({
     t,
@@ -29,31 +42,38 @@ const BlockedDomains = ({
     blockedFiltering,
     replacedSafebrowsing,
     replacedParental,
-    replacedSafesearch,
-}) => {
+    replacedSafesearch
+}: BlockedDomainsProps) => {
     const totalBlocked = (
         blockedFiltering + replacedSafebrowsing + replacedParental + replacedSafesearch
     );
 
     return (
+
         <Card
             title={t('top_blocked_domains')}
             subtitle={subtitle}
             bodyType="card-table"
             refresh={refreshButton}
         >
+
             <ReactTable
-                data={topBlockedDomains.map(({ name: domain, count }) => ({
+                data={topBlockedDomains.map(({
+                    name: domain,
+                    count,
+                }: any) => ({
                     domain,
                     count,
                 }))}
                 columns={[
                     {
+
                         Header: <Trans>domain</Trans>,
                         accessor: 'domain',
                         Cell: DomainCell,
                     },
                     {
+
                         Header: <Trans>requests_count</Trans>,
                         accessor: 'count',
                         maxWidth: 190,
@@ -68,17 +88,6 @@ const BlockedDomains = ({
             />
         </Card>
     );
-};
-
-BlockedDomains.propTypes = {
-    topBlockedDomains: PropTypes.array.isRequired,
-    blockedFiltering: PropTypes.number.isRequired,
-    replacedSafebrowsing: PropTypes.number.isRequired,
-    replacedSafesearch: PropTypes.number.isRequired,
-    replacedParental: PropTypes.number.isRequired,
-    refreshButton: PropTypes.node.isRequired,
-    subtitle: PropTypes.string.isRequired,
-    t: PropTypes.func.isRequired,
 };
 
 export default withTranslation()(BlockedDomains);

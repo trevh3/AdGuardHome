@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import {
     change,
     Field,
     formValueSelector,
     reduxForm,
+
 } from 'redux-form';
 import { connect } from 'react-redux';
 import { Trans, withTranslation } from 'react-i18next';
@@ -16,7 +16,9 @@ import {
     renderTextareaField,
     renderInputField,
     renderRadioField,
+
 } from '../../../helpers/form';
+
 import { trimLinesAndRemoveEmpty } from '../../../helpers/helpers';
 import {
     FORM_NAME,
@@ -30,7 +32,7 @@ import {
 } from '../../../helpers/constants';
 import '../FormButton.css';
 
-const getIntervalTitle = (interval, t) => {
+const getIntervalTitle = (interval: any, t: any) => {
     switch (interval) {
         case RETENTION_CUSTOM:
             return t('settings_custom');
@@ -43,7 +45,8 @@ const getIntervalTitle = (interval, t) => {
     }
 };
 
-const getIntervalFields = (processing, t, toNumber) => QUERY_LOG_INTERVALS_DAYS.map((interval) => (
+const getIntervalFields = (processing: any, t: any, toNumber: any) => QUERY_LOG_INTERVALS_DAYS.map((interval) => (
+
     <Field
         key={interval}
         name="interval"
@@ -56,7 +59,20 @@ const getIntervalFields = (processing, t, toNumber) => QUERY_LOG_INTERVALS_DAYS.
     />
 ));
 
-let Form = (props) => {
+interface FormProps {
+    handleSubmit: (...args: unknown[]) => unknown;
+    handleClear: (...args: unknown[]) => unknown;
+    submitting: boolean;
+    invalid: boolean;
+    processing: boolean;
+    processingClear: boolean;
+    t: (...args: unknown[]) => unknown;
+    interval?: number;
+    customInterval?: number;
+    dispatch: (...args: unknown[]) => unknown;
+}
+
+let Form = (props: FormProps) => {
     const {
         handleSubmit,
         submitting,
@@ -77,8 +93,11 @@ let Form = (props) => {
     }, [interval]);
 
     return (
+
         <form onSubmit={handleSubmit}>
+
             <div className="form__group form__group--settings">
+
                 <Field
                     name="enabled"
                     type="checkbox"
@@ -87,7 +106,9 @@ let Form = (props) => {
                     disabled={processing}
                 />
             </div>
+
             <div className="form__group form__group--settings">
+
                 <Field
                     name="anonymize_client_ip"
                     type="checkbox"
@@ -97,11 +118,16 @@ let Form = (props) => {
                     disabled={processing}
                 />
             </div>
+
             <label className="form__label">
+
                 <Trans>query_log_retention</Trans>
             </label>
+
             <div className="form__group form__group--settings">
+
                 <div className="custom-controls-stacked">
+
                     <Field
                         key={RETENTION_CUSTOM}
                         name="interval"
@@ -116,10 +142,13 @@ let Form = (props) => {
                         disabled={processing}
                     />
                     {!QUERY_LOG_INTERVALS_DAYS.includes(interval) && (
+
                         <div className="form__group--input">
+
                             <div className="form__desc form__desc--top">
                                 {t('custom_rotation_input')}
                             </div>
+
                             <Field
                                 key={RETENTION_CUSTOM_INPUT}
                                 name={CUSTOM_INTERVAL}
@@ -136,13 +165,19 @@ let Form = (props) => {
                     {getIntervalFields(processing, t, toFloatNumber)}
                 </div>
             </div>
+
             <label className="form__label form__label--with-desc">
+
                 <Trans>ignore_domains_title</Trans>
             </label>
+
             <div className="form__desc form__desc--top">
+
                 <Trans>ignore_domains_desc_query</Trans>
             </div>
+
             <div className="form__group form__group--settings">
+
                 <Field
                     name="ignored"
                     type="textarea"
@@ -153,7 +188,9 @@ let Form = (props) => {
                     normalizeOnBlur={trimLinesAndRemoveEmpty}
                 />
             </div>
+
             <div className="mt-5">
+
                 <button
                     type="submit"
                     className="btn btn-success btn-standard btn-large"
@@ -164,32 +201,22 @@ let Form = (props) => {
                         || (!QUERY_LOG_INTERVALS_DAYS.includes(interval) && !customInterval)
                     }
                 >
+
                     <Trans>save_btn</Trans>
                 </button>
+
                 <button
                     type="button"
                     className="btn btn-outline-secondary btn-standard form__button"
                     onClick={() => handleClear()}
                     disabled={processingClear}
                 >
+
                     <Trans>query_log_clear</Trans>
                 </button>
             </div>
         </form>
     );
-};
-
-Form.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    handleClear: PropTypes.func.isRequired,
-    submitting: PropTypes.bool.isRequired,
-    invalid: PropTypes.bool.isRequired,
-    processing: PropTypes.bool.isRequired,
-    processingClear: PropTypes.bool.isRequired,
-    t: PropTypes.func.isRequired,
-    interval: PropTypes.number,
-    customInterval: PropTypes.number,
-    dispatch: PropTypes.func.isRequired,
 };
 
 const selector = formValueSelector(FORM_NAME.LOG_CONFIG);

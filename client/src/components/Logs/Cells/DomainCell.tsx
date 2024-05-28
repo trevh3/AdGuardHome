@@ -1,16 +1,28 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
-import propTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import {
     DEFAULT_SHORT_DATE_FORMAT_OPTIONS,
     LONG_TIME_FORMAT,
     SCHEME_TO_PROTOCOL_MAP,
 } from '../../../helpers/constants';
+
 import { captitalizeWords, formatDateTime, formatTime } from '../../../helpers/helpers';
 import { getSourceData } from '../../../helpers/trackers/trackers';
+
 import IconTooltip from './IconTooltip';
+
+interface DomainCellProps {
+    answer_dnssec: boolean;
+    client_proto: string;
+    domain: string;
+    unicodeName?: string;
+    time: string;
+    type: string;
+    tracker?: object;
+    ecs?: string;
+}
 
 const DomainCell = ({
     answer_dnssec,
@@ -20,10 +32,12 @@ const DomainCell = ({
     time,
     tracker,
     type,
-    ecs,
-}) => {
+    ecs
+}: DomainCellProps) => {
     const { t } = useTranslation();
+
     const dnssec_enabled = useSelector((state) => state.dnsConfig.dnssec_enabled);
+
     const isDetailed = useSelector((state) => state.queryLogs.isDetailed);
 
     const hasTracker = !!tracker;
@@ -45,6 +59,7 @@ const DomainCell = ({
 
     let requestDetailsObj = {
         time_table_header: formatTime(time, LONG_TIME_FORMAT),
+
         date: formatDateTime(time, DEFAULT_SHORT_DATE_FORMAT_OPTIONS),
         domain,
     };
@@ -53,6 +68,7 @@ const DomainCell = ({
         requestDetailsObj = {
             ...requestDetailsObj,
             domain: unicodeName,
+
             punycode: domain,
         };
     }
@@ -60,12 +76,14 @@ const DomainCell = ({
     if (ecs) {
         requestDetailsObj = {
             ...requestDetailsObj,
+
             ecs,
         };
     }
 
     requestDetailsObj = {
         ...requestDetailsObj,
+
         type_table_header: type,
         protocol,
     };
@@ -76,6 +94,7 @@ const DomainCell = ({
         name_table_header: tracker?.name,
         category_label: hasTracker && captitalizeWords(tracker.category),
         source_label: sourceData && (
+
             <a
                 href={sourceData.url}
                 target="_blank"
@@ -87,7 +106,7 @@ const DomainCell = ({
         ),
     };
 
-    const renderGrid = (content, idx) => {
+    const renderGrid = (content: any, idx: any) => {
         const preparedContent = typeof content === 'string' ? t(content) : content;
 
         const className = classNames(
@@ -96,17 +115,21 @@ const DomainCell = ({
         );
 
         return (
+
             <div key={idx} className={className}>
                 {preparedContent}
             </div>
         );
     };
 
-    const getGrid = (contentObj, title, className) => [
+    const getGrid = (contentObj: any, title: any, className: any) => [
+
         <div key={title} className={classNames('pb-2 grid--title', className)}>
             {t(title)}
         </div>,
+
         <div key={`${title}-1`} className="grid grid--limited">
+
             {React.Children.map(Object.entries(contentObj), renderGrid)}
         </div>,
     ];
@@ -122,11 +145,13 @@ const DomainCell = ({
     const details = [ip, protocol].filter(Boolean).join(', ');
 
     return (
+
         <div
             className="d-flex o-hidden logs__cell logs__cell logs__cell--domain"
             role="gridcell"
         >
             {dnssec_enabled && (
+
                 <IconTooltip
                     className={lockIconClass}
                     tooltipClass="py-4 px-5 pb-45"
@@ -137,25 +162,31 @@ const DomainCell = ({
                     placement="bottom"
                 />
             )}
+
             <IconTooltip
                 className={privacyIconClass}
                 tooltipClass="pt-4 pb-5 px-5 mw-75"
                 xlinkHref="privacy"
                 contentItemClass="key-colon"
                 renderContent={renderContent}
+
                 place="bottom"
             />
+
             <div className={valueClass}>
                 {unicodeName ? (
+
                     <div className="text-truncate overflow-break-mobile" title={unicodeName}>
                         {unicodeName}
                     </div>
                 ) : (
+
                     <div className="text-truncate overflow-break-mobile" title={domain}>
                         {domain}
                     </div>
                 )}
                 {details && isDetailed && (
+
                     <div
                         className="detailed-info d-none d-sm-block text-truncate"
                         title={details}
@@ -166,17 +197,6 @@ const DomainCell = ({
             </div>
         </div>
     );
-};
-
-DomainCell.propTypes = {
-    answer_dnssec: propTypes.bool.isRequired,
-    client_proto: propTypes.string.isRequired,
-    domain: propTypes.string.isRequired,
-    unicodeName: propTypes.string,
-    time: propTypes.string.isRequired,
-    type: propTypes.string.isRequired,
-    tracker: propTypes.object,
-    ecs: propTypes.string,
 };
 
 export default DomainCell;

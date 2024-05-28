@@ -1,12 +1,13 @@
 import React, { useCallback } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+
 import { Field, reduxForm } from 'redux-form';
 import { useTranslation } from 'react-i18next';
 
 import {
     renderInputField,
     toNumber,
+
 } from '../../../helpers/form';
 import { FORM_NAME, UINT32_RANGE } from '../../../helpers/constants';
 import {
@@ -18,18 +19,31 @@ import {
     validateNotInRange,
 } from '../../../helpers/validators';
 
+interface FormDHCPv4Props {
+    handleSubmit: (...args: unknown[]) => unknown;
+    submitting: boolean;
+    initialValues: object;
+    processingConfig: boolean;
+    change: (...args: unknown[]) => unknown;
+    reset: (...args: unknown[]) => unknown;
+    ipv4placeholders: object;
+}
+
 const FormDHCPv4 = ({
     handleSubmit,
     submitting,
     processingConfig,
-    ipv4placeholders,
-}) => {
+    ipv4placeholders
+}: FormDHCPv4Props) => {
     const { t } = useTranslation();
+
     const dhcp = useSelector((state) => state.form[FORM_NAME.DHCPv4], shallowEqual);
+
     const interfaces = useSelector((state) => state.form[FORM_NAME.DHCP_INTERFACES], shallowEqual);
     const interface_name = interfaces?.values?.interface_name;
 
     const isInterfaceIncludesIpv4 = useSelector(
+
         (state) => !!state.dhcp?.interfaces?.[interface_name]?.ipv4_addresses,
     );
 
@@ -47,10 +61,15 @@ const FormDHCPv4 = ({
     }, [isEmptyConfig]);
 
     return <form onSubmit={handleSubmit}>
+
         <div className="row">
+
             <div className="col-lg-6">
+
                 <div className="form__group form__group--settings">
+
                     <label>{t('dhcp_form_gateway_input')}</label>
+
                     <Field
                         name="v4.gateway_ip"
                         component={renderInputField}
@@ -65,8 +84,11 @@ const FormDHCPv4 = ({
                         disabled={!isInterfaceIncludesIpv4}
                     />
                 </div>
+
                 <div className="form__group form__group--settings">
+
                     <label>{t('dhcp_form_subnet_input')}</label>
+
                     <Field
                         name="v4.subnet_mask"
                         component={renderInputField}
@@ -81,13 +103,20 @@ const FormDHCPv4 = ({
                     />
                 </div>
             </div>
+
             <div className="col-lg-6">
+
                 <div className="form__group form__group--settings">
+
                     <div className="row">
+
                         <div className="col-12">
+
                             <label>{t('dhcp_form_range_title')}</label>
                         </div>
+
                         <div className="col">
+
                             <Field
                                 name="v4.range_start"
                                 component={renderInputField}
@@ -101,7 +130,9 @@ const FormDHCPv4 = ({
                                 disabled={!isInterfaceIncludesIpv4}
                             />
                         </div>
+
                         <div className="col">
+
                             <Field
                                 name="v4.range_end"
                                 component={renderInputField}
@@ -118,8 +149,11 @@ const FormDHCPv4 = ({
                         </div>
                     </div>
                 </div>
+
                 <div className="form__group form__group--settings">
+
                     <label>{t('dhcp_form_lease_title')}</label>
+
                     <Field
                         name="v4.lease_duration"
                         component={renderInputField}
@@ -135,7 +169,9 @@ const FormDHCPv4 = ({
                 </div>
             </div>
         </div>
+
         <div className="btn-list">
+
             <button
                 type="submit"
                 className="btn btn-success btn-standard"
@@ -145,16 +181,6 @@ const FormDHCPv4 = ({
             </button>
         </div>
     </form>;
-};
-
-FormDHCPv4.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    submitting: PropTypes.bool.isRequired,
-    initialValues: PropTypes.object.isRequired,
-    processingConfig: PropTypes.bool.isRequired,
-    change: PropTypes.func.isRequired,
-    reset: PropTypes.func.isRequired,
-    ipv4placeholders: PropTypes.object.isRequired,
 };
 
 export default reduxForm({

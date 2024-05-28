@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Trans, useTranslation } from 'react-i18next';
 import i18next from 'i18next';
 import { useSelector } from 'react-redux';
@@ -7,10 +6,20 @@ import { useSelector } from 'react-redux';
 import { MOBILE_CONFIG_LINKS } from '../../../helpers/constants';
 
 import Tabs from '../Tabs';
+
 import MobileConfigForm from './MobileConfigForm';
 
-const renderLi = ({ label, components }) => <li key={label}>
-    <Trans components={components?.map((props) => {
+interface renderLiProps {
+    label?: string;
+    components?: string;
+}
+
+const renderLi = ({
+    label,
+    components
+}: renderLiProps) => <li key={label}>
+
+    <Trans components={components?.map((props: any) => {
         if (React.isValidElement(props)) {
             return props;
         }
@@ -39,6 +48,7 @@ const getDnsPrivacyList = () => [
                         key: 0,
                         href: 'https://link.adtidy.org/forward.html?action=android&from=ui&app=home',
                     },
+
                     <code key="1">text</code>,
                 ],
             },
@@ -49,6 +59,7 @@ const getDnsPrivacyList = () => [
                         key: 0,
                         href: 'https://getintra.org/',
                     },
+
                     <code key="1">text</code>,
                 ],
             },
@@ -64,6 +75,7 @@ const getDnsPrivacyList = () => [
                         key: 0,
                         href: 'https://link.adtidy.org/forward.html?action=ios&from=ui&app=home',
                     },
+
                     <code key="1">text</code>,
                 ],
             },
@@ -74,6 +86,7 @@ const getDnsPrivacyList = () => [
                         key: 0,
                         href: 'https://itunes.apple.com/app/id1452162351',
                     },
+
                     <code key="1">text</code>,
                     {
                         key: 2,
@@ -106,6 +119,7 @@ const getDnsPrivacyList = () => [
                         key: 0,
                         href: 'https://github.com/jedisct1/dnscrypt-proxy',
                     },
+
                         <code key="1">text</code>,
                 ],
             },
@@ -116,6 +130,7 @@ const getDnsPrivacyList = () => [
                         key: 0,
                         href: 'https://support.mozilla.org/kb/firefox-dns-over-https',
                     },
+
                         <code key="1">text</code>,
                 ],
             },
@@ -136,13 +151,30 @@ const getDnsPrivacyList = () => [
     },
 ];
 
-const renderDnsPrivacyList = ({ title, list }) => (
+interface renderDnsPrivacyListProps {
+    title: string;
+    list: unknown[];
+    renderList?: (...args: unknown[]) => unknown;
+}
+
+const renderDnsPrivacyList = ({
+    title,
+    list
+}: renderDnsPrivacyListProps) => (
+
     <div className="tab__paragraph" key={title}>
+
         <strong>
+
             <Trans>{title}</Trans>
         </strong>
+
         <ul>
-            {list.map(({ label, components, renderComponent = renderLi }) => (
+            {list.map(({
+                label,
+                components,
+                renderComponent = renderLi,
+            }: any) => (
                 renderComponent({ label, components })
             ))}
         </ul>
@@ -156,18 +188,22 @@ const getTabs = ({
     serverName,
     portHttps,
     t,
-}) => ({
+}: any) => ({
     Router: {
+
         // eslint-disable-next-line react/display-name
         getTitle: () => <p>
+
             <Trans>install_devices_router_desc</Trans>
         </p>,
         title: 'Router',
         list: ['install_devices_router_list_1',
             'install_devices_router_list_2',
             'install_devices_router_list_3',
+
             // eslint-disable-next-line react/jsx-key
             <Trans components={[
+
                 <a href="#dhcp" key="0">
                     link
                 </a>,
@@ -209,13 +245,18 @@ const getTabs = ({
         title: 'dns_privacy',
         getTitle: function Title() {
             return <div label="dns_privacy" title={t('dns_privacy')}>
+
             <div className="tab__text">
                 {tlsAddress?.length > 0 && (
+
                     <div className="tab__paragraph">
+
                         <Trans
                             values={{ address: tlsAddress[0] }}
                             components={[
+
                                 <strong key="0">text</strong>,
+
                                 <code key="1">text</code>,
                             ]}
                         >
@@ -224,11 +265,15 @@ const getTabs = ({
                     </div>
                 )}
                 {httpsAddress?.length > 0 && (
+
                     <div className="tab__paragraph">
+
                         <Trans
                             values={{ address: httpsAddress[0] }}
                             components={[
+
                                 <strong key="0">text</strong>,
+
                                 <code key="1">text</code>,
                             ]}
                         >
@@ -237,9 +282,12 @@ const getTabs = ({
                     </div>
                 )}
                 {showDnsPrivacyNotice ? (
+
                     <div className="tab__paragraph">
+
                         <Trans
                             components={[
+
                                 <a
                                     href="https://github.com/AdguardTeam/AdguardHome/wiki/Encryption"
                                     target="_blank"
@@ -248,6 +296,7 @@ const getTabs = ({
                                 >
                                     link
                                 </a>,
+
                                 <code key="1">text</code>,
                             ]}
                         >
@@ -255,25 +304,34 @@ const getTabs = ({
                         </Trans>
                     </div>
                 ) : (
+
                     <>
+
                         <div className="tab__paragraph">
+
                             <Trans components={[<p key="0">text</p>]}>
                                 setup_dns_privacy_3
                             </Trans>
                         </div>
                         {getDnsPrivacyList().map(renderDnsPrivacyList)}
+
                         <div>
+
                             <strong>
+
                                 <Trans>
                                     setup_dns_privacy_ioc_mac
                                 </Trans>
                             </strong>
                         </div>
+
                         <div className="mb-3">
+
                             <Trans components={{ highlight: <code /> }}>
                                 setup_dns_privacy_4
                             </Trans>
                         </div>
+
                         <MobileConfigForm
                             initialValues={{
                                 host: serverName,
@@ -290,32 +348,54 @@ const getTabs = ({
     },
 });
 
-const renderContent = ({ title, list, getTitle }) => (
+interface renderContentProps {
+    title: string;
+    list: unknown[];
+    getTitle?: (...args: unknown[]) => unknown;
+}
+
+const renderContent = ({
+    title,
+    list,
+    getTitle
+}: renderContentProps) => (
+
     <div key={title} label={i18next.t(title)}>
+
         <div className="tab__title">
             {i18next.t(title)}
         </div>
+
         <div className="tab__text">
             {getTitle?.()}
             {list && (
+
                 <ol>
-                    {list.map((item) => (
-                        <li key={item}>
-                            <Trans>{item}</Trans>
-                        </li>
-                    ))}
+
+                    {list.map((item: any) => <li key={item}>
+
+                        <Trans>{item}</Trans>
+                    </li>)}
                 </ol>
             )}
         </div>
     </div>
 );
 
-const Guide = ({ dnsAddresses }) => {
+interface GuideProps {
+    dnsAddresses?: unknown[];
+}
+
+const Guide = ({
+    dnsAddresses
+}: GuideProps) => {
     const { t } = useTranslation();
+
     const serverName = useSelector((state) => state.encryption?.server_name);
+
     const portHttps = useSelector((state) => state.encryption?.port_https);
-    const tlsAddress = dnsAddresses?.filter((item) => item.includes('tls://')) ?? '';
-    const httpsAddress = dnsAddresses?.filter((item) => item.includes('https://')) ?? '';
+    const tlsAddress = dnsAddresses?.filter((item: any) => item.includes('tls://')) ?? '';
+    const httpsAddress = dnsAddresses?.filter((item: any) => item.includes('https://')) ?? '';
     const showDnsPrivacyNotice = httpsAddress.length < 1 && tlsAddress.length < 1;
 
     const [activeTabLabel, setActiveTabLabel] = useState('Router');
@@ -332,7 +412,9 @@ const Guide = ({ dnsAddresses }) => {
     const activeTab = renderContent(tabs[activeTabLabel]);
 
     return (
+
         <div>
+
             <Tabs
                 tabs={tabs}
                 activeTabLabel={activeTabLabel}
@@ -346,27 +428,6 @@ const Guide = ({ dnsAddresses }) => {
 
 Guide.defaultProps = {
     dnsAddresses: [],
-};
-
-Guide.propTypes = {
-    dnsAddresses: PropTypes.array,
-};
-
-renderDnsPrivacyList.propTypes = {
-    title: PropTypes.string.isRequired,
-    list: PropTypes.array.isRequired,
-    renderList: PropTypes.func,
-};
-
-renderContent.propTypes = {
-    title: PropTypes.string.isRequired,
-    list: PropTypes.array.isRequired,
-    getTitle: PropTypes.func,
-};
-
-renderLi.propTypes = {
-    label: PropTypes.string,
-    components: PropTypes.string,
 };
 
 export default Guide;

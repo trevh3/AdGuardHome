@@ -1,10 +1,12 @@
 import { connect } from 'react-redux';
+
 import { toggleProtection, getClients } from '../actions';
 import { getStats, getStatsConfig, setStatsConfig } from '../actions/stats';
 import { getAccessList } from '../actions/access';
+
 import Dashboard from '../components/Dashboard';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     const { dashboard, stats, access } = state;
     const props = { dashboard, stats, access };
     return props;

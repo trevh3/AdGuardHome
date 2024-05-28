@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import debounce from 'lodash/debounce';
 
 import * as actionCreators from '../../actions/install';
+
 import { getWebAddress } from '../../helpers/helpers';
 import {
     INSTALL_FIRST_STEP,
@@ -13,28 +13,50 @@ import {
 } from '../../helpers/constants';
 
 import Loading from '../../components/ui/Loading';
+
 import Greeting from './Greeting';
+
 import Settings from './Settings';
+
 import Auth from './Auth';
+
 import Devices from './Devices';
+
 import Submit from './Submit';
+
 import Progress from './Progress';
 
 import Toasts from '../../components/Toasts';
+
 import Footer from '../../components/ui/Footer';
+
 import Icons from '../../components/ui/Icons';
-import logo from '../../components/ui/svg/logo.svg';
+
+import logo from '../../components/ui/svg/logo';
 
 import './Setup.css';
 import '../../components/ui/Tabler.css';
 
-class Setup extends Component {
+interface SetupProps {
+    getDefaultAddresses: (...args: unknown[]) => unknown;
+    setAllSettings: (...args: unknown[]) => unknown;
+    checkConfig: (...args: unknown[]) => unknown;
+    nextStep: (...args: unknown[]) => unknown;
+    prevStep: (...args: unknown[]) => unknown;
+    install: object;
+    step?: number;
+    web?: object;
+    dns?: object;
+}
+
+class Setup extends Component<SetupProps> {
     componentDidMount() {
         this.props.getDefaultAddresses();
     }
 
-    handleFormSubmit = (values) => {
+    handleFormSubmit = (values: any) => {
         const { staticIp, ...config } = values;
+
         this.props.setAllSettings(config);
     };
 
@@ -45,11 +67,11 @@ class Setup extends Component {
         }
     }, DEBOUNCE_TIMEOUT);
 
-    handleFix = (web, dns, set_static_ip) => {
+    handleFix = (web: any, dns: any, set_static_ip: any) => {
         this.props.checkConfig({ web, dns, set_static_ip });
     };
 
-    openDashboard = (ip, port) => {
+    openDashboard = (ip: any, port: any) => {
         let address = getWebAddress(ip, port);
 
         if (ip === ALL_INTERFACES_IP) {
@@ -57,26 +79,28 @@ class Setup extends Component {
         }
 
         window.location.replace(address);
-    }
+    };
 
     nextStep = () => {
         if (this.props.install.step < INSTALL_TOTAL_STEPS) {
             this.props.nextStep();
         }
-    }
+    };
 
     prevStep = () => {
         if (this.props.install.step > INSTALL_FIRST_STEP) {
             this.props.prevStep();
         }
-    }
+    };
 
-    renderPage(step, config, interfaces) {
+    renderPage(step: any, config: any, interfaces: any) {
         switch (step) {
             case 1:
+
                 return <Greeting />;
             case 2:
                 return (
+
                     <Settings
                         config={config}
                         initialValues={config}
@@ -89,11 +113,14 @@ class Setup extends Component {
                 );
             case 3:
                 return (
+
                     <Auth onSubmit={this.handleFormSubmit} />
                 );
             case 4:
+
                 return <Devices interfaces={interfaces} />;
             case 5:
+
                 return <Submit openDashboard={this.openDashboard} />;
             default:
                 return false;
@@ -108,22 +135,33 @@ class Setup extends Component {
             dns,
             staticIp,
             interfaces,
+
         } = this.props.install;
 
         return (
+
             <Fragment>
+
                 {processingDefault && <Loading />}
                 {!processingDefault
+
                     && <Fragment>
+
                         <div className="setup">
+
                             <div className="setup__container">
+
                                 <img src={logo} className="setup__logo" alt="logo" />
                                 {this.renderPage(step, { web, dns, staticIp }, interfaces)}
+
                                 <Progress step={step} />
                             </div>
                         </div>
+
                         <Footer />
+
                         <Toasts />
+
                         <Icons />
                     </Fragment>
                 }
@@ -132,19 +170,7 @@ class Setup extends Component {
     }
 }
 
-Setup.propTypes = {
-    getDefaultAddresses: PropTypes.func.isRequired,
-    setAllSettings: PropTypes.func.isRequired,
-    checkConfig: PropTypes.func.isRequired,
-    nextStep: PropTypes.func.isRequired,
-    prevStep: PropTypes.func.isRequired,
-    install: PropTypes.object.isRequired,
-    step: PropTypes.number,
-    web: PropTypes.object,
-    dns: PropTypes.object,
-};
-
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     const { install, toasts } = state;
     const props = { install, toasts };
     return props;

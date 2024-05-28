@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+
 import ReactModal from 'react-modal';
 
 import { Timezone } from './Timezone';
+
 import { TimeSelect } from './TimeSelect';
+
 import { TimePeriod } from './TimePeriod';
 import { getFullDayName, getShortDayName } from './helpers';
 import { LOCAL_TIMEZONE_VALUE } from '../../../../helpers/constants';
@@ -14,13 +16,21 @@ export const DAYS_OF_WEEK = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
 const INITIAL_START_TIME_MS = 0;
 const INITIAL_END_TIME_MS = 86340000;
 
+interface ModalProps {
+    schedule: object;
+    currentDay?: string;
+    isOpen: boolean;
+    onClose: (...args: unknown[]) => unknown;
+    onSubmit: (...args: unknown[]) => unknown;
+}
+
 export const Modal = ({
     isOpen,
     currentDay,
     schedule,
     onClose,
-    onSubmit,
-}) => {
+    onSubmit
+}: ModalProps) => {
     const [t] = useTranslation();
 
     const intialTimezone = schedule.time_zone === LOCAL_TIMEZONE_VALUE
@@ -53,7 +63,7 @@ export const Modal = ({
         }
     }, [startTime, endTime]);
 
-    const addDays = (day) => {
+    const addDays = (day: any) => {
         const newDays = new Set(days);
 
         if (newDays.has(day)) {
@@ -65,11 +75,11 @@ export const Modal = ({
         setDays(newDays);
     };
 
-    const activeDay = (day) => {
+    const activeDay = (day: any) => {
         return days.has(day);
     };
 
-    const onFormSubmit = (e) => {
+    const onFormSubmit = (e: any) => {
         e.preventDefault();
 
         const newSchedule = schedule;
@@ -89,23 +99,32 @@ export const Modal = ({
     };
 
     return (
+
         <ReactModal
             className="Modal__Bootstrap modal-dialog modal-dialog-centered modal-dialog--schedule"
             closeTimeoutMS={0}
             isOpen={isOpen}
             onRequestClose={onClose}
         >
+
             <div className="modal-content">
+
                 <div className="modal-header">
+
                     <h4 className="modal-title">
                         {currentDay ? t('schedule_edit') : t('schedule_new')}
                     </h4>
+
                     <button type="button" className="close" onClick={onClose}>
+
                         <span className="sr-only">Close</span>
                     </button>
                 </div>
+
                 <form onSubmit={onFormSubmit}>
+
                     <div className="modal-body">
+
                         <Timezone
                             timezone={timezone}
                             setTimezone={setTimezone}
@@ -113,6 +132,7 @@ export const Modal = ({
 
                         <div className="schedule__days">
                             {DAYS_OF_WEEK.map((day) => (
+
                                 <button
                                     type="button"
                                     key={day}
@@ -126,7 +146,9 @@ export const Modal = ({
                         </div>
 
                         <div className="schedule__time-wrap">
+
                             <div className="schedule__time-row">
+
                                 <TimeSelect
                                     value={startTime}
                                     onChange={(v) => setStartTime(v)}
@@ -139,6 +161,7 @@ export const Modal = ({
                             </div>
 
                             {wrongPeriod && (
+
                                 <div className="schedule__error">
                                     {t('schedule_invalid_select')}
                                 </div>
@@ -146,30 +169,40 @@ export const Modal = ({
                         </div>
 
                         <div className="schedule__info">
+
                             <div className="schedule__info-title">
                                 {t('schedule_modal_time_off')}
                             </div>
+
                             <div className="schedule__info-row">
+
                                 <svg className="icons schedule__info-icon">
+
                                     <use xlinkHref="#calendar" />
                                 </svg>
                                 {days.size ? (
                                     Array.from(days).map((day) => getFullDayName(t, day)).join(', ')
                                 ) : (
+
                                     <span>
                                         —
                                     </span>
                                 )}
                             </div>
+
                             <div className="schedule__info-row">
+
                                 <svg className="icons schedule__info-icon">
+
                                     <use xlinkHref="#watch" />
                                 </svg>
                                 {wrongPeriod ? (
+
                                     <span>
                                         —
                                     </span>
                                 ) : (
+
                                     <TimePeriod
                                         startTimeMs={startTime}
                                         endTimeMs={endTime}
@@ -182,8 +215,11 @@ export const Modal = ({
                             {t('schedule_modal_description')}
                         </div>
                     </div>
+
                     <div className="modal-footer">
+
                         <div className="btn-list">
+
                             <button
                                 type="button"
                                 className="btn btn-success btn-standard"
@@ -198,12 +234,4 @@ export const Modal = ({
             </div>
         </ReactModal>
     );
-};
-
-Modal.propTypes = {
-    schedule: PropTypes.object.isRequired,
-    currentDay: PropTypes.string,
-    isOpen: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
 };

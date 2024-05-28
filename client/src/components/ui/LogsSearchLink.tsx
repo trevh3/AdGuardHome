@@ -1,18 +1,30 @@
 import React from 'react';
+
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
+
 import { getLogsUrlParams } from '../../helpers/helpers';
 import { MENU_URLS } from '../../helpers/constants';
 
+interface LogsSearchLinkProps {
+    children: string | number | React.ReactElement;
+    search?: string;
+    response_status?: string;
+    link?: string;
+}
+
 const LogsSearchLink = ({
-    search = '', response_status = '', children, link = MENU_URLS.logs,
-}) => {
+    search = '',
+    response_status = '',
+    children,
+    link = MENU_URLS.logs
+}: LogsSearchLinkProps) => {
     const { t } = useTranslation();
 
     const to = link === MENU_URLS.logs ? `${MENU_URLS.logs}${getLogsUrlParams(search && `"${search}"`, response_status)}` : link;
 
     return (
+
         <Link
             to={to}
             tabIndex={0}
@@ -22,16 +34,6 @@ const LogsSearchLink = ({
             {children}
         </Link>
     );
-};
-
-LogsSearchLink.propTypes = {
-    children: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.element]).isRequired,
-    search: PropTypes.string,
-    response_status: PropTypes.string,
-    link: PropTypes.string,
 };
 
 export default LogsSearchLink;

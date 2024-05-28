@@ -1,11 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import { Field, reduxForm } from 'redux-form';
 import { Trans, useTranslation } from 'react-i18next';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { renderInputField, toNumber, CheckboxField } from '../../../../helpers/form';
 import { CACHE_CONFIG_FIELDS, FORM_NAME, UINT32_RANGE } from '../../../../helpers/constants';
+
 import { replaceZeroWithEmptyString } from '../../../../helpers/helpers';
 import { clearDnsCache } from '../../../../actions/dnsConfig';
 
@@ -30,15 +31,24 @@ const INPUTS_FIELDS = [
     },
 ];
 
+interface FormProps {
+    handleSubmit: (...args: unknown[]) => unknown;
+    submitting: boolean;
+    invalid: boolean;
+}
+
 const Form = ({
-    handleSubmit, submitting, invalid,
-}) => {
+    handleSubmit,
+    submitting,
+    invalid
+}: FormProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const { processingSetConfig } = useSelector((state) => state.dnsConfig, shallowEqual);
     const {
         cache_ttl_max, cache_ttl_min,
+
     } = useSelector((state) => state.form[FORM_NAME.CACHE].values, shallowEqual);
 
     const minExceedsMax = cache_ttl_min > 0 && cache_ttl_max > 0 && cache_ttl_min > cache_ttl_max;
@@ -50,19 +60,27 @@ const Form = ({
     };
 
     return <form onSubmit={handleSubmit}>
+
         <div className="row">
             {INPUTS_FIELDS.map(({
+
                 name, title, description, placeholder, validate, min = 0, max = UINT32_RANGE.MAX,
+
             }) => <div className="col-12" key={name}>
+
                     <div className="col-12 col-md-7 p-0">
+
                         <div className="form__group form__group--settings">
+
                             <label
                                 htmlFor={name}
                                 className="form__label form__label--with-desc"
                             >
                                 {t(title)}
                             </label>
+
                             <div className="form__desc form__desc--top">{t(description)}</div>
+
                             <Field
                                 name={name}
                                 type="number"
@@ -80,14 +98,19 @@ const Form = ({
                     </div>
                 </div>)}
             {minExceedsMax && (
+
                 <span className="text-danger pl-3 pb-3">
                     {t('ttl_cache_validation')}
                 </span>
             )}
         </div>
+
         <div className="row">
+
             <div className="col-12 col-md-7">
+
                 <div className="form__group form__group--settings">
+
                     <Field
                         name="cache_optimistic"
                         type="checkbox"
@@ -99,27 +122,25 @@ const Form = ({
                 </div>
             </div>
         </div>
+
         <button
             type="submit"
             className="btn btn-success btn-standard btn-large"
             disabled={submitting || invalid || processingSetConfig || minExceedsMax}
         >
+
             <Trans>save_btn</Trans>
         </button>
+
         <button
             type="button"
             className="btn btn-outline-secondary btn-standard form__button"
             onClick={handleClearCache}
         >
+
             <Trans>clear_cache</Trans>
         </button>
     </form>;
-};
-
-Form.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    submitting: PropTypes.bool.isRequired,
-    invalid: PropTypes.bool.isRequired,
 };
 
 export default reduxForm({ form: FORM_NAME.CACHE })(Form);

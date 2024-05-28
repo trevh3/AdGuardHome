@@ -1,19 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import './Topline.css';
 
-const Topline = (props) => (
-    <div className={`alert alert-${props.type} topline`}>
-        <div className="container">
-            {props.children}
-        </div>
-    </div>
-);
+interface ToplineProps {
+    children: React.ReactNode;
+    type: string;
+}
 
-Topline.propTypes = {
-    children: PropTypes.node.isRequired,
-    type: PropTypes.string.isRequired,
-};
+const Topline = (props: ToplineProps) => <div className={`alert alert-${props.type} topline`}>
+
+    <div className="container">
+        {props.children}
+    </div>
+</div>;
 
 export default Topline;

@@ -1,7 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+
 import Form from './Form';
+
 import Card from '../../../ui/Card';
 import { setAccessList } from '../../../../actions/access';
 
@@ -12,18 +14,21 @@ const Access = () => {
         processing,
         processingSet,
         ...values
+
     } = useSelector((state) => state.access, shallowEqual);
 
-    const handleFormSubmit = (values) => {
+    const handleFormSubmit = (values: any) => {
         dispatch(setAccessList(values));
     };
 
     return (
+
         <Card
             title={t('access_title')}
             subtitle={t('access_desc')}
             bodyType="card-body box-body--settings"
         >
+
             <Form
                 initialValues={values}
                 onSubmit={handleFormSubmit}

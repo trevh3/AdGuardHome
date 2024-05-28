@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+
 import { Field, reduxForm } from 'redux-form';
 import { useTranslation } from 'react-i18next';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import {
@@ -14,8 +15,28 @@ import {
 } from '../../../helpers/constants';
 import { setLogsFilter } from '../../../actions/queryLogs';
 import useDebounce from '../../../helpers/useDebounce';
+
 import { createOnBlurHandler, getLogsUrlParams } from '../../../helpers/helpers';
+
 import Tooltip from '../../ui/Tooltip';
+
+interface renderFilterFieldProps {
+    input: object;
+    id: string;
+    onClearInputClick: (...args: unknown[]) => unknown;
+    className?: string;
+    placeholder?: string;
+    type?: string;
+    disabled?: string;
+    autoComplete?: string;
+    tooltip?: string;
+    onKeyDown?: (...args: unknown[]) => unknown;
+    normalizeOnBlur?: (...args: unknown[]) => unknown;
+    meta: {
+        touched?: boolean;
+        error?: object;
+    };
+}
 
 const renderFilterField = ({
     input,
@@ -29,16 +50,20 @@ const renderFilterField = ({
     meta: { touched, error },
     onClearInputClick,
     onKeyDown,
-    normalizeOnBlur,
-}) => {
-    const onBlur = (event) => createOnBlurHandler(event, input, normalizeOnBlur);
+    normalizeOnBlur
+}: renderFilterFieldProps) => {
+    const onBlur = (event: any) => createOnBlurHandler(event, input, normalizeOnBlur);
 
     return <>
+
         <div className="input-group-search input-group-search__icon--magnifier">
+
             <svg className="icons icon--24 icon--gray">
+
                 <use xlinkHref="#magnifier" />
             </svg>
         </div>
+
         <input
             {...input}
             id={id}
@@ -51,41 +76,31 @@ const renderFilterField = ({
             onKeyDown={onKeyDown}
             onBlur={onBlur}
         />
+
         <div
             className={classNames('input-group-search input-group-search__icon--cross', { invisible: input.value.length < 1 })}>
+
             <svg className="icons icon--20 icon--gray" onClick={onClearInputClick}>
+
                 <use xlinkHref="#cross" />
             </svg>
         </div>
+
         <span className="input-group-search input-group-search__icon--tooltip">
+
             <Tooltip content={tooltip} className="tooltip-container">
+
                 <svg className="icons icon--20 icon--gray">
+
                     <use xlinkHref="#question" />
                 </svg>
             </Tooltip>
     </span>
         {!disabled
         && touched
+
         && (error && <span className="form__message form__message--error">{error}</span>)}
     </>;
-};
-
-renderFilterField.propTypes = {
-    input: PropTypes.object.isRequired,
-    id: PropTypes.string.isRequired,
-    onClearInputClick: PropTypes.func.isRequired,
-    className: PropTypes.string,
-    placeholder: PropTypes.string,
-    type: PropTypes.string,
-    disabled: PropTypes.string,
-    autoComplete: PropTypes.string,
-    tooltip: PropTypes.string,
-    onKeyDown: PropTypes.func,
-    normalizeOnBlur: PropTypes.func,
-    meta: PropTypes.shape({
-        touched: PropTypes.bool,
-        error: PropTypes.object,
-    }).isRequired,
 };
 
 const FORM_NAMES = {
@@ -93,7 +108,14 @@ const FORM_NAMES = {
     response_status: 'response_status',
 };
 
-const Form = (props) => {
+interface FormProps {
+    className?: string;
+    responseStatusClass?: string;
+    change: (...args: unknown[]) => unknown;
+    setIsLoading: (...args: unknown[]) => unknown;
+}
+
+const Form = (props: FormProps) => {
     const {
         className = '',
         responseStatusClass,
@@ -107,6 +129,7 @@ const Form = (props) => {
 
     const {
         response_status, search,
+
     } = useSelector((state) => state?.form[FORM_NAME.LOGS_FILTER].values, shallowEqual);
 
     const [
@@ -129,26 +152,30 @@ const Form = (props) => {
 
     const onInputClear = async () => {
         setIsLoading(true);
+
         change(FORM_NAMES.search, DEFAULT_LOGS_FILTER[FORM_NAMES.search]);
         setIsLoading(false);
     };
 
-    const onEnterPress = (e) => {
+    const onEnterPress = (e: any) => {
         if (e.key === 'Enter') {
             setDebouncedSearch(search);
         }
     };
 
-    const normalizeOnBlur = (data) => data.trim();
+    const normalizeOnBlur = (data: any) => data.trim();
 
     return (
+
         <form
             className="d-flex flex-wrap form-control--container"
             onSubmit={(e) => {
                 e.preventDefault();
             }}
         >
+
             <div className="field__search">
+
                 <Field
                     id={FORM_NAMES.search}
                     name={FORM_NAMES.search}
@@ -162,16 +189,22 @@ const Form = (props) => {
                     normalizeOnBlur={normalizeOnBlur}
                 />
             </div>
+
             <div className="field__select">
+
                 <Field
                     name={FORM_NAMES.response_status}
                     component="select"
                     className={classNames('form-control custom-select custom-select--logs custom-select__arrow--left form-control--transparent', responseStatusClass)}
                 >
+
                     {Object.values(RESPONSE_FILTER)
                         .map(({
-                            QUERY, LABEL, disabled,
-                        }) => (
+                            QUERY,
+                            LABEL,
+                            disabled,
+                        }: any) => (
+
                             <option
                                 key={LABEL}
                                 value={QUERY}
@@ -185,13 +218,6 @@ const Form = (props) => {
             </div>
         </form>
     );
-};
-
-Form.propTypes = {
-    className: PropTypes.string,
-    responseStatusClass: PropTypes.string,
-    change: PropTypes.func.isRequired,
-    setIsLoading: PropTypes.func.isRequired,
 };
 
 export default reduxForm({

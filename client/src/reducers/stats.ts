@@ -1,4 +1,5 @@
 import { handleActions } from 'redux-actions';
+
 import { normalizeTopClients } from '../helpers/helpers';
 import {
     DAY,
@@ -28,28 +29,62 @@ const defaultStats = {
 
 const stats = handleActions(
     {
-        [actions.getStatsConfigRequest]: (state) => ({ ...state, processingGetConfig: true }),
-        [actions.getStatsConfigFailure]: (state) => ({ ...state, processingGetConfig: false }),
-        [actions.getStatsConfigSuccess]: (state, { payload }) => ({
+        [actions.getStatsConfigRequest]: (state: any) => ({
+            ...state,
+            processingGetConfig: true,
+        }),
+        [actions.getStatsConfigFailure]: (state: any) => ({
+            ...state,
+            processingGetConfig: false,
+        }),
+        [actions.getStatsConfigSuccess]: (
+
+            state,
+            {
+                payload,
+            }: any,
+        ) => ({
             ...state,
             ...payload,
+
             customInterval: !STATS_INTERVALS_DAYS.includes(payload.interval)
                 ? payload.interval / HOUR
                 : null,
+
             processingGetConfig: false,
         }),
 
-        [actions.setStatsConfigRequest]: (state) => ({ ...state, processingSetConfig: true }),
-        [actions.setStatsConfigFailure]: (state) => ({ ...state, processingSetConfig: false }),
-        [actions.setStatsConfigSuccess]: (state, { payload }) => ({
+        [actions.setStatsConfigRequest]: (state: any) => ({
+            ...state,
+            processingSetConfig: true,
+        }),
+        [actions.setStatsConfigFailure]: (state: any) => ({
+            ...state,
+            processingSetConfig: false,
+        }),
+        [actions.setStatsConfigSuccess]: (
+
+            state,
+            {
+                payload,
+            }: any,
+        ) => ({
             ...state,
             ...payload,
             processingSetConfig: false,
         }),
 
-        [actions.getStatsRequest]: (state) => ({ ...state, processingStats: true }),
-        [actions.getStatsFailure]: (state) => ({ ...state, processingStats: false }),
-        [actions.getStatsSuccess]: (state, { payload }) => {
+        [actions.getStatsRequest]: (state: any) => ({
+            ...state,
+            processingStats: true,
+        }),
+        [actions.getStatsFailure]: (state: any) => ({
+            ...state,
+            processingStats: false,
+        }),
+        [actions.getStatsSuccess]: (state: any, {
+            payload,
+        }: any) => {
             const {
                 dns_queries: dnsQueries,
                 blocked_filtering: blockedFiltering,
@@ -94,9 +129,15 @@ const stats = handleActions(
             return newState;
         },
 
-        [actions.resetStatsRequest]: (state) => ({ ...state, processingReset: true }),
-        [actions.resetStatsFailure]: (state) => ({ ...state, processingReset: false }),
-        [actions.resetStatsSuccess]: (state) => ({
+        [actions.resetStatsRequest]: (state: any) => ({
+            ...state,
+            processingReset: true,
+        }),
+        [actions.resetStatsFailure]: (state: any) => ({
+            ...state,
+            processingReset: false,
+        }),
+        [actions.resetStatsSuccess]: (state: any) => ({
             ...state,
             ...defaultStats,
             processingReset: false,

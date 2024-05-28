@@ -3,9 +3,15 @@ import { handleActions } from 'redux-actions';
 import * as actions from '../actions/clients';
 
 const clients = handleActions({
-    [actions.addClientRequest]: (state) => ({ ...state, processingAdding: true }),
-    [actions.addClientFailure]: (state) => ({ ...state, processingAdding: false }),
-    [actions.addClientSuccess]: (state) => {
+    [actions.addClientRequest]: (state: any) => ({
+        ...state,
+        processingAdding: true,
+    }),
+    [actions.addClientFailure]: (state: any) => ({
+        ...state,
+        processingAdding: false,
+    }),
+    [actions.addClientSuccess]: (state: any) => {
         const newState = {
             ...state,
             processingAdding: false,
@@ -13,9 +19,15 @@ const clients = handleActions({
         return newState;
     },
 
-    [actions.deleteClientRequest]: (state) => ({ ...state, processingDeleting: true }),
-    [actions.deleteClientFailure]: (state) => ({ ...state, processingDeleting: false }),
-    [actions.deleteClientSuccess]: (state) => {
+    [actions.deleteClientRequest]: (state: any) => ({
+        ...state,
+        processingDeleting: true,
+    }),
+    [actions.deleteClientFailure]: (state: any) => ({
+        ...state,
+        processingDeleting: false,
+    }),
+    [actions.deleteClientSuccess]: (state: any) => {
         const newState = {
             ...state,
             processingDeleting: false,
@@ -23,9 +35,15 @@ const clients = handleActions({
         return newState;
     },
 
-    [actions.updateClientRequest]: (state) => ({ ...state, processingUpdating: true }),
-    [actions.updateClientFailure]: (state) => ({ ...state, processingUpdating: false }),
-    [actions.updateClientSuccess]: (state) => {
+    [actions.updateClientRequest]: (state: any) => ({
+        ...state,
+        processingUpdating: true,
+    }),
+    [actions.updateClientFailure]: (state: any) => ({
+        ...state,
+        processingUpdating: false,
+    }),
+    [actions.updateClientSuccess]: (state: any) => {
         const newState = {
             ...state,
             processingUpdating: false,
@@ -33,7 +51,9 @@ const clients = handleActions({
         return newState;
     },
 
-    [actions.toggleClientModal]: (state, { payload }) => {
+    [actions.toggleClientModal]: (state: any, {
+        payload,
+    }: any) => {
         if (payload) {
             const newState = {
                 ...state,

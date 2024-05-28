@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { loadingBarReducer } from 'react-redux-loading-bar';
+
 import { reducer as formReducer } from 'redux-form';
 import toasts from './toasts';
 import encryption from './encryption';

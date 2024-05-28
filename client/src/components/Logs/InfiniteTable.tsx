@@ -5,14 +5,26 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import propTypes from 'prop-types';
 import throttle from 'lodash/throttle';
+
 import Loading from '../ui/Loading';
+
 import Header from './Cells/Header';
 import { getLogs } from '../../actions/queryLogs';
+
 import Row from './Cells';
+
 import { isScrolledIntoView } from '../../helpers/helpers';
 import { QUERY_LOGS_PAGE_LIMIT } from '../../helpers/constants';
+
+interface InfiniteTableProps {
+    isLoading: boolean;
+    items: unknown[];
+    isSmallScreen: boolean;
+    setDetailedDataCurrent: (...args: unknown[]) => unknown;
+    setButtonType: (...args: unknown[]) => unknown;
+    setModalOpened: (...args: unknown[]) => unknown;
+}
 
 const InfiniteTable = ({
     isLoading,
@@ -20,14 +32,15 @@ const InfiniteTable = ({
     isSmallScreen,
     setDetailedDataCurrent,
     setButtonType,
-    setModalOpened,
-}) => {
+    setModalOpened
+}: InfiniteTableProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const loader = useRef(null);
     const loadingRef = useRef(null);
 
     const isEntireLog = useSelector((state) => state.queryLogs.isEntireLog);
+
     const processingGetLogs = useSelector((state) => state.queryLogs.processingGetLogs);
     const loading = isLoading || processingGetLogs;
 
@@ -55,8 +68,9 @@ const InfiniteTable = ({
         };
     }, []);
 
-    const renderRow = (row, idx) => <Row
+    const renderRow = (row: any, idx: any) => <Row
         key={idx}
+
         rowProps={row}
         isSmallScreen={isSmallScreen}
         setDetailedDataCurrent={setDetailedDataCurrent}
@@ -67,15 +81,21 @@ const InfiniteTable = ({
     const isNothingFound = items.length === 0 && !processingGetLogs;
 
     return (
+
         <div className="logs__table" role="grid">
+
             {loading && <Loading />}
+
             <Header />
             {isNothingFound ? (
+
                 <label className="logs__no-data">{t('nothing_found')}</label>
             ) : (
+
                 <>
                     {items.map(renderRow)}
                     {!isEntireLog && (
+
                         <div ref={loader} className="logs__loading text-center">
                             {t('loading_table_status')}
                         </div>
@@ -84,15 +104,6 @@ const InfiniteTable = ({
             )}
         </div>
     );
-};
-
-InfiniteTable.propTypes = {
-    isLoading: propTypes.bool.isRequired,
-    items: propTypes.array.isRequired,
-    isSmallScreen: propTypes.bool.isRequired,
-    setDetailedDataCurrent: propTypes.func.isRequired,
-    setButtonType: propTypes.func.isRequired,
-    setModalOpened: propTypes.func.isRequired,
 };
 
 export default InfiniteTable;

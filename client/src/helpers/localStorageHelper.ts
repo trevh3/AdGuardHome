@@ -8,7 +8,7 @@ export const LOCAL_STORAGE_KEYS = {
 };
 
 export const LocalStorageHelper = {
-    setItem(key, value) {
+    setItem(key: any, value: any) {
         try {
             localStorage.setItem(key, JSON.stringify(value));
         } catch (error) {
@@ -16,7 +16,7 @@ export const LocalStorageHelper = {
         }
     },
 
-    getItem(key) {
+    getItem(key: any) {
         try {
             const item = localStorage.getItem(key);
             return item ? JSON.parse(item) : null;
@@ -26,7 +26,7 @@ export const LocalStorageHelper = {
         }
     },
 
-    removeItem(key) {
+    removeItem(key: any) {
         try {
             localStorage.removeItem(key);
         } catch (error) {

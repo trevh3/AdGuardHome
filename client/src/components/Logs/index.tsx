@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
+
 import Modal from 'react-modal';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+
 import { useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import classNames from 'classnames';
@@ -9,10 +11,14 @@ import {
     BLOCK_ACTIONS,
     MEDIUM_SCREEN_SIZE,
 } from '../../helpers/constants';
+
 import Loading from '../ui/Loading';
+
 import Filters from './Filters';
+
 import Disabled from './Disabled';
 import { getFilteringStatus } from '../../actions/filtering';
+
 import { getClients } from '../../actions';
 import { getDnsConfig } from '../../actions/dnsConfig';
 import { getAccessList } from '../../actions/access';
@@ -23,12 +29,15 @@ import {
     setFilteredLogs,
     toggleDetailedLogs,
 } from '../../actions/queryLogs';
+
 import InfiniteTable from './InfiniteTable';
 import './Logs.css';
 import { BUTTON_PREFIX } from './Cells/helpers';
+
 import AnonymizerNotification from './AnonymizerNotification';
 
-const processContent = (data) => Object.entries(data)
+const processContent = (data: any) => Object.entries(data)
+
     .map(([key, value]) => {
         if (!value) {
             return null;
@@ -49,15 +58,20 @@ const processContent = (data) => Object.entries(data)
         }
 
         return isHidden ? null : (
+
             <div className="grid__row" key={key}>
+
                 <div
                     className={classNames(`key__${key}`, keyClass, {
                         'font-weight-bold': isBoolean && value === true,
                     })}
                 >
+
                     <Trans>{isButton ? value : key}</Trans>
                 </div>
+
                 <div className={`value__${key} text-pre text-truncate`}>
+
                     <Trans>{(isTitle || isButton || isBoolean) ? '' : value || '—'}</Trans>
                 </div>
             </div>
@@ -79,8 +93,11 @@ const Logs = () => {
         processingAdditionalLogs,
         processingGetLogs,
         anonymize_client_ip: anonymizeClientIp,
+
     } = useSelector((state) => state.queryLogs, shallowEqual);
+
     const filter = useSelector((state) => state.queryLogs.filter, shallowEqual);
+
     const logs = useSelector((state) => state.queryLogs.logs, shallowEqual);
 
     const search = search_url_param || filter?.search || '';
@@ -106,7 +123,7 @@ const Logs = () => {
     }, [response_status, search]);
 
     const mediaQuery = window.matchMedia(`(max-width: ${MEDIUM_SCREEN_SIZE}px)`);
-    const mediaQueryHandler = (e) => {
+    const mediaQueryHandler = (e: any) => {
         setIsSmallScreen(e.matches);
         if (e.matches) {
             dispatch(toggleDetailedLogs(false));
@@ -165,6 +182,7 @@ const Logs = () => {
         if (!history.location.search) {
             (async () => {
                 setIsLoading(true);
+
                 await dispatch(setFilteredLogs());
                 setIsLoading(false);
             })();
@@ -172,6 +190,7 @@ const Logs = () => {
     }, [history.location.search]);
 
     const renderPage = () => <>
+
         <Filters
                 filter={{
                     response_status,
@@ -179,8 +198,10 @@ const Logs = () => {
                 }}
                 setIsLoading={setIsLoading}
                 processingGetLogs={processingGetLogs}
+
                 processingAdditionalLogs={processingAdditionalLogs}
         />
+
         <InfiniteTable
                 isLoading={isLoading}
                 items={logs}
@@ -189,6 +210,7 @@ const Logs = () => {
                 setButtonType={setButtonType}
                 setModalOpened={setModalOpened}
         />
+
         <Modal
             portalClassName='grid'
             isOpen={isSmallScreen && isModalOpened}
@@ -208,27 +230,36 @@ const Logs = () => {
                 },
             }}
         >
+
             <div className="logs__modal-wrap">
+
                 <svg
                     className="icon icon--24 icon-cross d-block cursor--pointer"
                     onClick={closeModal}
                 >
+
                     <use xlinkHref="#cross" />
                 </svg>
+
                 {processContent(detailedDataCurrent, buttonType)}
             </div>
         </Modal>
     </>;
 
     return (
+
         <>
             {enabled && (
+
                 <>
+
                     {processingGetConfig && <Loading />}
+
                     {anonymizeClientIp && <AnonymizerNotification />}
                     {!processingGetConfig && renderPage()}
                 </>
             )}
+
             {!enabled && !processingGetConfig && <Disabled />}
         </>
     );

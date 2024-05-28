@@ -11,8 +11,11 @@ const UpdateOverlay = () => {
     });
 
     return (
+
         <div className={overlayClass}>
+
             <div className="overlay__loading"></div>
+
             <Trans>processing_update</Trans>
         </div>
     );

@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 import { Modal } from './Modal';
 import { getFullDayName, getShortDayName } from './helpers';
 import { LOCAL_TIMEZONE_VALUE } from '../../../../helpers/constants';
+
 import { TimePeriod } from './TimePeriod';
 import './styles.css';
+
+interface ScheduleFormProps {
+    schedule?: object;
+    onScheduleSubmit: (...args: unknown[]) => unknown;
+    clientForm?: boolean;
+}
 
 export const ScheduleForm = ({
     schedule,
     onScheduleSubmit,
-    clientForm,
-}) => {
+    clientForm
+}: ScheduleFormProps) => {
     const [t] = useTranslation();
     const [modalOpen, setModalOpen] = useState(false);
     const [currentDay, setCurrentDay] = useState();
@@ -25,12 +31,12 @@ export const ScheduleForm = ({
     const scheduleMap = new Map();
     filteredScheduleKeys.forEach((day) => scheduleMap.set(day, schedule[day]));
 
-    const onSubmit = (values) => {
+    const onSubmit = (values: any) => {
         onScheduleSubmit(values);
         onModalClose();
     };
 
-    const onDelete = (day) => {
+    const onDelete = (day: any) => {
         scheduleMap.delete(day);
 
         const scheduleWeek = Object.fromEntries(Array.from(scheduleMap.entries()));
@@ -41,7 +47,7 @@ export const ScheduleForm = ({
         });
     };
 
-    const onEdit = (day) => {
+    const onEdit = (day: any) => {
         setCurrentDay(day);
         onModalOpen();
     };
@@ -52,7 +58,9 @@ export const ScheduleForm = ({
     };
 
     return (
+
         <div>
+
             <div className="schedule__current-timezone">
                 {t('schedule_current_timezone', { value: schedule?.time_zone || LOCAL_TIMEZONE_VALUE })}
             </div>
@@ -66,25 +74,33 @@ export const ScheduleForm = ({
                     }
 
                     return (
+
                         <div key={day} className="schedule__row">
+
                             <div className="schedule__day">
                                 {getFullDayName(t, day)}
                             </div>
+
                             <div className="schedule__day schedule__day--mobile">
                                 {getShortDayName(t, day)}
                             </div>
+
                             <TimePeriod
                                 startTimeMs={data.start}
                                 endTimeMs={data.end}
                             />
+
                             <div className="schedule__actions">
+
                                 <button
                                     type="button"
                                     className="btn btn-icon btn-outline-primary btn-sm schedule__button"
                                     title={t('edit_table_action')}
                                     onClick={() => onEdit(day)}
                                 >
+
                                     <svg className="icons icon12">
+
                                         <use xlinkHref="#edit" />
                                     </svg>
                                 </button>
@@ -95,7 +111,9 @@ export const ScheduleForm = ({
                                     title={t('delete_table_action')}
                                     onClick={() => onDelete(day)}
                                 >
+
                                     <svg className="icons">
+
                                         <use xlinkHref="#delete" />
                                     </svg>
                                 </button>
@@ -118,6 +136,7 @@ export const ScheduleForm = ({
             </button>
 
             {modalOpen && (
+
                 <Modal
                     isOpen={modalOpen}
                     onClose={onModalClose}
@@ -128,10 +147,4 @@ export const ScheduleForm = ({
             )}
         </div>
     );
-};
-
-ScheduleForm.propTypes = {
-    schedule: PropTypes.object,
-    onScheduleSubmit: PropTypes.func.isRequired,
-    clientForm: PropTypes.bool,
 };

@@ -3,6 +3,7 @@ import {
     countClientsStatistics,
     findAddressType,
     subnetMaskToBitMask,
+
 } from '../helpers/helpers';
 import { ADDRESS_TYPES } from '../helpers/constants';
 
@@ -19,8 +20,10 @@ describe('sortIp', () => {
                 '127.0.2.0',
                 '127.0.3.0',
             ];
+
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
+
         test('few octets differ', () => {
             const arr = [
                 '192.168.11.10',
@@ -58,6 +61,7 @@ describe('sortIp', () => {
                 '192.168.11.10',
                 '192.168.11.11',
             ];
+
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
 
             // Example from issue https://github.com/AdguardTeam/AdGuardHome/issues/1778#issuecomment-640937599
@@ -83,9 +87,11 @@ describe('sortIp', () => {
                 '192.168.2.200',
                 '192.168.3.1',
             ];
+
             expect(arr2.sort(sortIp)).toStrictEqual(sortedArr2);
         });
     });
+
     describe('ipv6', () => {
         test('only long form', () => {
             const arr = [
@@ -98,8 +104,10 @@ describe('sortIp', () => {
                 '2001:db8:11a3:9d7:0:0:0:2',
                 '2001:db8:11a3:9d7:0:0:0:3',
             ];
+
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
+
         test('only short form', () => {
             const arr = [
                 '2001:db8::',
@@ -111,8 +119,10 @@ describe('sortIp', () => {
                 '2001:db8::',
                 '2001:db9::',
             ];
+
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
+
         test('long and short forms', () => {
             const arr = [
                 '2001:db8::',
@@ -130,9 +140,11 @@ describe('sortIp', () => {
                 '2001:db7:11a3:9d7:0:0:0:2',
                 '2001:db8::',
             ];
+
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
     });
+
     describe('ipv4 and ipv6', () => {
         test('ipv6 long form', () => {
             const arr = [
@@ -151,8 +163,10 @@ describe('sortIp', () => {
                 '2001:db8:11a3:9d7:0:0:0:2',
                 '2001:db8:11a3:9d7:0:0:0:3',
             ];
+
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
+
         test('ipv6 short form', () => {
             const arr = [
                 '2001:db8:11a3:9d7::1',
@@ -170,8 +184,10 @@ describe('sortIp', () => {
                 '2001:db8:11a3:9d7::2',
                 '2001:db8:11a3:9d7::3',
             ];
+
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
+
         test('ipv6 long and short forms', () => {
             const arr = [
                 '2001:db8:11a3:9d7::1',
@@ -189,8 +205,10 @@ describe('sortIp', () => {
                 '2001:db8:11a3:9d7:0:0:0:2',
                 '2001:db8:11a3:9d7::3',
             ];
+
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
+
         test('always put ipv4 before ipv6', () => {
             const arr = [
                 '::1',
@@ -210,9 +228,11 @@ describe('sortIp', () => {
                 '2001:db8:11a3:9d7::1',
                 '2001:db8:11a3:9d7:0:0:0:2',
             ];
+
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
     });
+
     describe('cidr', () => {
         test('only ipv4 cidr', () => {
             const arr = [
@@ -225,8 +245,10 @@ describe('sortIp', () => {
                 '192.168.0.1/8',
                 '192.168.0.1/9',
             ];
+
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
+
         test('ipv4 and cidr ipv4', () => {
             const arr = [
                 '192.168.0.1/9',
@@ -242,8 +264,10 @@ describe('sortIp', () => {
                 '192.168.0.1/32',
                 '192.168.0.1',
             ];
+
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
+
         test('only ipv6 cidr', () => {
             const arr = [
                 '2001:db8:11a3:9d7::1/32',
@@ -257,8 +281,10 @@ describe('sortIp', () => {
                 '2001:db8:11a3:9d7::1/64',
                 '2001:db8:11a3:9d7::1/128',
             ];
+
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
+
         test('ipv6 and cidr ipv6', () => {
             const arr = [
                 '2001:db8:11a3:9d7::1/32',
@@ -274,9 +300,11 @@ describe('sortIp', () => {
                 '2001:db8:11a3:9d7::1/128',
                 '2001:db8:11a3:9d7::1',
             ];
+
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
     });
+
     describe('invalid input', () => {
         const originalWarn = console.warn;
 
@@ -291,21 +319,29 @@ describe('sortIp', () => {
 
         test('invalid strings', () => {
             const arr = ['invalid ip', 'invalid cidr'];
+
             expect(arr.sort(sortIp)).toStrictEqual(arr);
         });
+
         test('invalid ip', () => {
             const arr = ['127.0.0.2.', '.127.0.0.1.', '.2001:db8:11a3:9d7:0:0:0:0'];
+
             expect(arr.sort(sortIp)).toStrictEqual(arr);
         });
+
         test('invalid cidr', () => {
             const arr = ['127.0.0.2/33', '2001:db8:11a3:9d7:0:0:0:0/129'];
+
             expect(arr.sort(sortIp)).toStrictEqual(arr);
         });
+
         test('valid and invalid ip', () => {
             const arr = ['127.0.0.4.', '127.0.0.1', '.127.0.0.3', '127.0.0.2'];
+
             expect(arr.sort(sortIp)).toStrictEqual(arr);
         });
     });
+
     describe('mixed', () => {
         test('ipv4, ipv6 in short and long forms and cidr', () => {
             const arr = [
@@ -354,6 +390,7 @@ describe('sortIp', () => {
                 '2001:db8:11a3:9d7:0:0:0:1',
                 '2001:db8:11a3:9d7:0:0:0:2',
             ];
+
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
     });
@@ -363,9 +400,11 @@ describe('findAddressType', () => {
     describe('ip', () => {
         expect(findAddressType('127.0.0.1')).toStrictEqual(ADDRESS_TYPES.IP);
     });
+
     describe('cidr', () => {
         expect(findAddressType('127.0.0.1/8')).toStrictEqual(ADDRESS_TYPES.CIDR);
     });
+
     describe('mac', () => {
         expect(findAddressType('00:1B:44:11:3A:B7')).toStrictEqual(ADDRESS_TYPES.UNKNOWN);
     });
@@ -377,18 +416,21 @@ describe('countClientsStatistics', () => {
             '127.0.0.1': 1,
         })).toStrictEqual(1);
     });
+
     test('multiple ip', () => {
         expect(countClientsStatistics(['127.0.0.1', '127.0.0.2'], {
             '127.0.0.1': 1,
             '127.0.0.2': 2,
         })).toStrictEqual(1 + 2);
     });
+
     test('cidr', () => {
         expect(countClientsStatistics(['127.0.0.0/8'], {
             '127.0.0.1': 1,
             '127.0.0.2': 2,
         })).toStrictEqual(1 + 2);
     });
+
     test('cidr and multiple ip', () => {
         expect(countClientsStatistics(['1.1.1.1', '2.2.2.2', '3.3.3.0/24'], {
             '1.1.1.1': 1,
@@ -396,6 +438,7 @@ describe('countClientsStatistics', () => {
             '3.3.3.3': 3,
         })).toStrictEqual(1 + 2 + 3);
     });
+
     test('mac', () => {
         expect(countClientsStatistics(['00:1B:44:11:3A:B7', '2.2.2.2', '3.3.3.0/24'], {
             '1.1.1.1': 1,
@@ -403,6 +446,7 @@ describe('countClientsStatistics', () => {
             '3.3.3.3': 3,
         })).toStrictEqual(2 + 3);
     });
+
     test('not found', () => {
         expect(countClientsStatistics(['4.4.4.4', '5.5.5.5', '6.6.6.6'], {
             '1.1.1.1': 1,

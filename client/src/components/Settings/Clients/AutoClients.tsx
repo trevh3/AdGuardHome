@@ -1,22 +1,32 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
+
 import ReactTable from 'react-table';
 
 import Card from '../../ui/Card';
+
 import CellWrap from '../../ui/CellWrap';
 
 import whoisCell from './whoisCell';
+
 import LogsSearchLink from '../../ui/LogsSearchLink';
+
 import { sortIp } from '../../../helpers/helpers';
 import { LocalStorageHelper, LOCAL_STORAGE_KEYS } from '../../../helpers/localStorageHelper';
 import { TABLES_MIN_ROWS } from '../../../helpers/constants';
 
 const COLUMN_MIN_WIDTH = 200;
 
-class AutoClients extends Component {
+interface AutoClientsProps {
+    t: (...args: unknown[]) => unknown;
+    autoClients: unknown[];
+    normalizedTopClients: object;
+}
+
+class AutoClients extends Component<AutoClientsProps> {
     columns = [
         {
+
             Header: this.props.t('table_client'),
             accessor: 'ip',
             minWidth: COLUMN_MIN_WIDTH,
@@ -24,36 +34,45 @@ class AutoClients extends Component {
             sortMethod: sortIp,
         },
         {
+
             Header: this.props.t('table_name'),
             accessor: 'name',
             minWidth: COLUMN_MIN_WIDTH,
             Cell: CellWrap,
         },
         {
+
             Header: this.props.t('source_label'),
             accessor: 'source',
             minWidth: COLUMN_MIN_WIDTH,
             Cell: CellWrap,
         },
         {
+
             Header: this.props.t('whois'),
             accessor: 'whois_info',
             minWidth: COLUMN_MIN_WIDTH,
+
             Cell: whoisCell(this.props.t),
         },
         {
+
             Header: this.props.t('requests_count'),
-            accessor: (row) => this.props.normalizedTopClients.auto[row.ip] || 0,
-            sortMethod: (a, b) => b - a,
+
+            accessor: (row: any) => this.props.normalizedTopClients.auto[row.ip] || 0,
+            sortMethod: (a: any, b: any) => b - a,
             id: 'statistics',
             minWidth: COLUMN_MIN_WIDTH,
-            Cell: (row) => {
+            Cell: (row: any) => {
                 const { value: clientStats } = row;
 
                 if (clientStats) {
                     return (
+
                         <div className="logs__row">
+
                             <div className="logs__text" title={clientStats}>
+
                                 <LogsSearchLink search={row.original.ip}>
                                     {clientStats}
                                 </LogsSearchLink>
@@ -71,11 +90,13 @@ class AutoClients extends Component {
         const { t, autoClients } = this.props;
 
         return (
+
             <Card
                 title={t('auto_clients_title')}
                 subtitle={t('auto_clients_desc')}
                 bodyType="card-body box-body--settings"
             >
+
                 <ReactTable
                     data={autoClients || []}
                     columns={this.columns}
@@ -88,9 +109,7 @@ class AutoClients extends Component {
                     className="-striped -highlight card-table-overflow"
                     showPagination
                     defaultPageSize={LocalStorageHelper.getItem(LOCAL_STORAGE_KEYS.AUTO_CLIENTS_PAGE_SIZE) || 10}
-                    onPageSizeChange={(size) => (
-                        LocalStorageHelper.setItem(LOCAL_STORAGE_KEYS.AUTO_CLIENTS_PAGE_SIZE, size)
-                    )}
+                    onPageSizeChange={(size: any) => LocalStorageHelper.setItem(LOCAL_STORAGE_KEYS.AUTO_CLIENTS_PAGE_SIZE, size)}
                     minRows={TABLES_MIN_ROWS}
                     ofText="/"
                     previousText={t('previous_btn')}
@@ -104,11 +123,5 @@ class AutoClients extends Component {
         );
     }
 }
-
-AutoClients.propTypes = {
-    t: PropTypes.func.isRequired,
-    autoClients: PropTypes.array.isRequired,
-    normalizedTopClients: PropTypes.object.isRequired,
-};
 
 export default withTranslation()(AutoClients);

@@ -1,14 +1,21 @@
 import React from 'react';
+
 import ReactTable from 'react-table';
-import PropTypes from 'prop-types';
 import round from 'lodash/round';
 import { withTranslation, Trans } from 'react-i18next';
 
 import Card from '../ui/Card';
+
 import DomainCell from './DomainCell';
 import { DASHBOARD_TABLES_DEFAULT_PAGE_SIZE, TABLES_MIN_ROWS } from '../../helpers/constants';
 
-const TimeCell = ({ value }) => {
+interface TimeCellProps {
+    value?: string | number;
+}
+
+const TimeCell = ({
+    value
+}: TimeCellProps) => {
     if (!value) {
         return '–';
     }
@@ -16,7 +23,9 @@ const TimeCell = ({ value }) => {
     const valueInMilliseconds = round(value * 1000);
 
     return (
+
         <div className="logs__row o-hidden">
+
             <span className="logs__text logs__text--full" title={valueInMilliseconds}>
                 {valueInMilliseconds}&nbsp;ms
             </span>
@@ -24,37 +33,44 @@ const TimeCell = ({ value }) => {
     );
 };
 
-TimeCell.propTypes = {
-    value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-    ]),
-};
+interface UpstreamAvgTimeProps {
+    topUpstreamsAvgTime: unknown[];
+    refreshButton: React.ReactNode;
+    subtitle: string;
+    t: (...args: unknown[]) => unknown;
+}
 
 const UpstreamAvgTime = ({
     t,
     refreshButton,
     topUpstreamsAvgTime,
-    subtitle,
-}) => (
+    subtitle
+}: UpstreamAvgTimeProps) => (
+
     <Card
         title={t('average_upstream_response_time')}
         subtitle={subtitle}
         bodyType="card-table"
         refresh={refreshButton}
     >
+
         <ReactTable
-            data={topUpstreamsAvgTime.map(({ name: domain, count }) => ({
+            data={topUpstreamsAvgTime.map(({
+                name: domain,
+                count,
+            }: any) => ({
                 domain,
                 count,
             }))}
             columns={[
                 {
+
                     Header: <Trans>upstream</Trans>,
                     accessor: 'domain',
                     Cell: DomainCell,
                 },
                 {
+
                     Header: <Trans>response_time</Trans>,
                     accessor: 'count',
                     maxWidth: 190,
@@ -69,12 +85,5 @@ const UpstreamAvgTime = ({
         />
     </Card>
 );
-
-UpstreamAvgTime.propTypes = {
-    topUpstreamsAvgTime: PropTypes.array.isRequired,
-    refreshButton: PropTypes.node.isRequired,
-    subtitle: PropTypes.string.isRequired,
-    t: PropTypes.func.isRequired,
-};
 
 export default withTranslation()(UpstreamAvgTime);

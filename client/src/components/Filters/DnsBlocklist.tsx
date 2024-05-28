@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 
 import PageTitle from '../ui/PageTitle';
+
 import Card from '../ui/Card';
+
 import Modal from './Modal';
+
 import Actions from './Actions';
 
 import Table from './Table';
@@ -12,29 +14,45 @@ import { MODAL_TYPE } from '../../helpers/constants';
 
 import {
     getCurrentFilter,
+
 } from '../../helpers/helpers';
 
 import filtersCatalog from '../../helpers/filters/filters';
 
-class DnsBlocklist extends Component {
+interface DnsBlocklistProps {
+    getFilteringStatus: (...args: unknown[]) => unknown;
+    filtering: object;
+    removeFilter: (...args: unknown[]) => unknown;
+    toggleFilterStatus: (...args: unknown[]) => unknown;
+    addFilter: (...args: unknown[]) => unknown;
+    toggleFilteringModal: (...args: unknown[]) => unknown;
+    handleRulesChange: (...args: unknown[]) => unknown;
+    refreshFilters: (...args: unknown[]) => unknown;
+    editFilter: (...args: unknown[]) => unknown;
+    t: (...args: unknown[]) => unknown;
+}
+
+class DnsBlocklist extends Component<DnsBlocklistProps> {
     componentDidMount() {
         this.props.getFilteringStatus();
     }
 
-    handleSubmit = (values) => {
+    handleSubmit = (values: any) => {
         const { modalFilterUrl, modalType } = this.props.filtering;
 
         switch (modalType) {
             case MODAL_TYPE.EDIT_FILTERS:
+
                 this.props.editFilter(modalFilterUrl, values);
                 break;
             case MODAL_TYPE.ADD_FILTERS: {
                 const { name, url } = values;
+
                 this.props.addFilter(url, name);
                 break;
             }
             case MODAL_TYPE.CHOOSE_FILTERING_LIST: {
-                const changedValues = Object.entries(values)?.reduce((acc, [key, value]) => {
+                const changedValues = Object.entries(values)?.reduce((acc: any, [key, value]) => {
                     if (value && key in filtersCatalog.filters) {
                         acc[key] = value;
                     }
@@ -44,7 +62,9 @@ class DnsBlocklist extends Component {
                 Object.keys(changedValues)
                     .forEach((fieldName) => {
                         // filterId is actually in the field name
+
                         const { source, name } = filtersCatalog.filters[fieldName];
+
                         this.props.addFilter(source, name);
                     });
                 break;
@@ -54,13 +74,13 @@ class DnsBlocklist extends Component {
         }
     };
 
-    handleDelete = (url) => {
+    handleDelete = (url: any) => {
         if (window.confirm(this.props.t('list_confirm_delete'))) {
             this.props.removeFilter(url);
         }
     };
 
-    toggleFilter = (url, data) => {
+    toggleFilter = (url: any, data: any) => {
         this.props.toggleFilterStatus(url, data);
     };
 
@@ -74,9 +94,13 @@ class DnsBlocklist extends Component {
 
     render() {
         const {
+
             t,
+
             toggleFilteringModal,
+
             addFilter,
+
             filtering: {
                 filters,
                 isModalOpen,
@@ -98,16 +122,24 @@ class DnsBlocklist extends Component {
             || processingRefreshFilters;
 
         return (
+
             <>
+
                 <PageTitle
                     title={t('dns_blocklists')}
                     subtitle={t('dns_blocklists_desc')}
                 />
+
                 <div className="content">
+
                     <div className="row">
+
                         <div className="col-md-12">
+
                             <Card subtitle={t('filters_and_hosts_hint')}>
+
                                 <Table
+
                                     filters={filters}
                                     loading={loading}
                                     processingConfigFilter={processingConfigFilter}
@@ -115,6 +147,7 @@ class DnsBlocklist extends Component {
                                     handleDelete={this.handleDelete}
                                     toggleFilter={this.toggleFilter}
                                 />
+
                                 <Actions
                                     handleAdd={this.openSelectTypeModal}
                                     handleRefresh={this.handleRefresh}
@@ -124,7 +157,9 @@ class DnsBlocklist extends Component {
                         </div>
                     </div>
                 </div>
+
                 <Modal
+
                     filtersCatalog={filtersCatalog}
                     filters={filters}
                     isOpen={isModalOpen}
@@ -141,18 +176,5 @@ class DnsBlocklist extends Component {
         );
     }
 }
-
-DnsBlocklist.propTypes = {
-    getFilteringStatus: PropTypes.func.isRequired,
-    filtering: PropTypes.object.isRequired,
-    removeFilter: PropTypes.func.isRequired,
-    toggleFilterStatus: PropTypes.func.isRequired,
-    addFilter: PropTypes.func.isRequired,
-    toggleFilteringModal: PropTypes.func.isRequired,
-    handleRulesChange: PropTypes.func.isRequired,
-    refreshFilters: PropTypes.func.isRequired,
-    editFilter: PropTypes.func.isRequired,
-    t: PropTypes.func.isRequired,
-};
 
 export default withTranslation()(DnsBlocklist);

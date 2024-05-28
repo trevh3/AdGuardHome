@@ -1,49 +1,83 @@
 import React from 'react';
-import propTypes from 'prop-types';
 import { Trans, useTranslation } from 'react-i18next';
 import round from 'lodash/round';
 import { shallowEqual, useSelector } from 'react-redux';
+
 import Card from '../ui/Card';
+
 import { formatNumber, msToDays, msToHours } from '../../helpers/helpers';
+
 import LogsSearchLink from '../ui/LogsSearchLink';
 import { RESPONSE_FILTER, TIME_UNITS } from '../../helpers/constants';
+
 import Tooltip from '../ui/Tooltip';
 
+interface RowProps {
+    label: string;
+    count: string;
+    response_status?: string;
+    tooltipTitle: string;
+    translationComponents?: React.ReactElement[];
+}
+
 const Row = ({
-    label, count, response_status, tooltipTitle, translationComponents,
-}) => {
+    label,
+    count,
+    response_status,
+    tooltipTitle,
+    translationComponents
+}: RowProps) => {
     const content = response_status
+
         ? <LogsSearchLink response_status={response_status}>{formatNumber(count)}</LogsSearchLink>
         : count;
 
     return (
+
         <div className="counters__row" key={label}>
+
             <div className="counters__column">
+
                 <span className="counters__title">
+
                     <Trans components={translationComponents}>
                         {label}
                     </Trans>
                 </span>
+
                 <span className="counters__tooltip">
+
                     <Tooltip
                         content={tooltipTitle}
                         placement="top"
                         className="tooltip-container tooltip-custom--narrow text-center"
                     >
+
                         <svg className="icons icon--20 icon--lightgray ml-2">
+
                             <use xlinkHref="#question" />
                         </svg>
                     </Tooltip>
                 </span>
             </div>
+
             <div className="counters__column counters__column--value">
+
                 <strong>{content}</strong>
             </div>
         </div>
     );
 };
 
-const Counters = ({ refreshButton, subtitle }) => {
+interface CountersProps {
+    refreshButton: React.ReactNode;
+    subtitle: string;
+}
+
+const Counters = ({
+    refreshButton,
+    subtitle
+}: CountersProps) => {
     const {
         interval,
         numDnsQueries,
@@ -53,6 +87,7 @@ const Counters = ({ refreshButton, subtitle }) => {
         numReplacedSafesearch,
         avgProcessingTime,
         timeUnits,
+
     } = useSelector((state) => state.stats, shallowEqual);
     const { t } = useTranslation();
 
@@ -72,6 +107,7 @@ const Counters = ({ refreshButton, subtitle }) => {
             count: numBlockedFiltering,
             tooltipTitle: 'number_of_dns_query_blocked_24_hours',
             response_status: RESPONSE_FILTER.BLOCKED.QUERY,
+
             translationComponents: [<a href="#filters" key="0">link</a>],
         },
         {
@@ -100,30 +136,19 @@ const Counters = ({ refreshButton, subtitle }) => {
     ];
 
     return (
+
         <Card
             title={t('general_statistics')}
             subtitle={subtitle}
             bodyType="card-table"
             refresh={refreshButton}
         >
+
             <div className="counters">
                 {rows.map(Row)}
             </div>
         </Card>
     );
-};
-
-Row.propTypes = {
-    label: propTypes.string.isRequired,
-    count: propTypes.string.isRequired,
-    response_status: propTypes.string,
-    tooltipTitle: propTypes.string.isRequired,
-    translationComponents: propTypes.arrayOf(propTypes.element),
-};
-
-Counters.propTypes = {
-    refreshButton: propTypes.node.isRequired,
-    subtitle: propTypes.string.isRequired,
 };
 
 export default Counters;

@@ -10,7 +10,9 @@ import i18n from '../../i18n';
 import Version from './Version';
 import './Footer.css';
 import './Select.css';
+
 import { setHtmlLangAttr, setUITheme } from '../../helpers/helpers';
+
 import { changeTheme } from '../../actions';
 
 const linksData = [
@@ -34,9 +36,11 @@ const Footer = () => {
     const dispatch = useDispatch();
 
     const currentTheme = useSelector((state) => (
+
         state.dashboard ? state.dashboard.theme : THEMES.auto
     ));
     const profileName = useSelector((state) => (
+
         state.dashboard ? state.dashboard.name : ''
     ));
     const isLoggedIn = profileName !== '';
@@ -47,13 +51,13 @@ const Footer = () => {
         return today.getFullYear();
     };
 
-    const changeLanguage = (event) => {
+    const changeLanguage = (event: any) => {
         const { value } = event.target;
         i18n.changeLanguage(value);
         setHtmlLangAttr(value);
     };
 
-    const onThemeChange = (value) => {
+    const onThemeChange = (value: any) => {
         if (isLoggedIn) {
             dispatch(changeTheme(value));
         } else {
@@ -63,13 +67,20 @@ const Footer = () => {
     };
 
     const renderCopyright = () => <div className="footer__column">
+
         <div className="footer__copyright">
             {t('copyright')} &copy; {getYear()}{' '}
+
             <a target="_blank" rel="noopener noreferrer" href="https://link.adtidy.org/forward.html?action=home&from=ui&app=home">AdGuard</a>
         </div>
     </div>;
 
-    const renderLinks = (linksData) => linksData.map(({ name, href, className = '' }) => <a
+    const renderLinks = (linksData: any) => linksData.map(({
+        name,
+        href,
+        className = '',
+
+    }: any) => <a
             key={name}
             href={href}
             className={cn('footer__link', className)}
@@ -97,45 +108,55 @@ const Footer = () => {
             },
         };
 
-        return (
-            Object.values(THEMES)
-                .map((theme) => (
-                    <button
-                        key={theme}
-                        type="button"
-                        className="btn btn-sm btn-secondary footer__theme-button"
-                        onClick={() => onThemeChange(theme)}
-                        title={content[theme].desc}
-                    >
-                        <svg
-                            className={cn(
-                                'footer__theme-icon',
-                                { 'footer__theme-icon--active': currentValue === theme },
-                            )}
-                        >
-                            <use xlinkHref={content[theme].icon} />
-                        </svg>
-                    </button>
-                ))
-        );
+        return Object.values(THEMES)
+
+            .map((theme: any) => <button
+            key={theme}
+            type="button"
+            className="btn btn-sm btn-secondary footer__theme-button"
+            onClick={() => onThemeChange(theme)}
+
+            title={content[theme].desc}
+        >
+
+            <svg
+                className={cn(
+                    'footer__theme-icon',
+                    { 'footer__theme-icon--active': currentValue === theme },
+                )}
+            >
+
+                <use xlinkHref={content[theme].icon} />
+            </svg>
+        </button>);
     };
 
     return (
+
         <>
+
             <footer className="footer">
+
                 <div className="container">
+
                     <div className="footer__row">
+
                         <div className="footer__column footer__column--links">
                             {renderLinks(linksData)}
                         </div>
+
                         <div className="footer__column footer__column--theme">
+
                             <div className="footer__themes">
+
                                 <div className="btn-group">
                                     {renderThemeButtons()}
                                 </div>
                             </div>
                         </div>
+
                         <div className="footer__column footer__column--language">
+
                             <select
                                 className="form-control select select--language"
                                 value={i18n.language}
@@ -143,6 +164,7 @@ const Footer = () => {
                             >
                                 {Object.keys(LANGUAGES)
                                     .map((lang) => (
+
                                         <option key={lang} value={lang}>
                                             {LANGUAGES[lang]}
                                         </option>
@@ -152,11 +174,16 @@ const Footer = () => {
                     </div>
                 </div>
             </footer>
+
             <div className="footer">
+
                 <div className="container">
+
                     <div className="footer__row">
                         {renderCopyright()}
+
                         <div className="footer__column footer__column--language">
+
                             <Version />
                         </div>
                     </div>

@@ -3,6 +3,7 @@ import { Trans } from 'react-i18next';
 import isAfter from 'date-fns/is_after';
 import addDays from 'date-fns/add_days';
 import { useSelector } from 'react-redux';
+
 import Topline from './Topline';
 import { EMPTY_DATE } from '../../helpers/constants';
 
@@ -23,7 +24,7 @@ const EXPIRATION_STATE = {
     },
 };
 
-const getExpirationFlags = (not_after) => {
+const getExpirationFlags = (not_after: any) => {
     const DAYS_BEFORE_EXPIRATION = 5;
 
     const now = Date.now();
@@ -36,7 +37,7 @@ const getExpirationFlags = (not_after) => {
     };
 };
 
-const getExpirationEnumKey = (not_after) => {
+const getExpirationEnumKey = (not_after: any) => {
     const { isExpiring, isExpired } = getExpirationFlags(not_after);
 
     if (isExpired) {
@@ -66,7 +67,9 @@ const EncryptionTopline = () => {
     const { toplineType, i18nKey } = EXPIRATION_STATE[expirationStateKey];
 
     return (
+
             <Topline type={toplineType}>
+
                 <Trans components={[<a href="#encryption" key="0">link</a>]}>
                     {i18nKey}
                 </Trans>

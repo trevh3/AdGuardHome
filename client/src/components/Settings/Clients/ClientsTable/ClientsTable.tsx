@@ -1,26 +1,50 @@
 /* eslint-disable react/display-name */
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Trans, useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { useHistory, useLocation } from 'react-router-dom';
+
 import ReactTable from 'react-table';
 
 import { getAllBlockedServices, getBlockedServices } from '../../../../actions/services';
+
 import { initSettings } from '../../../../actions';
 import {
     splitByNewLine,
     countClientsStatistics,
     sortIp,
     getService,
+
 } from '../../../../helpers/helpers';
 import { MODAL_TYPE, LOCAL_TIMEZONE_VALUE, TABLES_MIN_ROWS } from '../../../../helpers/constants';
+
 import Card from '../../../ui/Card';
+
 import CellWrap from '../../../ui/CellWrap';
+
 import LogsSearchLink from '../../../ui/LogsSearchLink';
+
 import Modal from '../Modal';
 import { LocalStorageHelper, LOCAL_STORAGE_KEYS } from '../../../../helpers/localStorageHelper';
+
+interface ClientsTableProps {
+    clients: unknown[];
+    normalizedTopClients: object;
+    toggleClientModal: (...args: unknown[]) => unknown;
+    deleteClient: (...args: unknown[]) => unknown;
+    addClient: (...args: unknown[]) => unknown;
+    updateClient: (...args: unknown[]) => unknown;
+    isModalOpen: boolean;
+    modalType: string;
+    modalClientName: string;
+    processingAdding: boolean;
+    processingDeleting: boolean;
+    processingUpdating: boolean;
+    getStats: (...args: unknown[]) => unknown;
+    supportedTags: unknown[];
+}
 
 const ClientsTable = ({
     clients,
@@ -36,13 +60,15 @@ const ClientsTable = ({
     processingDeleting,
     processingUpdating,
     getStats,
-    supportedTags,
-}) => {
+    supportedTags
+}: ClientsTableProps) => {
     const [t] = useTranslation();
     const dispatch = useDispatch();
     const location = useLocation();
     const history = useHistory();
+
     const services = useSelector((store) => store?.services);
+
     const globalSettings = useSelector((store) => store?.settings.settingsList) || {};
     const params = new URLSearchParams(location.search);
     const clientId = params.get('clientId');
@@ -61,15 +87,15 @@ const ClientsTable = ({
         }
     }, []);
 
-    const handleFormAdd = (values) => {
+    const handleFormAdd = (values: any) => {
         addClient(values);
     };
 
-    const handleFormUpdate = (values, name) => {
+    const handleFormUpdate = (values: any, name: any) => {
         updateClient(values, name);
     };
 
-    const handleSubmit = (values) => {
+    const handleSubmit = (values: any) => {
         const config = { ...values };
 
         if (values) {
@@ -86,7 +112,7 @@ const ClientsTable = ({
             }
 
             if (values.tags) {
-                config.tags = values.tags.map((tag) => tag.value);
+                config.tags = values.tags.map((tag: any) => tag.value);
             } else {
                 config.tags = [];
             }
@@ -107,15 +133,13 @@ const ClientsTable = ({
         }
     };
 
-    const getOptionsWithLabels = (options) => (
-        options.map((option) => ({
-            value: option,
-            label: option,
-        }))
-    );
+    const getOptionsWithLabels = (options: any) => options.map((option: any) => ({
+        value: option,
+        label: option,
+    }));
 
-    const getClient = (name, clients) => {
-        const client = clients.find((item) => name === item.name);
+    const getClient = (name: any, clients: any) => {
+        const client = clients.find((item: any) => name === item.name);
 
         if (client) {
             const {
@@ -140,7 +164,7 @@ const ClientsTable = ({
         };
     };
 
-    const handleDelete = (data) => {
+    const handleDelete = (data: any) => {
         // eslint-disable-next-line no-alert
         if (window.confirm(t('client_confirm_delete', { key: data.name }))) {
             deleteClient(data);
@@ -161,17 +185,18 @@ const ClientsTable = ({
             Header: t('table_client'),
             accessor: 'ids',
             minWidth: 150,
-            Cell: (row) => {
+            Cell: (row: any) => {
                 const { value } = row;
 
                 return (
+
                     <div className="logs__row o-hidden">
+
                         <span className="logs__text">
-                            {value.map((address) => (
-                                <div key={address} title={address}>
-                                    {address}
-                                </div>
-                            ))}
+
+                            {value.map((address: any) => <div key={address} title={address}>
+                                {address}
+                            </div>)}
                         </span>
                     </div>
                 );
@@ -188,15 +213,21 @@ const ClientsTable = ({
             Header: t('settings'),
             accessor: 'use_global_settings',
             minWidth: 120,
-            Cell: ({ value }) => {
+            Cell: ({
+                value,
+            }: any) => {
                 const title = value ? (
+
                     <Trans>settings_global</Trans>
                 ) : (
+
                     <Trans>settings_custom</Trans>
                 );
 
                 return (
+
                     <div className="logs__row o-hidden">
+
                         <div className="logs__text">{title}</div>
                     </div>
                 );
@@ -206,7 +237,7 @@ const ClientsTable = ({
             Header: t('blocked_services'),
             accessor: 'blocked_services',
             minWidth: 180,
-            Cell: (row) => {
+            Cell: (row: any) => {
                 const { value, original } = row;
 
                 if (original.use_global_blocked_services) {
@@ -215,12 +246,14 @@ const ClientsTable = ({
 
                 if (value && services.allServices) {
                     return (
+
                         <div className="logs__row logs__row--icons">
-                            {value.map((service) => {
+                            {value.map((service: any) => {
                                 const serviceInfo = getService(services.allServices, service);
 
                                 if (serviceInfo?.icon_svg) {
                                     return (
+
                                         <div
                                             key={serviceInfo.name}
                                             dangerouslySetInnerHTML={{
@@ -239,6 +272,7 @@ const ClientsTable = ({
                 }
 
                 return (
+
                     <div className="logs__row logs__row--icons">
                         –
                     </div>
@@ -249,15 +283,21 @@ const ClientsTable = ({
             Header: t('upstreams'),
             accessor: 'upstreams',
             minWidth: 120,
-            Cell: ({ value }) => {
+            Cell: ({
+                value,
+            }: any) => {
                 const title = value && value.length > 0 ? (
+
                     <Trans>settings_custom</Trans>
                 ) : (
+
                     <Trans>settings_global</Trans>
                 );
 
                 return (
+
                     <div className="logs__row o-hidden">
+
                         <div className="logs__text">{title}</div>
                     </div>
                 );
@@ -267,7 +307,7 @@ const ClientsTable = ({
             Header: t('tags_title'),
             accessor: 'tags',
             minWidth: 140,
-            Cell: (row) => {
+            Cell: (row: any) => {
                 const { value } = row;
 
                 if (!value || value.length < 1) {
@@ -275,13 +315,14 @@ const ClientsTable = ({
                 }
 
                 return (
+
                     <div className="logs__row o-hidden">
+
                         <span className="logs__text">
-                            {value.map((tag) => (
-                                <div key={tag} title={tag} className="logs__tag small">
-                                    {tag}
-                                </div>
-                            ))}
+
+                            {value.map((tag: any) => <div key={tag} title={tag} className="logs__tag small">
+                                {tag}
+                            </div>)}
                         </span>
                     </div>
                 );
@@ -290,13 +331,13 @@ const ClientsTable = ({
         {
             Header: t('requests_count'),
             id: 'statistics',
-            accessor: (row) => countClientsStatistics(
+            accessor: (row: any) => countClientsStatistics(
                 row.ids,
                 normalizedTopClients.auto,
             ),
-            sortMethod: (a, b) => b - a,
+            sortMethod: (a: any, b: any) => b - a,
             minWidth: 120,
-            Cell: (row) => {
+            Cell: (row: any) => {
                 const content = CellWrap(row);
 
                 if (!row.value) {
@@ -312,11 +353,13 @@ const ClientsTable = ({
             maxWidth: 100,
             sortable: false,
             resizable: false,
-            Cell: (row) => {
+            Cell: (row: any) => {
                 const clientName = row.original.name;
 
                 return (
+
                     <div className="logs__row logs__row--center">
+
                         <button
                             type="button"
                             className="btn btn-icon btn-outline-primary btn-sm mr-2"
@@ -328,10 +371,13 @@ const ClientsTable = ({
                             disabled={processingUpdating}
                             title={t('edit_table_action')}
                         >
+
                             <svg className="icons icon12">
+
                                 <use xlinkHref="#edit" />
                             </svg>
                         </button>
+
                         <button
                             type="button"
                             className="btn btn-icon btn-outline-secondary btn-sm"
@@ -339,7 +385,9 @@ const ClientsTable = ({
                             disabled={processingDeleting}
                             title={t('delete_table_action')}
                         >
+
                             <svg className="icons icon12">
+
                                 <use xlinkHref="#delete" />
                             </svg>
                         </button>
@@ -353,12 +401,15 @@ const ClientsTable = ({
     const tagsOptions = getOptionsWithLabels(supportedTags);
 
     return (
+
         <Card
             title={t('clients_title')}
             subtitle={t('clients_desc')}
             bodyType="card-body box-body--settings"
         >
+
             <>
+
                 <ReactTable
                     data={clients || []}
                     columns={columns}
@@ -371,9 +422,7 @@ const ClientsTable = ({
                     className="-striped -highlight card-table-overflow"
                     showPagination
                     defaultPageSize={LocalStorageHelper.getItem(LOCAL_STORAGE_KEYS.CLIENTS_PAGE_SIZE) || 10}
-                    onPageSizeChange={(size) => (
-                        LocalStorageHelper.setItem(LOCAL_STORAGE_KEYS.CLIENTS_PAGE_SIZE, size)
-                    )}
+                    onPageSizeChange={(size: any) => LocalStorageHelper.setItem(LOCAL_STORAGE_KEYS.CLIENTS_PAGE_SIZE, size)}
                     minRows={TABLES_MIN_ROWS}
                     ofText="/"
                     previousText={t('previous_btn')}
@@ -383,14 +432,17 @@ const ClientsTable = ({
                     loadingText={t('loading_table_status')}
                     noDataText={t('clients_not_found')}
                 />
+
                 <button
                     type="button"
                     className="btn btn-success btn-standard mt-3"
                     onClick={() => toggleClientModal(MODAL_TYPE.ADD_FILTERS)}
                     disabled={processingAdding}
                 >
+
                     <Trans>client_add</Trans>
                 </button>
+
                 <Modal
                     isModalOpen={isModalOpen}
                     modalType={modalType}
@@ -405,23 +457,6 @@ const ClientsTable = ({
             </>
         </Card>
     );
-};
-
-ClientsTable.propTypes = {
-    clients: PropTypes.array.isRequired,
-    normalizedTopClients: PropTypes.object.isRequired,
-    toggleClientModal: PropTypes.func.isRequired,
-    deleteClient: PropTypes.func.isRequired,
-    addClient: PropTypes.func.isRequired,
-    updateClient: PropTypes.func.isRequired,
-    isModalOpen: PropTypes.bool.isRequired,
-    modalType: PropTypes.string.isRequired,
-    modalClientName: PropTypes.string.isRequired,
-    processingAdding: PropTypes.bool.isRequired,
-    processingDeleting: PropTypes.bool.isRequired,
-    processingUpdating: PropTypes.bool.isRequired,
-    getStats: PropTypes.func.isRequired,
-    supportedTags: PropTypes.array.isRequired,
 };
 
 export default ClientsTable;

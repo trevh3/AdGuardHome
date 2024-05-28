@@ -18,7 +18,9 @@ import {
     R_IPV4_SUBNET,
     R_IPV6_SUBNET,
 } from './constants';
+
 import { ip4ToInt, isValidAbsolutePath } from './form';
+
 import { isIpInCidr, parseSubnetMask } from './helpers';
 
 // Validation functions
@@ -28,7 +30,7 @@ import { isIpInCidr, parseSubnetMask } from './helpers';
  * @param value {string|number}
  * @returns {undefined|string}
  */
-export const validateRequiredValue = (value) => {
+export const validateRequiredValue = (value: any) => {
     const formattedValue = typeof value === 'string' ? value.trim() : value;
     if (formattedValue || formattedValue === 0 || (formattedValue && formattedValue.length !== 0)) {
         return undefined;
@@ -41,7 +43,7 @@ export const validateRequiredValue = (value) => {
  * @param _
  * @param allValues
  */
-export const validateIpv4RangeEnd = (_, allValues) => {
+export const validateIpv4RangeEnd = (_: any, allValues: any) => {
     if (!allValues || !allValues.v4 || !allValues.v4.range_end || !allValues.v4.range_start) {
         return undefined;
     }
@@ -59,7 +61,7 @@ export const validateIpv4RangeEnd = (_, allValues) => {
  * @param value {string}
  * @returns {undefined|string}
  */
-export const validateIpv4 = (value) => {
+export const validateIpv4 = (value: any) => {
     if (value && !R_IPV4.test(value)) {
         return 'form_error_ip4_format';
     }
@@ -71,7 +73,7 @@ export const validateIpv4 = (value) => {
  * @param _
  * @param allValues
  */
-export const validateNotInRange = (value, allValues) => {
+export const validateNotInRange = (value: any, allValues: any) => {
     if (!allValues.v4) {
         return undefined;
     }
@@ -104,7 +106,7 @@ export const validateNotInRange = (value, allValues) => {
  * @param _
  * @param allValues
  */
-export const validateGatewaySubnetMask = (_, allValues) => {
+export const validateGatewaySubnetMask = (_: any, allValues: any) => {
     if (!allValues || !allValues.v4 || !allValues.v4.subnet_mask || !allValues.v4.gateway_ip) {
         return 'gateway_or_subnet_invalid';
     }
@@ -123,7 +125,7 @@ export const validateGatewaySubnetMask = (_, allValues) => {
  * @param value
  * @param allValues
  */
-export const validateIpForGatewaySubnetMask = (value, allValues) => {
+export const validateIpForGatewaySubnetMask = (value: any, allValues: any) => {
     if (!allValues || !allValues.v4 || !value) {
         return undefined;
     }
@@ -149,7 +151,7 @@ export const validateIpForGatewaySubnetMask = (value, allValues) => {
  * @param value {string}
  * @returns {undefined|string}
  */
-export const validateClientId = (value) => {
+export const validateClientId = (value: any) => {
     if (!value) {
         return undefined;
     }
@@ -171,7 +173,7 @@ export const validateClientId = (value) => {
  * @param value {string}
  * @returns {undefined|string}
  */
-export const validateConfigClientId = (value) => {
+export const validateConfigClientId = (value: any) => {
     if (!value) {
         return undefined;
     }
@@ -186,7 +188,7 @@ export const validateConfigClientId = (value) => {
  * @param value {string}
  * @returns {undefined|string}
  */
-export const validateServerName = (value) => {
+export const validateServerName = (value: any) => {
     if (!value) {
         return undefined;
     }
@@ -201,7 +203,7 @@ export const validateServerName = (value) => {
  * @param value {string}
  * @returns {undefined|string}
  */
-export const validateIpv6 = (value) => {
+export const validateIpv6 = (value: any) => {
     if (value && !R_IPV6.test(value)) {
         return 'form_error_ip6_format';
     }
@@ -212,7 +214,7 @@ export const validateIpv6 = (value) => {
  * @param value {string}
  * @returns {undefined|string}
  */
-export const validateIp = (value) => {
+export const validateIp = (value: any) => {
     if (value && !R_IPV4.test(value) && !R_IPV6.test(value)) {
         return 'form_error_ip_format';
     }
@@ -223,7 +225,7 @@ export const validateIp = (value) => {
  * @param value {string}
  * @returns {undefined|string}
  */
-export const validateMac = (value) => {
+export const validateMac = (value: any) => {
     if (value && !R_MAC.test(value)) {
         return 'form_error_mac_format';
     }
@@ -234,7 +236,7 @@ export const validateMac = (value) => {
  * @param value {number}
  * @returns {undefined|string}
  */
-export const validatePort = (value) => {
+export const validatePort = (value: any) => {
     if ((value || value === 0) && (value < STANDARD_WEB_PORT || value > MAX_PORT)) {
         return 'form_error_port_range';
     }
@@ -245,7 +247,7 @@ export const validatePort = (value) => {
  * @param value {number}
  * @returns {undefined|string}
  */
-export const validateInstallPort = (value) => {
+export const validateInstallPort = (value: any) => {
     if (value < 1 || value > MAX_PORT) {
         return 'form_error_port';
     }
@@ -256,7 +258,7 @@ export const validateInstallPort = (value) => {
  * @param value {number}
  * @returns {undefined|string}
  */
-export const validatePortTLS = (value) => {
+export const validatePortTLS = (value: any) => {
     if (value === 0) {
         return undefined;
     }
@@ -276,7 +278,7 @@ export const validatePortQuic = validatePortTLS;
  * @param value {number}
  * @returns {undefined|string}
  */
-export const validateIsSafePort = (value) => {
+export const validateIsSafePort = (value: any) => {
     if (UNSAFE_PORTS.includes(value)) {
         return 'form_error_port_unsafe';
     }
@@ -287,7 +289,7 @@ export const validateIsSafePort = (value) => {
  * @param value {string}
  * @returns {undefined|string}
  */
-export const validateDomain = (value) => {
+export const validateDomain = (value: any) => {
     if (value && !R_HOST.test(value)) {
         return 'form_error_domain_format';
     }
@@ -298,7 +300,7 @@ export const validateDomain = (value) => {
  * @param value {string}
  * @returns {undefined|string}
  */
-export const validateAnswer = (value) => {
+export const validateAnswer = (value: any) => {
     if (value && (!R_IPV4.test(value) && !R_IPV6.test(value) && !R_HOST.test(value))) {
         return 'form_error_answer_format';
     }
@@ -309,7 +311,7 @@ export const validateAnswer = (value) => {
  * @param value {string}
  * @returns {undefined|string}
  */
-export const validatePath = (value) => {
+export const validatePath = (value: any) => {
     if (value && !isValidAbsolutePath(value) && !R_URL_REQUIRES_PROTOCOL.test(value)) {
         return 'form_error_url_or_path_format';
     }
@@ -320,7 +322,7 @@ export const validatePath = (value) => {
  * @param cidr {string}
  * @returns {Function}
  */
-export const validateIpv4InCidr = (valueIp, allValues) => {
+export const validateIpv4InCidr = (valueIp: any, allValues: any) => {
     if (!isIpInCidr(valueIp, allValues.cidr)) {
         return i18next.t('form_error_subnet', { ip: valueIp, cidr: allValues.cidr });
     }
@@ -331,7 +333,7 @@ export const validateIpv4InCidr = (valueIp, allValues) => {
  * @param value {string}
  * @returns {number}
  */
-const utf8StringLength = (value) => {
+const utf8StringLength = (value: any) => {
     const encoder = new TextEncoder();
     const view = encoder.encode(value);
 
@@ -342,7 +344,7 @@ const utf8StringLength = (value) => {
  * @param value {string}
  * @returns {Function}
  */
-export const validatePasswordLength = (value) => {
+export const validatePasswordLength = (value: any) => {
     if (value) {
         const length = utf8StringLength(value);
         if (length < MIN_PASSWORD_LENGTH || length > MAX_PASSWORD_LENGTH) {
@@ -361,7 +363,7 @@ export const validatePasswordLength = (value) => {
  * @param value {string}
  * @returns {Function}
  */
-export const validateIpGateway = (value, allValues) => {
+export const validateIpGateway = (value: any, allValues: any) => {
     if (value === allValues.gatewayIp) {
         return i18next.t('form_error_gateway_ip');
     }
@@ -372,7 +374,7 @@ export const validateIpGateway = (value, allValues) => {
  * @param value {string}
  * @returns {Function}
  */
-export const validateIPv4Subnet = (value) => {
+export const validateIPv4Subnet = (value: any) => {
     if (!R_IPV4_SUBNET.test(value)) {
         return i18next.t('rate_limit_subnet_len_ipv4_error');
     }
@@ -383,7 +385,7 @@ export const validateIPv4Subnet = (value) => {
  * @param value {string}
  * @returns {Function}
  */
-export const validateIPv6Subnet = (value) => {
+export const validateIPv6Subnet = (value: any) => {
     if (!R_IPV6_SUBNET.test(value)) {
         return i18next.t('rate_limit_subnet_len_ipv6_error');
     }
@@ -395,7 +397,7 @@ export const validateIPv6Subnet = (value) => {
  * @param value
  * @param allValues
  */
-export const validatePlainDns = (value, allValues) => {
+export const validatePlainDns = (value: any, allValues: any) => {
     const { enabled } = allValues;
 
     if (!enabled && !value) {

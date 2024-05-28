@@ -1,19 +1,31 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import LogsSearchLink from './LogsSearchLink';
+
 import { formatNumber } from '../../helpers/helpers';
+
+interface CellProps {
+    value: number;
+    percent: number;
+    color: string;
+    search?: string;
+    onSearchRedirect?: (...args: unknown[]) => unknown;
+}
 
 const Cell = ({
     value,
     percent,
     color,
-    search,
-}) => (
+    search
+}: CellProps) => (
+
     <div className="stats__row">
+
         <div className="stats__row-value mb-1">
+
             <strong>
                 {search ? (
+
                     <LogsSearchLink search={search}>
                         {formatNumber(value)}
                     </LogsSearchLink>
@@ -21,9 +33,12 @@ const Cell = ({
                     formatNumber(value)
                 )}
             </strong>
+
             <small className="ml-3 text-muted">{percent}%</small>
         </div>
+
         <div className="progress progress-xs">
+
             <div
                 className="progress-bar"
                 style={{
@@ -34,13 +49,5 @@ const Cell = ({
         </div>
     </div>
 );
-
-Cell.propTypes = {
-    value: PropTypes.number.isRequired,
-    percent: PropTypes.number.isRequired,
-    color: PropTypes.string.isRequired,
-    search: PropTypes.string,
-    onSearchRedirect: PropTypes.func,
-};
 
 export default Cell;

@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import debounce from 'lodash/debounce';
 
 import { DEBOUNCE_TIMEOUT, ENCRYPTION_SOURCE } from '../../../helpers/constants';
+
 import Form from './Form';
+
 import Card from '../../ui/Card';
+
 import PageTitle from '../../ui/PageTitle';
+
 import Loading from '../../ui/Loading';
 
-class Encryption extends Component {
+interface EncryptionProps {
+    setTlsConfig: (...args: unknown[]) => unknown;
+    validateTlsConfig: (...args: unknown[]) => unknown;
+    encryption: object;
+    t: (...args: unknown[]) => unknown;
+}
+
+class Encryption extends Component<EncryptionProps> {
     componentDidMount() {
         const { validateTlsConfig, encryption } = this.props;
 
@@ -18,8 +28,9 @@ class Encryption extends Component {
         }
     }
 
-    handleFormSubmit = (values) => {
+    handleFormSubmit = (values: any) => {
         const submitValues = this.getSubmitValues(values);
+
         this.props.setTlsConfig(submitValues);
     };
 
@@ -31,7 +42,7 @@ class Encryption extends Component {
         }
     }, DEBOUNCE_TIMEOUT);
 
-    getInitialValues = (data) => {
+    getInitialValues = (data: any) => {
         const { certificate_chain, private_key, private_key_saved } = data;
         const certificate_source = certificate_chain
             ? ENCRYPTION_SOURCE.CONTENT
@@ -47,7 +58,7 @@ class Encryption extends Component {
         };
     };
 
-    getSubmitValues = (values) => {
+    getSubmitValues = (values: any) => {
         const {
             certificate_source, key_source, private_key_saved, ...config
         } = values;
@@ -105,21 +116,29 @@ class Encryption extends Component {
         });
 
         return (
+
             <div className="encryption">
+
                 <PageTitle title={t('encryption_settings')} />
+
                 {encryption.processing && <Loading />}
                 {!encryption.processing && (
+
                     <Card
                         title={t('encryption_title')}
                         subtitle={t('encryption_desc')}
                         bodyType="card-body box-body--settings"
                     >
+
                         <Form
                             initialValues={initialValues}
                             onSubmit={this.handleFormSubmit}
                             onChange={this.handleFormChange}
+
                             setTlsConfig={this.props.setTlsConfig}
+
                             validateTlsConfig={this.props.validateTlsConfig}
+
                             {...this.props.encryption}
                         />
                     </Card>
@@ -128,12 +147,5 @@ class Encryption extends Component {
         );
     }
 }
-
-Encryption.propTypes = {
-    setTlsConfig: PropTypes.func.isRequired,
-    validateTlsConfig: PropTypes.func.isRequired,
-    encryption: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired,
-};
 
 export default withTranslation()(Encryption);

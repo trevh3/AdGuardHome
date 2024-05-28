@@ -3,6 +3,7 @@ import { createAction } from 'redux-actions';
 import apiClient from '../api/Api';
 import {
     normalizeTopStats, secondsToMilliseconds, getParamsForClientsSearch, addClientInfo,
+
 } from '../helpers/helpers';
 import { addErrorToast, addSuccessToast } from './toasts';
 
@@ -10,7 +11,7 @@ export const getStatsConfigRequest = createAction('GET_STATS_CONFIG_REQUEST');
 export const getStatsConfigFailure = createAction('GET_STATS_CONFIG_FAILURE');
 export const getStatsConfigSuccess = createAction('GET_STATS_CONFIG_SUCCESS');
 
-export const getStatsConfig = () => async (dispatch) => {
+export const getStatsConfig = () => async (dispatch: any) => {
     dispatch(getStatsConfigRequest());
     try {
         const data = await apiClient.getStatsConfig();
@@ -25,7 +26,7 @@ export const setStatsConfigRequest = createAction('SET_STATS_CONFIG_REQUEST');
 export const setStatsConfigFailure = createAction('SET_STATS_CONFIG_FAILURE');
 export const setStatsConfigSuccess = createAction('SET_STATS_CONFIG_SUCCESS');
 
-export const setStatsConfig = (config) => async (dispatch) => {
+export const setStatsConfig = (config: any) => async (dispatch: any) => {
     dispatch(setStatsConfigRequest());
     try {
         await apiClient.setStatsConfig(config);
@@ -41,11 +42,12 @@ export const getStatsRequest = createAction('GET_STATS_REQUEST');
 export const getStatsFailure = createAction('GET_STATS_FAILURE');
 export const getStatsSuccess = createAction('GET_STATS_SUCCESS');
 
-export const getStats = () => async (dispatch) => {
+export const getStats = () => async (dispatch: any) => {
     dispatch(getStatsRequest());
     try {
         const stats = await apiClient.getStats();
         const normalizedTopClients = normalizeTopStats(stats.top_clients);
+
         const clientsParams = getParamsForClientsSearch(normalizedTopClients, 'name');
         const clients = await apiClient.findClients(clientsParams);
         const topClientsWithInfo = addClientInfo(normalizedTopClients, clients, 'name');
@@ -71,7 +73,7 @@ export const resetStatsRequest = createAction('RESET_STATS_REQUEST');
 export const resetStatsFailure = createAction('RESET_STATS_FAILURE');
 export const resetStatsSuccess = createAction('RESET_STATS_SUCCESS');
 
-export const resetStats = () => async (dispatch) => {
+export const resetStats = () => async (dispatch: any) => {
     dispatch(getStatsRequest());
     try {
         await apiClient.resetStats();

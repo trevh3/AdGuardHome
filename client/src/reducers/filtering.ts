@@ -4,44 +4,66 @@ import * as actions from '../actions/filtering';
 
 const filtering = handleActions(
     {
-        [actions.setRulesRequest]: (state) => ({ ...state, processingRules: true }),
-        [actions.setRulesFailure]: (state) => ({ ...state, processingRules: false }),
-        [actions.setRulesSuccess]: (state) => ({ ...state, processingRules: false }),
+        [actions.setRulesRequest]: (state: any) => ({
+            ...state,
+            processingRules: true,
+        }),
+        [actions.setRulesFailure]: (state: any) => ({
+            ...state,
+            processingRules: false,
+        }),
+        [actions.setRulesSuccess]: (state: any) => ({
+            ...state,
+            processingRules: false,
+        }),
 
-        [actions.handleRulesChange]: (state, { payload }) => {
+        [actions.handleRulesChange]: (state: any, {
+            payload,
+        }: any) => {
             const { userRules } = payload;
             return { ...state, userRules };
         },
 
-        [actions.getFilteringStatusRequest]: (state) => ({
+        [actions.getFilteringStatusRequest]: (state: any) => ({
             ...state,
             processingFilters: true,
             check: {},
         }),
-        [actions.getFilteringStatusFailure]: (state) => ({ ...state, processingFilters: false }),
-        [actions.getFilteringStatusSuccess]: (state, { payload }) => ({
+        [actions.getFilteringStatusFailure]: (state: any) => ({
+            ...state,
+            processingFilters: false,
+        }),
+        [actions.getFilteringStatusSuccess]: (
+
+            state,
+            {
+                payload,
+            }: any,
+        ) => ({
             ...state,
             ...payload,
             processingFilters: false,
         }),
 
-        [actions.addFilterRequest]: (state) => ({
+        [actions.addFilterRequest]: (state: any) => ({
             ...state,
             processingAddFilter: true,
             isFilterAdded: false,
         }),
-        [actions.addFilterFailure]: (state) => ({
+        [actions.addFilterFailure]: (state: any) => ({
             ...state,
             processingAddFilter: false,
             isFilterAdded: false,
         }),
-        [actions.addFilterSuccess]: (state) => ({
+        [actions.addFilterSuccess]: (state: any) => ({
             ...state,
             processingAddFilter: false,
             isFilterAdded: true,
         }),
 
-        [actions.toggleFilteringModal]: (state, { payload }) => {
+        [actions.toggleFilteringModal]: (state: any, {
+            payload,
+        }: any) => {
             if (payload) {
                 const newState = {
                     ...state,
@@ -61,33 +83,93 @@ const filtering = handleActions(
             return newState;
         },
 
-        [actions.toggleFilterRequest]: (state) => ({ ...state, processingConfigFilter: true }),
-        [actions.toggleFilterFailure]: (state) => ({ ...state, processingConfigFilter: false }),
-        [actions.toggleFilterSuccess]: (state) => ({ ...state, processingConfigFilter: false }),
+        [actions.toggleFilterRequest]: (state: any) => ({
+            ...state,
+            processingConfigFilter: true,
+        }),
+        [actions.toggleFilterFailure]: (state: any) => ({
+            ...state,
+            processingConfigFilter: false,
+        }),
+        [actions.toggleFilterSuccess]: (state: any) => ({
+            ...state,
+            processingConfigFilter: false,
+        }),
 
-        [actions.editFilterRequest]: (state) => ({ ...state, processingConfigFilter: true }),
-        [actions.editFilterFailure]: (state) => ({ ...state, processingConfigFilter: false }),
-        [actions.editFilterSuccess]: (state) => ({ ...state, processingConfigFilter: false }),
+        [actions.editFilterRequest]: (state: any) => ({
+            ...state,
+            processingConfigFilter: true,
+        }),
+        [actions.editFilterFailure]: (state: any) => ({
+            ...state,
+            processingConfigFilter: false,
+        }),
+        [actions.editFilterSuccess]: (state: any) => ({
+            ...state,
+            processingConfigFilter: false,
+        }),
 
-        [actions.refreshFiltersRequest]: (state) => ({ ...state, processingRefreshFilters: true }),
-        [actions.refreshFiltersFailure]: (state) => ({ ...state, processingRefreshFilters: false }),
-        [actions.refreshFiltersSuccess]: (state) => ({ ...state, processingRefreshFilters: false }),
+        [actions.refreshFiltersRequest]: (state: any) => ({
+            ...state,
+            processingRefreshFilters: true,
+        }),
+        [actions.refreshFiltersFailure]: (state: any) => ({
+            ...state,
+            processingRefreshFilters: false,
+        }),
+        [actions.refreshFiltersSuccess]: (state: any) => ({
+            ...state,
+            processingRefreshFilters: false,
+        }),
 
-        [actions.removeFilterRequest]: (state) => ({ ...state, processingRemoveFilter: true }),
-        [actions.removeFilterFailure]: (state) => ({ ...state, processingRemoveFilter: false }),
-        [actions.removeFilterSuccess]: (state) => ({ ...state, processingRemoveFilter: false }),
+        [actions.removeFilterRequest]: (state: any) => ({
+            ...state,
+            processingRemoveFilter: true,
+        }),
+        [actions.removeFilterFailure]: (state: any) => ({
+            ...state,
+            processingRemoveFilter: false,
+        }),
+        [actions.removeFilterSuccess]: (state: any) => ({
+            ...state,
+            processingRemoveFilter: false,
+        }),
 
-        [actions.setFiltersConfigRequest]: (state) => ({ ...state, processingSetConfig: true }),
-        [actions.setFiltersConfigFailure]: (state) => ({ ...state, processingSetConfig: false }),
-        [actions.setFiltersConfigSuccess]: (state, { payload }) => ({
+        [actions.setFiltersConfigRequest]: (state: any) => ({
+            ...state,
+            processingSetConfig: true,
+        }),
+        [actions.setFiltersConfigFailure]: (state: any) => ({
+            ...state,
+            processingSetConfig: false,
+        }),
+        [actions.setFiltersConfigSuccess]: (
+
+            state,
+            {
+                payload,
+            }: any,
+        ) => ({
             ...state,
             ...payload,
             processingSetConfig: false,
         }),
 
-        [actions.checkHostRequest]: (state) => ({ ...state, processingCheck: true }),
-        [actions.checkHostFailure]: (state) => ({ ...state, processingCheck: false }),
-        [actions.checkHostSuccess]: (state, { payload }) => ({
+        [actions.checkHostRequest]: (state: any) => ({
+            ...state,
+            processingCheck: true,
+        }),
+        [actions.checkHostFailure]: (state: any) => ({
+            ...state,
+            processingCheck: false,
+        }),
+        [actions.checkHostSuccess]: (
+
+            state,
+            {
+                payload,
+            }: any,
+        ) => ({
             ...state,
             check: payload,
             processingCheck: false,

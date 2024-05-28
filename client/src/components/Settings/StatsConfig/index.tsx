@@ -1,15 +1,30 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 
 import Card from '../../ui/Card';
+
 import Form from './Form';
 import { HOUR } from '../../../helpers/constants';
 
-class StatsConfig extends Component {
+interface StatsConfigProps {
+    interval: number;
+    customInterval?: number;
+    ignored: unknown[];
+    enabled: boolean;
+    processing: boolean;
+    processingReset: boolean;
+    setStatsConfig: (...args: unknown[]) => unknown;
+    resetStats: (...args: unknown[]) => unknown;
+    t: (...args: unknown[]) => unknown;
+}
+
+class StatsConfig extends Component<StatsConfigProps> {
     handleFormSubmit = ({
-        enabled, interval, ignored, customInterval,
-    }) => {
+        enabled,
+        interval,
+        ignored,
+        customInterval,
+    }: any) => {
         const { t, interval: prevInterval } = this.props;
         const newInterval = customInterval ? customInterval * HOUR : interval;
 
@@ -38,22 +53,32 @@ class StatsConfig extends Component {
 
     render() {
         const {
+
             t,
+
             interval,
+
             customInterval,
+
             processing,
+
             processingReset,
+
             ignored,
+
             enabled,
         } = this.props;
 
         return (
+
             <Card
                 title={t('statistics_configuration')}
                 bodyType="card-body box-body--settings"
                 id="stats-config"
             >
+
                 <div className="form">
+
                     <Form
                         initialValues={{
                             interval,
@@ -71,17 +96,5 @@ class StatsConfig extends Component {
         );
     }
 }
-
-StatsConfig.propTypes = {
-    interval: PropTypes.number.isRequired,
-    customInterval: PropTypes.number,
-    ignored: PropTypes.array.isRequired,
-    enabled: PropTypes.bool.isRequired,
-    processing: PropTypes.bool.isRequired,
-    processingReset: PropTypes.bool.isRequired,
-    setStatsConfig: PropTypes.func.isRequired,
-    resetStats: PropTypes.func.isRequired,
-    t: PropTypes.func.isRequired,
-};
 
 export default withTranslation()(StatsConfig);

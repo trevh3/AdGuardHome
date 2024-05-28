@@ -9,7 +9,7 @@ export const getDefaultAddressesRequest = createAction('GET_DEFAULT_ADDRESSES_RE
 export const getDefaultAddressesFailure = createAction('GET_DEFAULT_ADDRESSES_FAILURE');
 export const getDefaultAddressesSuccess = createAction('GET_DEFAULT_ADDRESSES_SUCCESS');
 
-export const getDefaultAddresses = () => async (dispatch) => {
+export const getDefaultAddresses = () => async (dispatch: any) => {
     dispatch(getDefaultAddressesRequest());
     try {
         const addresses = await apiClient.getDefaultAddresses();
@@ -24,7 +24,7 @@ export const setAllSettingsRequest = createAction('SET_ALL_SETTINGS_REQUEST');
 export const setAllSettingsFailure = createAction('SET_ALL_SETTINGS_FAILURE');
 export const setAllSettingsSuccess = createAction('SET_ALL_SETTINGS_SUCCESS');
 
-export const setAllSettings = (values) => async (dispatch) => {
+export const setAllSettings = (values: any) => async (dispatch: any) => {
     dispatch(setAllSettingsRequest());
     try {
         const {
@@ -47,7 +47,7 @@ export const checkConfigRequest = createAction('CHECK_CONFIG_REQUEST');
 export const checkConfigFailure = createAction('CHECK_CONFIG_FAILURE');
 export const checkConfigSuccess = createAction('CHECK_CONFIG_SUCCESS');
 
-export const checkConfig = (values) => async (dispatch) => {
+export const checkConfig = (values: any) => async (dispatch: any) => {
     dispatch(checkConfigRequest());
     try {
         const check = await apiClient.checkConfig(values);

@@ -1,24 +1,39 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import { Field, reduxForm } from 'redux-form';
 import { Trans, withTranslation } from 'react-i18next';
 import flow from 'lodash/flow';
+
 import { renderInputField } from '../../helpers/form';
 import { validateRequiredValue } from '../../helpers/validators';
 import { FORM_NAME } from '../../helpers/constants';
 
-const Form = (props) => {
+interface FormProps {
+    handleSubmit: (...args: unknown[]) => unknown;
+    submitting: boolean;
+    invalid: boolean;
+    processing: boolean;
+    t: (...args: unknown[]) => unknown;
+}
+
+const Form = (props: FormProps) => {
     const {
         handleSubmit, processing, invalid, t,
     } = props;
 
     return (
+
         <form onSubmit={handleSubmit} className="card">
+
             <div className="card-body p-6">
+
                 <div className="form__group form__group--settings">
+
                     <label className="form__label" htmlFor="username">
+
                         <Trans>username_label</Trans>
                     </label>
+
                     <Field
                         id="username1"
                         name="username"
@@ -32,10 +47,14 @@ const Form = (props) => {
                         validate={[validateRequiredValue]}
                     />
                 </div>
+
                 <div className="form__group form__group--settings">
+
                     <label className="form__label" htmlFor="password">
+
                         <Trans>password_label</Trans>
                     </label>
+
                     <Field
                         id="password"
                         name="password"
@@ -48,26 +67,21 @@ const Form = (props) => {
                         validate={[validateRequiredValue]}
                     />
                 </div>
+
                 <div className="form-footer">
+
                     <button
                         type="submit"
                         className="btn btn-success btn-block"
                         disabled={processing || invalid}
                     >
+
                         <Trans>sign_in</Trans>
                     </button>
                 </div>
             </div>
         </form>
     );
-};
-
-Form.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    submitting: PropTypes.bool.isRequired,
-    invalid: PropTypes.bool.isRequired,
-    processing: PropTypes.bool.isRequired,
-    t: PropTypes.func.isRequired,
 };
 
 export default flow([

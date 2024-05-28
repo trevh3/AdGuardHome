@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+
 import { reduxForm, formValueSelector } from 'redux-form';
 import { Trans, withTranslation } from 'react-i18next';
 import flow from 'lodash/flow';
@@ -8,32 +8,36 @@ import flow from 'lodash/flow';
 import Controls from './Controls';
 import { FORM_NAME } from '../../helpers/constants';
 
-let Submit = (props) => (
-    <div className="setup__step">
-        <div className="setup__group">
-            <h1 className="setup__title">
-                <Trans>install_submit_title</Trans>
-            </h1>
-            <p className="setup__desc">
-                <Trans>install_submit_desc</Trans>
-            </p>
-        </div>
-        <Controls
-            openDashboard={props.openDashboard}
-            ip={props.webIp}
-            port={props.webPort}
-        />
-    </div>
-);
+interface SubmitProps {
+    webIp: string;
+    webPort: number;
+    handleSubmit: (...args: unknown[]) => unknown;
+    pristine: boolean;
+    submitting: boolean;
+    openDashboard: (...args: unknown[]) => unknown;
+}
 
-Submit.propTypes = {
-    webIp: PropTypes.string.isRequired,
-    webPort: PropTypes.number.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    pristine: PropTypes.bool.isRequired,
-    submitting: PropTypes.bool.isRequired,
-    openDashboard: PropTypes.func.isRequired,
-};
+let Submit = (props: SubmitProps) => <div className="setup__step">
+
+    <div className="setup__group">
+
+        <h1 className="setup__title">
+
+            <Trans>install_submit_title</Trans>
+        </h1>
+
+        <p className="setup__desc">
+
+            <Trans>install_submit_desc</Trans>
+        </p>
+    </div>
+
+    <Controls
+        openDashboard={props.openDashboard}
+        ip={props.webIp}
+        port={props.webPort}
+    />
+</div>;
 
 const selector = formValueSelector('install');
 

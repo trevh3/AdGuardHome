@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+
 import ReactModal from 'react-modal';
 import { withTranslation } from 'react-i18next';
 
 import { MODAL_TYPE } from '../../helpers/constants';
+
 import Form from './Form';
 import '../ui/Modal.css';
+
 import { getMap } from '../../helpers/helpers';
 
 ReactModal.setAppElement('#root');
@@ -25,7 +27,7 @@ const MODAL_TYPE_TO_TITLE_TYPE_MAP = {
  * @returns {'new_allowlist' | 'edit_allowlist' | 'choose_allowlist' |
  *           'new_blocklist' | 'edit_blocklist' | 'choose_blocklist' | null}
  */
-const getTitle = (modalType, whitelist) => {
+const getTitle = (modalType: any, whitelist: any) => {
     const titleType = MODAL_TYPE_TO_TITLE_TYPE_MAP[modalType];
     if (!titleType) {
         return null;
@@ -33,7 +35,9 @@ const getTitle = (modalType, whitelist) => {
     return `${titleType}_${whitelist ? 'allowlist' : 'blocklist'}`;
 };
 
-const getSelectedValues = (filters, catalogSourcesToIdMap) => filters.reduce((acc, { url }) => {
+const getSelectedValues = (filters: any, catalogSourcesToIdMap: any) => filters.reduce((acc: any, {
+    url,
+}: any) => {
     if (Object.prototype.hasOwnProperty.call(catalogSourcesToIdMap, url)) {
         const fieldId = `filter${catalogSourcesToIdMap[url]}`;
         acc.selectedFilterIds[fieldId] = true;
@@ -45,23 +49,50 @@ const getSelectedValues = (filters, catalogSourcesToIdMap) => filters.reduce((ac
     selectedSources: {},
 });
 
-class Modal extends Component {
+interface ModalProps {
+    toggleFilteringModal: (...args: unknown[]) => unknown;
+    isOpen: boolean;
+    addFilter: (...args: unknown[]) => unknown;
+    isFilterAdded: boolean;
+    processingAddFilter: boolean;
+    processingConfigFilter: boolean;
+    handleSubmit: (...args: unknown[]) => unknown;
+    modalType: string;
+    currentFilterData: object;
+    t: (...args: unknown[]) => unknown;
+    whitelist?: boolean;
+    filters: unknown[];
+    filtersCatalog?: object;
+}
+
+class Modal extends Component<ModalProps> {
     closeModal = () => {
         this.props.toggleFilteringModal();
     };
 
     render() {
         const {
+
             isOpen,
+
             processingAddFilter,
+
             processingConfigFilter,
+
             handleSubmit,
+
             modalType,
+
             currentFilterData,
+
             whitelist,
+
             toggleFilteringModal,
+
             filters,
+
             t,
+
             filtersCatalog,
         } = this.props;
 
@@ -86,19 +117,26 @@ class Modal extends Component {
         const title = t(getTitle(modalType, whitelist));
 
         return (
+
             <ReactModal
                 className="Modal__Bootstrap modal-dialog modal-dialog-centered"
                 closeTimeoutMS={0}
                 isOpen={isOpen}
                 onRequestClose={this.closeModal}
             >
+
                 <div className="modal-content">
+
                     <div className="modal-header">
+
                         {title && <h4 className="modal-title">{title}</h4>}
+
                         <button type="button" className="close" onClick={this.closeModal}>
+
                             <span className="sr-only">Close</span>
                         </button>
                     </div>
+
                     <Form
                         selectedSources={selectedSources}
                         initialValues={initialValues}
@@ -115,21 +153,5 @@ class Modal extends Component {
         );
     }
 }
-
-Modal.propTypes = {
-    toggleFilteringModal: PropTypes.func.isRequired,
-    isOpen: PropTypes.bool.isRequired,
-    addFilter: PropTypes.func.isRequired,
-    isFilterAdded: PropTypes.bool.isRequired,
-    processingAddFilter: PropTypes.bool.isRequired,
-    processingConfigFilter: PropTypes.bool.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    modalType: PropTypes.string.isRequired,
-    currentFilterData: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired,
-    whitelist: PropTypes.bool,
-    filters: PropTypes.array.isRequired,
-    filtersCatalog: PropTypes.object,
-};
 
 export default withTranslation()(Modal);

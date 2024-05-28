@@ -4,9 +4,17 @@ import * as actions from '../actions/rewrites';
 
 const rewrites = handleActions(
     {
-        [actions.getRewritesListRequest]: (state) => ({ ...state, processing: true }),
-        [actions.getRewritesListFailure]: (state) => ({ ...state, processing: false }),
-        [actions.getRewritesListSuccess]: (state, { payload }) => {
+        [actions.getRewritesListRequest]: (state: any) => ({
+            ...state,
+            processing: true,
+        }),
+        [actions.getRewritesListFailure]: (state: any) => ({
+            ...state,
+            processing: false,
+        }),
+        [actions.getRewritesListSuccess]: (state: any, {
+            payload,
+        }: any) => {
             const newState = {
                 ...state,
                 list: payload,
@@ -15,9 +23,17 @@ const rewrites = handleActions(
             return newState;
         },
 
-        [actions.addRewriteRequest]: (state) => ({ ...state, processingAdd: true }),
-        [actions.addRewriteFailure]: (state) => ({ ...state, processingAdd: false }),
-        [actions.addRewriteSuccess]: (state, { payload }) => {
+        [actions.addRewriteRequest]: (state: any) => ({
+            ...state,
+            processingAdd: true,
+        }),
+        [actions.addRewriteFailure]: (state: any) => ({
+            ...state,
+            processingAdd: false,
+        }),
+        [actions.addRewriteSuccess]: (state: any, {
+            payload,
+        }: any) => {
             const newState = {
                 ...state,
                 list: [...state.list, payload],
@@ -26,13 +42,28 @@ const rewrites = handleActions(
             return newState;
         },
 
-        [actions.deleteRewriteRequest]: (state) => ({ ...state, processingDelete: true }),
-        [actions.deleteRewriteFailure]: (state) => ({ ...state, processingDelete: false }),
-        [actions.deleteRewriteSuccess]: (state) => ({ ...state, processingDelete: false }),
+        [actions.deleteRewriteRequest]: (state: any) => ({
+            ...state,
+            processingDelete: true,
+        }),
+        [actions.deleteRewriteFailure]: (state: any) => ({
+            ...state,
+            processingDelete: false,
+        }),
+        [actions.deleteRewriteSuccess]: (state: any) => ({
+            ...state,
+            processingDelete: false,
+        }),
 
-        [actions.updateRewriteRequest]: (state) => ({ ...state, processingUpdate: true }),
-        [actions.updateRewriteFailure]: (state) => ({ ...state, processingUpdate: false }),
-        [actions.updateRewriteSuccess]: (state) => {
+        [actions.updateRewriteRequest]: (state: any) => ({
+            ...state,
+            processingUpdate: true,
+        }),
+        [actions.updateRewriteFailure]: (state: any) => ({
+            ...state,
+            processingUpdate: false,
+        }),
+        [actions.updateRewriteSuccess]: (state: any) => {
             const newState = {
                 ...state,
                 processingUpdate: false,
@@ -40,7 +71,9 @@ const rewrites = handleActions(
             return newState;
         },
 
-        [actions.toggleRewritesModal]: (state, { payload }) => {
+        [actions.toggleRewritesModal]: (state: any, {
+            payload,
+        }: any) => {
             if (payload) {
                 const newState = {
                     ...state,

@@ -13,7 +13,7 @@ export const getFilteringStatusRequest = createAction('GET_FILTERING_STATUS_REQU
 export const getFilteringStatusFailure = createAction('GET_FILTERING_STATUS_FAILURE');
 export const getFilteringStatusSuccess = createAction('GET_FILTERING_STATUS_SUCCESS');
 
-export const getFilteringStatus = () => async (dispatch) => {
+export const getFilteringStatus = () => async (dispatch: any) => {
     dispatch(getFilteringStatusRequest());
     try {
         const status = await apiClient.getFilteringStatus();
@@ -28,7 +28,7 @@ export const setRulesRequest = createAction('SET_RULES_REQUEST');
 export const setRulesFailure = createAction('SET_RULES_FAILURE');
 export const setRulesSuccess = createAction('SET_RULES_SUCCESS');
 
-export const setRules = (rules) => async (dispatch) => {
+export const setRules = (rules: any) => async (dispatch: any) => {
     dispatch(setRulesRequest());
     try {
         const normalizedRules = {
@@ -47,7 +47,7 @@ export const addFilterRequest = createAction('ADD_FILTER_REQUEST');
 export const addFilterFailure = createAction('ADD_FILTER_FAILURE');
 export const addFilterSuccess = createAction('ADD_FILTER_SUCCESS');
 
-export const addFilter = (url, name, whitelist = false) => async (dispatch, getState) => {
+export const addFilter = (url: any, name: any, whitelist = false) => async (dispatch: any, getState: any) => {
     dispatch(addFilterRequest());
     try {
         await apiClient.addFilter({ url, name, whitelist });
@@ -67,7 +67,7 @@ export const removeFilterRequest = createAction('REMOVE_FILTER_REQUEST');
 export const removeFilterFailure = createAction('REMOVE_FILTER_FAILURE');
 export const removeFilterSuccess = createAction('REMOVE_FILTER_SUCCESS');
 
-export const removeFilter = (url, whitelist = false) => async (dispatch, getState) => {
+export const removeFilter = (url: any, whitelist = false) => async (dispatch: any, getState: any) => {
     dispatch(removeFilterRequest());
     try {
         await apiClient.removeFilter({ url, whitelist });
@@ -87,7 +87,7 @@ export const toggleFilterRequest = createAction('FILTER_TOGGLE_REQUEST');
 export const toggleFilterFailure = createAction('FILTER_TOGGLE_FAILURE');
 export const toggleFilterSuccess = createAction('FILTER_TOGGLE_SUCCESS');
 
-export const toggleFilterStatus = (url, data, whitelist = false) => async (dispatch) => {
+export const toggleFilterStatus = (url: any, data: any, whitelist = false) => async (dispatch: any) => {
     dispatch(toggleFilterRequest());
     try {
         await apiClient.setFilterUrl({ url, data, whitelist });
@@ -103,7 +103,7 @@ export const editFilterRequest = createAction('EDIT_FILTER_REQUEST');
 export const editFilterFailure = createAction('EDIT_FILTER_FAILURE');
 export const editFilterSuccess = createAction('EDIT_FILTER_SUCCESS');
 
-export const editFilter = (url, data, whitelist = false) => async (dispatch, getState) => {
+export const editFilter = (url: any, data: any, whitelist = false) => async (dispatch: any, getState: any) => {
     dispatch(editFilterRequest());
     try {
         await apiClient.setFilterUrl({ url, data, whitelist });
@@ -123,7 +123,7 @@ export const refreshFiltersRequest = createAction('FILTERING_REFRESH_REQUEST');
 export const refreshFiltersFailure = createAction('FILTERING_REFRESH_FAILURE');
 export const refreshFiltersSuccess = createAction('FILTERING_REFRESH_SUCCESS');
 
-export const refreshFilters = (config) => async (dispatch) => {
+export const refreshFilters = (config: any) => async (dispatch: any) => {
     dispatch(refreshFiltersRequest());
     dispatch(showLoading());
     try {
@@ -150,7 +150,7 @@ export const setFiltersConfigRequest = createAction('SET_FILTERS_CONFIG_REQUEST'
 export const setFiltersConfigFailure = createAction('SET_FILTERS_CONFIG_FAILURE');
 export const setFiltersConfigSuccess = createAction('SET_FILTERS_CONFIG_SUCCESS');
 
-export const setFiltersConfig = (config) => async (dispatch, getState) => {
+export const setFiltersConfig = (config: any) => async (dispatch: any, getState: any) => {
     dispatch(setFiltersConfigRequest());
     try {
         const { enabled } = config;
@@ -180,7 +180,7 @@ export const checkHostSuccess = createAction('CHECK_HOST_SUCCESS');
  * @param {string} host.name
  * @returns {undefined}
  */
-export const checkHost = (host) => async (dispatch) => {
+export const checkHost = (host: any) => async (dispatch: any) => {
     dispatch(checkHostRequest());
     try {
         const data = await apiClient.checkHost(host);

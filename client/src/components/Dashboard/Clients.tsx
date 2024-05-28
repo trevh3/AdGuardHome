@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+
 import ReactTable from 'react-table';
-import PropTypes from 'prop-types';
 import { Trans, useTranslation } from 'react-i18next';
 
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
+
 import Card from '../ui/Card';
+
 import Cell from '../ui/Cell';
 
 import { getPercent, sortIp } from '../../helpers/helpers';
@@ -16,11 +18,13 @@ import {
     TABLES_MIN_ROWS,
 } from '../../helpers/constants';
 import { toggleClientBlock } from '../../actions/access';
+
 import { renderFormattedClientCell } from '../../helpers/renderFormattedClientCell';
 import { getStats } from '../../actions/stats';
+
 import IconTooltip from '../Logs/Cells/IconTooltip';
 
-const getClientsPercentColor = (percent) => {
+const getClientsPercentColor = (percent: any) => {
     if (percent > 50) {
         return STATUS_COLORS.green;
     }
@@ -30,8 +34,9 @@ const getClientsPercentColor = (percent) => {
     return STATUS_COLORS.red;
 };
 
-const CountCell = (row) => {
+const CountCell = (row: any) => {
     const { value, original: { ip } } = row;
+
     const numDnsQueries = useSelector((state) => state.stats.numDnsQueries, shallowEqual);
 
     const percent = getPercent(numDnsQueries, value);
@@ -40,15 +45,17 @@ const CountCell = (row) => {
     return <Cell value={value} percent={percent} color={percentColor} search={ip} />;
 };
 
-const renderBlockingButton = (ip, disallowed, disallowed_rule) => {
+const renderBlockingButton = (ip: any, disallowed: any, disallowed_rule: any) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
     const processingSet = useSelector((state) => state.access.processingSet);
+
     const allowedСlients = useSelector((state) => state.access.allowed_clients, shallowEqual);
 
     const [isOptionsOpened, setOptionsOpened] = useState(false);
 
-    const toggleClientStatus = async (ip, disallowed, disallowed_rule) => {
+    const toggleClientStatus = async (ip: any, disallowed: any, disallowed_rule: any) => {
         let confirmMessage;
 
         if (disallowed) {
@@ -76,29 +83,36 @@ const renderBlockingButton = (ip, disallowed, disallowed_rule) => {
     const lastRuleInAllowlist = !disallowed && allowedСlients === disallowed_rule;
     const disabled = processingSet || lastRuleInAllowlist;
     return (
+
         <div className="table__action">
+
             <button
                 type="button"
                 className="btn btn-icon btn-sm px-0"
                 onClick={() => setOptionsOpened(true)}
             >
+
                 <svg className="icon24 icon--lightgray button-action__icon">
+
                     <use xlinkHref="#bullets" />
                 </svg>
             </button>
             {isOptionsOpened && (
+
                 <IconTooltip
                     className="icon24"
                     tooltipClass="button-action--arrow-option-container"
                     xlinkHref="bullets"
                     triggerClass="btn btn-icon btn-sm px-0 button-action__hidden-trigger"
                     content={(
+
                         <button
                             className={classNames('button-action--arrow-option px-4 py-1', disallowed ? 'bg--green' : 'bg--danger')}
                             onClick={onClick}
                             disabled={disabled}
                             title={lastRuleInAllowlist ? t('last_rule_in_allowlist', { disallowed_rule }) : ''}
                         >
+
                             <Trans>{text}</Trans>
                         </button>
                     )}
@@ -113,10 +127,11 @@ const renderBlockingButton = (ip, disallowed, disallowed_rule) => {
     );
 };
 
-const ClientCell = (row) => {
+const ClientCell = (row: any) => {
     const { value, original: { info, info: { disallowed, disallowed_rule } } } = row;
 
     return <>
+
         <div className="logs__row logs__row--overflow logs__row--column d-flex align-items-center">
             {renderFormattedClientCell(value, info, true)}
             {renderBlockingButton(value, disallowed, disallowed_rule)}
@@ -124,24 +139,35 @@ const ClientCell = (row) => {
     </>;
 };
 
+interface ClientsProps {
+    refreshButton: React.ReactNode;
+    subtitle: string;
+}
+
 const Clients = ({
     refreshButton,
-    subtitle,
-}) => {
+    subtitle
+}: ClientsProps) => {
     const { t } = useTranslation();
+
     const topClients = useSelector((state) => state.stats.topClients, shallowEqual);
 
     return (
+
         <Card
             title={t('top_clients')}
             subtitle={subtitle}
             bodyType="card-table"
             refresh={refreshButton}
         >
+
             <ReactTable
                 data={topClients.map(({
-                    name: ip, count, info, blocked,
-                }) => ({
+                    name: ip,
+                    count,
+                    info,
+                    blocked,
+                }: any) => ({
                     ip,
                     count,
                     info,
@@ -149,12 +175,14 @@ const Clients = ({
                 }))}
                 columns={[
                     {
+
                         Header: <Trans>client_table_header</Trans>,
                         accessor: 'ip',
                         sortMethod: sortIp,
                         Cell: ClientCell,
                     },
                     {
+
                         Header: <Trans>requests_count</Trans>,
                         accessor: 'count',
                         minWidth: 180,
@@ -167,7 +195,7 @@ const Clients = ({
                 minRows={TABLES_MIN_ROWS}
                 defaultPageSize={DASHBOARD_TABLES_DEFAULT_PAGE_SIZE}
                 className="-highlight card-table-overflow--limited clients__table"
-                getTrProps={(_state, rowInfo) => {
+                getTrProps={(_state: any, rowInfo: any) => {
                     if (!rowInfo) {
                         return {};
                     }
@@ -179,11 +207,6 @@ const Clients = ({
             />
         </Card>
     );
-};
-
-Clients.propTypes = {
-    refreshButton: PropTypes.node.isRequired,
-    subtitle: PropTypes.string.isRequired,
 };
 
 export default Clients;

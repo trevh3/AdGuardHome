@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import propTypes from 'prop-types';
 import {
     captitalizeWords,
     checkFiltered,
@@ -13,6 +12,7 @@ import {
     getBlockingClientName,
     getServiceName,
     processContent,
+
 } from '../../../helpers/helpers';
 import {
     BLOCK_ACTIONS,
@@ -24,16 +24,62 @@ import {
     SCHEME_TO_PROTOCOL_MAP,
 } from '../../../helpers/constants';
 import { getSourceData } from '../../../helpers/trackers/trackers';
+
 import { toggleBlocking, toggleBlockingForClient } from '../../../actions';
+
 import DateCell from './DateCell';
+
 import DomainCell from './DomainCell';
+
 import ResponseCell from './ResponseCell';
+
 import ClientCell from './ClientCell';
 import { toggleClientBlock } from '../../../actions/access';
 import { getBlockClientInfo, BUTTON_PREFIX } from './helpers';
 import { updateLogs } from '../../../actions/queryLogs';
 
 import '../Logs.css';
+
+interface RowProps {
+    style?: object;
+    rowProps: {
+        reason: string;
+        answer_dnssec: boolean;
+        client: string;
+        domain: string;
+        elapsedMs: string;
+        response: unknown[];
+        time: string;
+        tracker?: object;
+        upstream: string;
+        cached: boolean;
+        type: string;
+        client_proto: string;
+        client_id?: string;
+        ecs?: string;
+        client_info?: {
+            name: string;
+            whois: {
+                country?: string;
+                city?: string;
+                orgname?: string;
+            };
+            disallowed: boolean;
+            disallowed_rule: string;
+        };
+        rules?: {
+            text: string;
+            filter_list_id: number;
+        }[];
+        originalResponse?: unknown[];
+        status: string;
+        service_name?: string;
+    };
+    isSmallScreen: boolean;
+    setDetailedDataCurrent: (...args: unknown[]) => unknown;
+    setButtonType: (...args: unknown[]) => unknown;
+    setModalOpened: (...args: unknown[]) => unknown;
+}
 
 const Row = memo(({
     style,
@@ -42,16 +88,23 @@ const Row = memo(({
     isSmallScreen,
     setDetailedDataCurrent,
     setButtonType,
-    setModalOpened,
-}) => {
+    setModalOpened
+}: RowProps) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
     const dnssec_enabled = useSelector((state) => state.dnsConfig.dnssec_enabled);
+
     const filters = useSelector((state) => state.filtering.filters, shallowEqual);
+
     const whitelistFilters = useSelector((state) => state.filtering.whitelistFilters, shallowEqual);
+
     const autoClients = useSelector((state) => state.dashboard.autoClients, shallowEqual);
+
     const processingSet = useSelector((state) => state.access.processingSet);
+
     const allowedСlients = useSelector((state) => state.access.allowed_clients, shallowEqual);
+
     const services = useSelector((store) => store?.services);
 
     const clients = useSelector((state) => state.dashboard.clients);
@@ -83,7 +136,7 @@ const Row = memo(({
         const hasTracker = !!tracker;
 
         const autoClient = autoClients
-            .find((autoClient) => autoClient.name === client);
+            .find((autoClient: any) => autoClient.name === client);
 
         const source = autoClient?.source;
 
@@ -138,8 +191,11 @@ const Row = memo(({
         };
 
         const blockButton = (
+
             <>
+
                 <div className="title--border" />
+
                 <button
                     type="button"
                     className={
@@ -170,8 +226,10 @@ const Row = memo(({
 
         const detailedData = {
             time_table_header: formatTime(time, LONG_TIME_FORMAT),
+
             date: formatDateTime(time, DEFAULT_SHORT_DATE_FORMAT_OPTIONS),
             encryption_status: isBlocked
+
                 ? <div className="bg--danger">{requestStatus}</div> : requestStatus,
             ...(FILTERED_STATUS.FILTERED_BLOCKED_SERVICE && service_name && services.allServices
                 && { service_name: getServiceName(services.allServices, service_name) }),
@@ -182,6 +240,7 @@ const Row = memo(({
             table_name: tracker?.name,
             category_label: hasTracker && captitalizeWords(tracker.category),
             tracker_source: hasTracker && sourceData
+
                     && <a
                             href={sourceData.url}
                             target="_blank"
@@ -193,7 +252,9 @@ const Row = memo(({
             ...(cached
                 && {
                     served_from_cache_label: (
+
                         <svg className="icons icon--20 icon--green">
+
                             <use xlinkHref="#check" />
                         </svg>
                     ),
@@ -226,60 +287,26 @@ const Row = memo(({
 
     const isDetailed = useSelector((state) => state.queryLogs.isDetailed);
 
-    const className = classNames('d-flex px-5 logs__row',
-        `logs__row--${FILTERED_STATUS_TO_META_MAP?.[reason]?.COLOR ?? QUERY_STATUS_COLORS.WHITE}`, {
+    const className = classNames(
+        'd-flex px-5 logs__row',
+        `logs__row--${FILTERED_STATUS_TO_META_MAP?.[reason]?.COLOR ?? QUERY_STATUS_COLORS.WHITE}`,
+        {
             'logs__cell--detailed': isDetailed,
-        });
+        },
+    );
 
     return <div style={style} className={className} onClick={onClick} role="row">
+
         <DateCell {...rowProps} />
+
         <DomainCell {...rowProps} />
+
         <ResponseCell {...rowProps} />
+
         <ClientCell {...rowProps} />
     </div>;
 });
 
 Row.displayName = 'Row';
-
-Row.propTypes = {
-    style: propTypes.object,
-    rowProps: propTypes.shape({
-        reason: propTypes.string.isRequired,
-        answer_dnssec: propTypes.bool.isRequired,
-        client: propTypes.string.isRequired,
-        domain: propTypes.string.isRequired,
-        elapsedMs: propTypes.string.isRequired,
-        response: propTypes.array.isRequired,
-        time: propTypes.string.isRequired,
-        tracker: propTypes.object,
-        upstream: propTypes.string.isRequired,
-        cached: propTypes.bool.isRequired,
-        type: propTypes.string.isRequired,
-        client_proto: propTypes.string.isRequired,
-        client_id: propTypes.string,
-        ecs: propTypes.string,
-        client_info: propTypes.shape({
-            name: propTypes.string.isRequired,
-            whois: propTypes.shape({
-                country: propTypes.string,
-                city: propTypes.string,
-                orgname: propTypes.string,
-            }).isRequired,
-            disallowed: propTypes.bool.isRequired,
-            disallowed_rule: propTypes.string.isRequired,
-        }),
-        rules: propTypes.arrayOf(propTypes.shape({
-            text: propTypes.string.isRequired,
-            filter_list_id: propTypes.number.isRequired,
-        })),
-        originalResponse: propTypes.array,
-        status: propTypes.string.isRequired,
-        service_name: propTypes.string,
-    }).isRequired,
-    isSmallScreen: propTypes.bool.isRequired,
-    setDetailedDataCurrent: propTypes.func.isRequired,
-    setButtonType: propTypes.func.isRequired,
-    setModalOpened: propTypes.func.isRequired,
-};
 
 export default Row;

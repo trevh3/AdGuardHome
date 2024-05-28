@@ -1,16 +1,19 @@
 import React from 'react';
+
 import ReactTable from 'react-table';
-import PropTypes from 'prop-types';
 import { withTranslation, Trans } from 'react-i18next';
 
 import Card from '../ui/Card';
+
 import Cell from '../ui/Cell';
+
 import DomainCell from './DomainCell';
 
 import { DASHBOARD_TABLES_DEFAULT_PAGE_SIZE, STATUS_COLORS, TABLES_MIN_ROWS } from '../../helpers/constants';
+
 import { getPercent } from '../../helpers/helpers';
 
-const getQueriedPercentColor = (percent) => {
+const getQueriedPercentColor = (percent: any) => {
     if (percent > 10) {
         return STATUS_COLORS.red;
     }
@@ -20,36 +23,55 @@ const getQueriedPercentColor = (percent) => {
     return STATUS_COLORS.green;
 };
 
-const countCell = (dnsQueries) => function cell(row) {
+const countCell = (dnsQueries: any) => (function cell(row: any) {
     const { value } = row;
     const percent = getPercent(dnsQueries, value);
     const percentColor = getQueriedPercentColor(percent);
 
     return <Cell value={value} percent={percent} color={percentColor}
                  search={row.original.domain} />;
-};
+});
+
+interface QueriedDomainsProps {
+    topQueriedDomains: unknown[];
+    dnsQueries: number;
+    refreshButton: React.ReactNode;
+    subtitle: string;
+    t: (...args: unknown[]) => unknown;
+}
 
 const QueriedDomains = ({
-    t, refreshButton, topQueriedDomains, subtitle, dnsQueries,
-}) => (
+    t,
+    refreshButton,
+    topQueriedDomains,
+    subtitle,
+    dnsQueries
+}: QueriedDomainsProps) => (
+
     <Card
         title={t('stats_query_domain')}
         subtitle={subtitle}
         bodyType="card-table"
         refresh={refreshButton}
     >
+
         <ReactTable
-            data={topQueriedDomains.map(({ name: domain, count }) => ({
+            data={topQueriedDomains.map(({
+                name: domain,
+                count,
+            }: any) => ({
                 domain,
                 count,
             }))}
             columns={[
                 {
+
                     Header: <Trans>domain</Trans>,
                     accessor: 'domain',
                     Cell: DomainCell,
                 },
                 {
+
                     Header: <Trans>requests_count</Trans>,
                     accessor: 'count',
                     maxWidth: 190,
@@ -64,13 +86,5 @@ const QueriedDomains = ({
         />
     </Card>
 );
-
-QueriedDomains.propTypes = {
-    topQueriedDomains: PropTypes.array.isRequired,
-    dnsQueries: PropTypes.number.isRequired,
-    refreshButton: PropTypes.node.isRequired,
-    subtitle: PropTypes.string.isRequired,
-    t: PropTypes.func.isRequired,
-};
 
 export default withTranslation()(QueriedDomains);

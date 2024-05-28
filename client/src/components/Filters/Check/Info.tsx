@@ -13,11 +13,13 @@ import {
     checkSafeBrowsing,
     checkParental,
     getRulesToFilterList,
+
 } from '../../../helpers/helpers';
 import { BLOCK_ACTIONS, FILTERED, FILTERED_STATUS } from '../../../helpers/constants';
+
 import { toggleBlocking } from '../../../actions';
 
-const renderBlockingButton = (isFiltered, domain) => {
+const renderBlockingButton = (isFiltered: any, domain: any) => {
     const processingRules = useSelector((state) => state.filtering.processingRules);
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -45,11 +47,14 @@ const getTitle = () => {
     const { t } = useTranslation();
 
     const filters = useSelector((state) => state.filtering.filters, shallowEqual);
+
     const whitelistFilters = useSelector((state) => state.filtering.whitelistFilters, shallowEqual);
+
     const rules = useSelector((state) => state.filtering.check.rules, shallowEqual);
+
     const reason = useSelector((state) => state.filtering.check.reason);
 
-    const getReasonFiltered = (reason) => {
+    const getReasonFiltered = (reason: any) => {
         const filterKey = reason.replace(FILTERED, '');
         return i18next.t('query_log_filtered', { filter: filterKey });
     };
@@ -72,7 +77,9 @@ const getTitle = () => {
     }
 
     return <>
+
         <div>{t('check_reason', { reason })}</div>
+
         <div>
             {t('rule_label')}:
             &nbsp;
@@ -88,6 +95,7 @@ const Info = () => {
         service_name,
         cname,
         ip_addrs,
+
     } = useSelector((state) => state.filtering.check, shallowEqual);
     const { t } = useTranslation();
 
@@ -106,12 +114,18 @@ const Info = () => {
     const isFiltered = checkFiltered(reason);
 
     return <div className={className}>
+
         <div><strong>{hostname}</strong></div>
+
         <div>{title}</div>
         {!onlyFiltered
+
         && <>
+
             {service_name && <div>{t('check_service', { service: service_name })}</div>}
+
             {cname && <div>{t('check_cname', { cname })}</div>}
+
             {ip_addrs && <div>{t('check_ip', { ip: ip_addrs.join(', ') })}</div>}
             {renderBlockingButton(isFiltered, hostname)}
         </>}

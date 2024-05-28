@@ -1,7 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+
 import Card from '../../../ui/Card';
+
 import Form from './Form';
 import { setDnsConfig } from '../../../../actions/dnsConfig';
 
@@ -23,19 +25,23 @@ const Config = () => {
         dnssec_enabled,
         disable_ipv6,
         processingSetConfig,
+
     } = useSelector((state) => state.dnsConfig, shallowEqual);
 
-    const handleFormSubmit = (values) => {
+    const handleFormSubmit = (values: any) => {
         dispatch(setDnsConfig(values));
     };
 
     return (
+
         <Card
             title={t('dns_config')}
             bodyType="card-body box-body--settings"
             id="dns-config"
         >
+
             <div className="form">
+
                 <Form
                     initialValues={{
                         ratelimit,

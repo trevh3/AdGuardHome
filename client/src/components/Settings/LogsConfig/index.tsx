@@ -1,13 +1,26 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 
 import Card from '../../ui/Card';
+
 import Form from './Form';
 import { HOUR } from '../../../helpers/constants';
 
-class LogsConfig extends Component {
-    handleFormSubmit = (values) => {
+interface LogsConfigProps {
+    interval: number;
+    customInterval?: number;
+    enabled: boolean;
+    anonymize_client_ip: boolean;
+    processing: boolean;
+    ignored: unknown[];
+    processingClear: boolean;
+    setLogsConfig: (...args: unknown[]) => unknown;
+    clearLogs: (...args: unknown[]) => unknown;
+    t: (...args: unknown[]) => unknown;
+}
+
+class LogsConfig extends Component<LogsConfigProps> {
+    handleFormSubmit = (values: any) => {
         const { t, interval: prevInterval } = this.props;
         const { interval, customInterval, ...rest } = values;
 
@@ -39,23 +52,34 @@ class LogsConfig extends Component {
 
     render() {
         const {
+
             t,
+
             enabled,
+
             interval,
+
             processing,
+
             processingClear,
+
             anonymize_client_ip,
+
             ignored,
+
             customInterval,
         } = this.props;
 
         return (
+
             <Card
                 title={t('query_log_configuration')}
                 bodyType="card-body box-body--settings"
                 id="logs-config"
             >
+
                 <div className="form">
+
                     <Form
                         initialValues={{
                             enabled,
@@ -74,18 +98,5 @@ class LogsConfig extends Component {
         );
     }
 }
-
-LogsConfig.propTypes = {
-    interval: PropTypes.number.isRequired,
-    customInterval: PropTypes.number,
-    enabled: PropTypes.bool.isRequired,
-    anonymize_client_ip: PropTypes.bool.isRequired,
-    processing: PropTypes.bool.isRequired,
-    ignored: PropTypes.array.isRequired,
-    processingClear: PropTypes.bool.isRequired,
-    setLogsConfig: PropTypes.func.isRequired,
-    clearLogs: PropTypes.func.isRequired,
-    t: PropTypes.func.isRequired,
-};
 
 export default withTranslation()(LogsConfig);

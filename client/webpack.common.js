@@ -6,6 +6,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import * as url from 'url';
 import { BUILD_ENVS } from './constants.js';
 
+// eslint-disable-next-line no-underscore-dangle
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const RESOURCES_PATH = path.resolve(__dirname);
@@ -39,11 +40,10 @@ const config = {
     },
     resolve: {
         modules: ['node_modules'],
-        alias: {
-            MainRoot: path.resolve(__dirname, '../'),
-            ClientRoot: path.resolve(__dirname, './src'),
-            'react-dom': '@hot-loader/react-dom',
-        },
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        // alias: {
+        //     'react-dom': '@hot-loader/react-dom',
+        // },
     },
     module: {
         rules: [
@@ -71,17 +71,14 @@ const config = {
                 ],
             },
             {
-                test: /\.js$/,
+                test: /\.tsx?$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: 'babel-loader',
-                    options: {
-                        cacheDirectory: true,
-                    },
+                    loader: 'ts-loader',
                 },
             },
             {
-                exclude: [/\.js$/, /\.html$/, /\.json$/, /\.css$/],
+                exclude: [/\.tsx?$/, /\.js$/, /\.html$/, /\.json$/, /\.css$/],
                 use: {
                     loader: 'url-loader',
                     options: {

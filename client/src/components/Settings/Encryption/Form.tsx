@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+
 import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { Trans, withTranslation } from 'react-i18next';
 import flow from 'lodash/flow';
@@ -10,23 +10,27 @@ import {
     CheckboxField,
     renderRadioField,
     toNumber,
+
 } from '../../../helpers/form';
 import {
     validateServerName, validateIsSafePort, validatePort, validatePortQuic, validatePortTLS, validatePlainDns,
 } from '../../../helpers/validators';
 import i18n from '../../../i18n';
+
 import KeyStatus from './KeyStatus';
+
 import CertificateStatus from './CertificateStatus';
 import {
     DNS_OVER_QUIC_PORT, DNS_OVER_TLS_PORT, FORM_NAME, STANDARD_HTTPS_PORT, ENCRYPTION_SOURCE,
 } from '../../../helpers/constants';
 
-const validate = (values) => {
+const validate = (values: any) => {
     const errors = {};
 
     if (values.port_dns_over_tls && values.port_https) {
         if (values.port_dns_over_tls === values.port_https) {
             errors.port_dns_over_tls = i18n.t('form_error_equal');
+
             errors.port_https = i18n.t('form_error_equal');
         }
     }
@@ -34,7 +38,7 @@ const validate = (values) => {
     return errors;
 };
 
-const clearFields = (change, setTlsConfig, validateTlsConfig, t) => {
+const clearFields = (change: any, setTlsConfig: any, validateTlsConfig: any, t: any) => {
     const fields = {
         private_key: '',
         certificate_chain: '',
@@ -52,33 +56,72 @@ const clearFields = (change, setTlsConfig, validateTlsConfig, t) => {
     // eslint-disable-next-line no-alert
     if (window.confirm(t('encryption_reset'))) {
         Object.keys(fields)
+
             .forEach((field) => change(field, fields[field]));
         setTlsConfig(fields);
         validateTlsConfig(fields);
     }
 };
 
-const validationMessage = (warningValidation, isWarning) => {
+const validationMessage = (warningValidation: any, isWarning: any) => {
     if (!warningValidation) {
         return null;
     }
 
     if (isWarning) {
         return (
+
             <div className="col-12">
+
                 <p><Trans>encryption_warning</Trans>: {warningValidation}</p>
             </div>
         );
     }
 
     return (
+
         <div className="col-12">
+
             <p className="text-danger">{warningValidation}</p>
         </div>
     );
 };
 
-let Form = (props) => {
+interface FormProps {
+    handleSubmit: (...args: unknown[]) => unknown;
+    handleChange?: (...args: unknown[]) => unknown;
+    isEnabled: boolean;
+    servePlainDns: boolean;
+    certificateChain: string;
+    privateKey: string;
+    certificatePath: string;
+    privateKeyPath: string;
+    change: (...args: unknown[]) => unknown;
+    submitting: boolean;
+    invalid: boolean;
+    initialValues: object;
+    processingConfig: boolean;
+    processingValidate: boolean;
+    status_key?: string;
+    not_after?: string;
+    warning_validation?: string;
+    valid_chain?: boolean;
+    valid_key?: boolean;
+    valid_cert?: boolean;
+    valid_pair?: boolean;
+    dns_names?: string[];
+    key_type?: string;
+    issuer?: string;
+    subject?: string;
+    t: (...args: unknown[]) => unknown;
+    setTlsConfig: (...args: unknown[]) => unknown;
+    validateTlsConfig: (...args: unknown[]) => unknown;
+    certificateSource?: string;
+    privateKeySource?: string;
+    privateKeySaved?: boolean;
+}
+
+let Form = (props: FormProps) => {
     const {
         t,
         handleSubmit,
@@ -125,10 +168,15 @@ let Form = (props) => {
     const isWarning = valid_key && valid_cert && valid_pair;
 
     return (
+
         <form onSubmit={handleSubmit}>
+
             <div className="row">
+
                 <div className="col-12">
+
                     <div className="form__group form__group--settings mb-3">
+
                         <Field
                             name="enabled"
                             type="checkbox"
@@ -137,10 +185,14 @@ let Form = (props) => {
                             onChange={handleChange}
                         />
                     </div>
+
                     <div className="form__desc">
+
                         <Trans>encryption_enable_desc</Trans>
                     </div>
+
                     <div className="form__group mb-3 mt-5">
+
                         <Field
                             name="serve_plain_dns"
                             type="checkbox"
@@ -150,18 +202,27 @@ let Form = (props) => {
                             validate={validatePlainDns}
                         />
                     </div>
+
                     <div className="form__desc">
+
                         <Trans>encryption_plain_dns_desc</Trans>
                     </div>
+
                     <hr />
                 </div>
+
                 <div className="col-12">
+
                     <label className="form__label" htmlFor="server_name">
+
                         <Trans>encryption_server</Trans>
                     </label>
                 </div>
+
                 <div className="col-lg-6">
+
                     <div className="form__group form__group--settings">
+
                         <Field
                             id="server_name"
                             name="server_name"
@@ -173,13 +234,18 @@ let Form = (props) => {
                             disabled={!isEnabled}
                             validate={validateServerName}
                         />
+
                         <div className="form__desc">
+
                             <Trans>encryption_server_desc</Trans>
                         </div>
                     </div>
                 </div>
+
                 <div className="col-lg-6">
+
                     <div className="form__group form__group--settings">
+
                         <Field
                             name="force_https"
                             type="checkbox"
@@ -188,18 +254,26 @@ let Form = (props) => {
                             onChange={handleChange}
                             disabled={!isEnabled}
                         />
+
                         <div className="form__desc">
+
                             <Trans>encryption_redirect_desc</Trans>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div className="row">
+
                 <div className="col-lg-6">
+
                     <div className="form__group form__group--settings">
+
                         <label className="form__label" htmlFor="port_https">
+
                             <Trans>encryption_https</Trans>
                         </label>
+
                         <Field
                             id="port_https"
                             name="port_https"
@@ -212,16 +286,23 @@ let Form = (props) => {
                             onChange={handleChange}
                             disabled={!isEnabled}
                         />
+
                         <div className="form__desc">
+
                             <Trans>encryption_https_desc</Trans>
                         </div>
                     </div>
                 </div>
+
                 <div className="col-lg-6">
+
                     <div className="form__group form__group--settings">
+
                         <label className="form__label" htmlFor="port_dns_over_tls">
+
                             <Trans>encryption_dot</Trans>
                         </label>
+
                         <Field
                             id="port_dns_over_tls"
                             name="port_dns_over_tls"
@@ -234,16 +315,23 @@ let Form = (props) => {
                             onChange={handleChange}
                             disabled={!isEnabled}
                         />
+
                         <div className="form__desc">
+
                             <Trans>encryption_dot_desc</Trans>
                         </div>
                     </div>
                 </div>
+
                 <div className="col-lg-6">
+
                     <div className="form__group form__group--settings">
+
                         <label className="form__label" htmlFor="port_dns_over_quic">
+
                             <Trans>encryption_doq</Trans>
                         </label>
+
                         <Field
                             id="port_dns_over_quic"
                             name="port_dns_over_quic"
@@ -256,25 +344,35 @@ let Form = (props) => {
                             onChange={handleChange}
                             disabled={!isEnabled}
                         />
+
                         <div className="form__desc">
+
                             <Trans>encryption_doq_desc</Trans>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div className="row">
+
                 <div className="col-12">
+
                     <div className="form__group form__group--settings">
+
                         <label
                             className="form__label form__label--with-desc form__label--bold"
                             htmlFor="certificate_chain"
                         >
+
                             <Trans>encryption_certificates</Trans>
                         </label>
+
                         <div className="form__desc form__desc--top">
+
                             <Trans
                                 values={{ link: 'letsencrypt.org' }}
                                 components={[
+
                                     <a target="_blank" rel="noopener noreferrer" href="https://letsencrypt.org/" key="0">
                                         link
                                     </a>,
@@ -285,7 +383,9 @@ let Form = (props) => {
                         </div>
 
                         <div className="form__inline mb-2">
+
                             <div className="custom-controls-stacked">
+
                                 <Field
                                     name="certificate_source"
                                     component={renderRadioField}
@@ -295,6 +395,7 @@ let Form = (props) => {
                                     placeholder={t('encryption_certificates_source_path')}
                                     disabled={!isEnabled}
                                 />
+
                                 <Field
                                     name="certificate_source"
                                     component={renderRadioField}
@@ -308,6 +409,7 @@ let Form = (props) => {
                         </div>
 
                         {certificateSource === ENCRYPTION_SOURCE.CONTENT && (
+
                             <Field
                                 id="certificate_chain"
                                 name="certificate_chain"
@@ -320,6 +422,7 @@ let Form = (props) => {
                             />
                         )}
                         {certificateSource === ENCRYPTION_SOURCE.PATH && (
+
                             <Field
                                 id="certificate_path"
                                 name="certificate_path"
@@ -332,8 +435,10 @@ let Form = (props) => {
                             />
                         )}
                     </div>
+
                     <div className="form__status">
                         {(certificateChain || certificatePath) && (
+
                             <CertificateStatus
                                 validChain={valid_chain}
                                 validCert={valid_cert}
@@ -346,15 +451,22 @@ let Form = (props) => {
                     </div>
                 </div>
             </div>
+
             <div className="row">
+
                 <div className="col-12">
+
                     <div className="form__group form__group--settings mt-3">
+
                         <label className="form__label form__label--bold" htmlFor="private_key">
+
                             <Trans>encryption_key</Trans>
                         </label>
 
                         <div className="form__inline mb-2">
+
                             <div className="custom-controls-stacked">
+
                                 <Field
                                     name="key_source"
                                     component={renderRadioField}
@@ -364,6 +476,7 @@ let Form = (props) => {
                                     placeholder={t('encryption_key_source_path')}
                                     disabled={!isEnabled}
                                 />
+
                                 <Field
                                     name="key_source"
                                     component={renderRadioField}
@@ -377,6 +490,7 @@ let Form = (props) => {
                         </div>
 
                         {privateKeySource === ENCRYPTION_SOURCE.PATH && (
+
                             <Field
                                 name="private_key_path"
                                 component={renderInputField}
@@ -388,6 +502,7 @@ let Form = (props) => {
                             />
                         )}
                         {privateKeySource === ENCRYPTION_SOURCE.CONTENT && [
+
                             <Field
                                 key="private_key_saved"
                                 name="private_key_saved"
@@ -396,7 +511,7 @@ let Form = (props) => {
                                 component={CheckboxField}
                                 disabled={!isEnabled}
                                 placeholder={t('use_saved_key')}
-                                onChange={(event) => {
+                                onChange={(event: any) => {
                                     if (event.target.checked) {
                                         change('private_key', '');
                                     }
@@ -405,6 +520,7 @@ let Form = (props) => {
                                     }
                                 }}
                             />,
+
                             <Field
                                 id="private_key"
                                 key="private_key"
@@ -418,8 +534,10 @@ let Form = (props) => {
                             />,
                         ]}
                     </div>
+
                     <div className="form__status">
                         {(privateKey || privateKeyPath) && (
+
                             <KeyStatus validKey={valid_key} keyType={key_type} />
                         )}
                     </div>
@@ -428,58 +546,28 @@ let Form = (props) => {
             </div>
 
             <div className="btn-list mt-2">
+
                 <button
                     type="submit"
                     disabled={isDisabled}
                     className="btn btn-success btn-standart"
                 >
+
                     <Trans>save_config</Trans>
                 </button>
+
                 <button
                     type="button"
                     className="btn btn-secondary btn-standart"
                     disabled={submitting || processingConfig}
                     onClick={() => clearFields(change, setTlsConfig, validateTlsConfig, t)}
                 >
+
                     <Trans>reset_settings</Trans>
                 </button>
             </div>
         </form>
     );
-};
-
-Form.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    handleChange: PropTypes.func,
-    isEnabled: PropTypes.bool.isRequired,
-    servePlainDns: PropTypes.bool.isRequired,
-    certificateChain: PropTypes.string.isRequired,
-    privateKey: PropTypes.string.isRequired,
-    certificatePath: PropTypes.string.isRequired,
-    privateKeyPath: PropTypes.string.isRequired,
-    change: PropTypes.func.isRequired,
-    submitting: PropTypes.bool.isRequired,
-    invalid: PropTypes.bool.isRequired,
-    initialValues: PropTypes.object.isRequired,
-    processingConfig: PropTypes.bool.isRequired,
-    processingValidate: PropTypes.bool.isRequired,
-    status_key: PropTypes.string,
-    not_after: PropTypes.string,
-    warning_validation: PropTypes.string,
-    valid_chain: PropTypes.bool,
-    valid_key: PropTypes.bool,
-    valid_cert: PropTypes.bool,
-    valid_pair: PropTypes.bool,
-    dns_names: PropTypes.arrayOf(PropTypes.string),
-    key_type: PropTypes.string,
-    issuer: PropTypes.string,
-    subject: PropTypes.string,
-    t: PropTypes.func.isRequired,
-    setTlsConfig: PropTypes.func.isRequired,
-    validateTlsConfig: PropTypes.func.isRequired,
-    certificateSource: PropTypes.string,
-    privateKeySource: PropTypes.string,
-    privateKeySaved: PropTypes.bool,
 };
 
 const selector = formValueSelector(FORM_NAME.ENCRYPTION);

@@ -5,9 +5,10 @@ import {
     handleRulesChange,
     checkHost,
 } from '../actions/filtering';
+
 import CustomRules from '../components/Filters/CustomRules';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     const { filtering } = state;
     const props = { filtering };
     return props;

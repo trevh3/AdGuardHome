@@ -1,18 +1,36 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
 import { Trans } from 'react-i18next';
 import cn from 'classnames';
 
 import { createOnBlurHandler } from './helpers';
 import { R_MAC_WITHOUT_COLON, R_UNIX_ABSOLUTE_PATH, R_WIN_ABSOLUTE_PATH } from './constants';
 
-export const renderField = (props, elementType) => {
+interface renderFieldProps {
+    id: string;
+    input: object;
+    className?: string;
+    placeholder?: string;
+    type?: string;
+    disabled?: boolean;
+    autoComplete?: boolean;
+    normalizeOnBlur?: (...args: unknown[]) => unknown;
+    min?: number;
+    max?: number;
+    step?: number;
+    onScroll?: (...args: unknown[]) => unknown;
+    meta: {
+        touched?: boolean;
+        error?: string;
+    };
+}
+
+export const renderField = (props: renderFieldProps, elementType: any) => {
     const {
         input, id, className, placeholder, type, disabled, normalizeOnBlur, onScroll,
         autoComplete, meta: { touched, error }, min, max, step,
     } = props;
 
-    const onBlur = (event) => createOnBlurHandler(event, input, normalizeOnBlur);
+    const onBlur = (event: any) => createOnBlurHandler(event, input, normalizeOnBlur);
 
     const element = React.createElement(elementType, {
         ...input,
@@ -30,36 +48,36 @@ export const renderField = (props, elementType) => {
     });
 
     return (
+
         <>
             {element}
             {!disabled && touched && error
+
             && <span className="form__message form__message--error"><Trans>{error}</Trans></span>}
         </>
     );
 };
 
-renderField.propTypes = {
-    id: PropTypes.string.isRequired,
-    input: PropTypes.object.isRequired,
-    className: PropTypes.string,
-    placeholder: PropTypes.string,
-    type: PropTypes.string,
-    disabled: PropTypes.bool,
-    autoComplete: PropTypes.bool,
-    normalizeOnBlur: PropTypes.func,
-    min: PropTypes.number,
-    max: PropTypes.number,
-    step: PropTypes.number,
-    onScroll: PropTypes.func,
-    meta: PropTypes.shape({
-        touched: PropTypes.bool,
-        error: PropTypes.string,
-    }).isRequired,
-};
+export const renderTextareaField = (props: any) => renderField(props, 'textarea');
 
-export const renderTextareaField = (props) => renderField(props, 'textarea');
+export const renderInputField = (props: any) => renderField(props, 'input');
 
-export const renderInputField = (props) => renderField(props, 'input');
+interface renderGroupFieldProps {
+    input: object;
+    id?: string;
+    className?: string;
+    placeholder?: string;
+    type?: string;
+    disabled?: boolean;
+    autoComplete?: boolean;
+    isActionAvailable?: boolean;
+    removeField?: (...args: unknown[]) => unknown;
+    meta: {
+        touched?: boolean;
+        error?: string;
+    };
+    normalizeOnBlur?: (...args: unknown[]) => unknown;
+}
 
 export const renderGroupField = ({
     input,
@@ -72,13 +90,16 @@ export const renderGroupField = ({
     isActionAvailable,
     removeField,
     meta: { touched, error },
-    normalizeOnBlur,
-}) => {
-    const onBlur = (event) => createOnBlurHandler(event, input, normalizeOnBlur);
+    normalizeOnBlur
+}: renderGroupFieldProps) => {
+    const onBlur = (event: any) => createOnBlurHandler(event, input, normalizeOnBlur);
 
     return (
+
         <>
+
             <div className="input-group">
+
                 <input
                     {...input}
                     id={id}
@@ -90,13 +111,17 @@ export const renderGroupField = ({
                     onBlur={onBlur}
                 />
                 {isActionAvailable
+
                 && <span className="input-group-append">
+
                         <button
                             type="button"
                             className="btn btn-secondary btn-icon btn-icon--green"
                             onClick={removeField}
                         >
+
                             <svg className="icon icon--24">
+
                                 <use xlinkHref="#cross" />
                             </svg>
                         </button>
@@ -104,38 +129,37 @@ export const renderGroupField = ({
                 }
             </div>
             {!disabled && touched && error
+
             && <span className="form__message form__message--error"><Trans>{error}</Trans></span>}
         </>
     );
 };
 
-renderGroupField.propTypes = {
-    input: PropTypes.object.isRequired,
-    id: PropTypes.string,
-    className: PropTypes.string,
-    placeholder: PropTypes.string,
-    type: PropTypes.string,
-    disabled: PropTypes.bool,
-    autoComplete: PropTypes.bool,
-    isActionAvailable: PropTypes.bool,
-    removeField: PropTypes.func,
-    meta: PropTypes.shape({
-        touched: PropTypes.bool,
-        error: PropTypes.string,
-    }).isRequired,
-    normalizeOnBlur: PropTypes.func,
-};
+interface renderRadioFieldProps {
+    input: object;
+    placeholder?: string;
+    subtitle?: string;
+    disabled?: boolean;
+    meta: {
+        touched?: boolean;
+        error?: string;
+    };
+}
 
 export const renderRadioField = ({
     input,
     placeholder,
     subtitle,
     disabled,
-    meta: { touched, error },
-}) => <Fragment>
+    meta: { touched, error }
+}: renderRadioFieldProps) => <Fragment>
+
     <label className="custom-control custom-radio">
+
         <input {...input} type="radio" className="custom-control-input" disabled={disabled} />
+
         <span className="custom-control-label">{placeholder}</span>
+
         {subtitle && <span
             className="checkbox__label-subtitle"
             dangerouslySetInnerHTML={{ __html: subtitle }}
@@ -144,19 +168,23 @@ export const renderRadioField = ({
     {!disabled
     && touched
     && error
+
     && <span className="form__message form__message--error"><Trans>{error}</Trans></span>}
 </Fragment>;
 
-renderRadioField.propTypes = {
-    input: PropTypes.object.isRequired,
-    placeholder: PropTypes.string,
-    subtitle: PropTypes.string,
-    disabled: PropTypes.bool,
-    meta: PropTypes.shape({
-        touched: PropTypes.bool,
-        error: PropTypes.string,
-    }).isRequired,
-};
+interface CheckboxFieldProps {
+    input: object;
+    placeholder?: string;
+    subtitle?: React.ReactNode;
+    disabled?: boolean;
+    onClick?: (...args: unknown[]) => unknown;
+    modifier?: string;
+    checked?: boolean;
+    meta: {
+        touched?: boolean;
+        error?: string;
+    };
+}
 
 export const CheckboxField = ({
     input,
@@ -165,14 +193,21 @@ export const CheckboxField = ({
     disabled,
     onClick,
     modifier = 'checkbox--form',
-    meta: { touched, error },
-}) => <>
+    meta: { touched, error }
+}: CheckboxFieldProps) => <>
+
     <label className={`checkbox ${modifier}`} onClick={onClick}>
+
         <span className="checkbox__marker" />
+
         <input {...input} type="checkbox" className="checkbox__input" disabled={disabled} />
+
         <span className="checkbox__label">
+
             <span className="checkbox__label-text checkbox__label-text--long">
+
                 <span className="checkbox__label-title">{placeholder}</span>
+
                 {subtitle && <span className="checkbox__label-subtitle">{subtitle}</span>}
             </span>
         </span>
@@ -180,49 +215,51 @@ export const CheckboxField = ({
     {!disabled
     && touched
     && error
+
     && <div className="form__message form__message--error mt-1"><Trans>{error}</Trans></div>}
 </>;
 
-CheckboxField.propTypes = {
-    input: PropTypes.object.isRequired,
-    placeholder: PropTypes.string,
-    subtitle: PropTypes.node,
-    disabled: PropTypes.bool,
-    onClick: PropTypes.func,
-    modifier: PropTypes.string,
-    checked: PropTypes.bool,
-    meta: PropTypes.shape({
-        touched: PropTypes.bool,
-        error: PropTypes.string,
-    }).isRequired,
-};
+interface renderSelectFieldProps {
+    input: object;
+    disabled?: boolean;
+    label?: string;
+    children: unknown[] | React.ReactElement;
+    meta: {
+        touched?: boolean;
+        error?: string;
+    };
+}
 
 export const renderSelectField = ({
     input,
     meta: { touched, error },
     children,
-    label,
-}) => {
+    label
+}: renderSelectFieldProps) => {
     const showWarning = touched && error;
 
     return <>
+
         {label && <label><Trans>{label}</Trans></label>}
+
         <select {...input} className='form-control custom-select'>{children}</select>
         {showWarning
+
         && <span className="form__message form__message--error form__message--left-pad"><Trans>{error}</Trans></span>}
     </>;
 };
 
-renderSelectField.propTypes = {
-    input: PropTypes.object.isRequired,
-    disabled: PropTypes.bool,
-    label: PropTypes.string,
-    children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]).isRequired,
-    meta: PropTypes.shape({
-        touched: PropTypes.bool,
-        error: PropTypes.string,
-    }).isRequired,
-};
+interface renderServiceFieldProps {
+    input: object;
+    placeholder?: string;
+    disabled?: boolean;
+    modifier?: string;
+    icon?: string;
+    meta: {
+        touched?: boolean;
+        error?: string;
+    };
+}
 
 export const renderServiceField = ({
     input,
@@ -230,10 +267,13 @@ export const renderServiceField = ({
     disabled,
     modifier,
     icon,
-    meta: { touched, error },
-}) => (
+    meta: { touched, error }
+}: renderServiceFieldProps) => (
+
     <>
+
         <label className={cn('service custom-switch', { [modifier]: modifier })}>
+
             <input
                 {...input}
                 type="checkbox"
@@ -241,11 +281,14 @@ export const renderServiceField = ({
                 value={placeholder.toLowerCase()}
                 disabled={disabled}
             />
+
             <span className="service__switch custom-switch-indicator"></span>
+
             <span className="service__text" title={placeholder}>
                 {placeholder}
             </span>
             {icon && (
+
                 <div
                     dangerouslySetInnerHTML={{ __html: window.atob(icon) }}
                     className="service__icon"
@@ -253,32 +296,22 @@ export const renderServiceField = ({
             )}
         </label>
         {!disabled && touched && error && (
+
             <span className="form__message form__message--error">
+
                 <Trans>{error}</Trans>
             </span>
         )}
     </>
 );
 
-renderServiceField.propTypes = {
-    input: PropTypes.object.isRequired,
-    placeholder: PropTypes.string,
-    disabled: PropTypes.bool,
-    modifier: PropTypes.string,
-    icon: PropTypes.string,
-    meta: PropTypes.shape({
-        touched: PropTypes.bool,
-        error: PropTypes.string,
-    }).isRequired,
-};
-
 /**
  *
  * @param {string} ip
  * @returns {*}
  */
-export const ip4ToInt = (ip) => {
-    const intIp = ip.split('.').reduce((int, oct) => (int * 256) + parseInt(oct, 10), 0);
+export const ip4ToInt = (ip: any) => {
+    const intIp = ip.split('.').reduce((int: any, oct: any) => (int * 256) + parseInt(oct, 10), 0);
     return Number.isNaN(intIp) ? 0 : intIp;
 };
 
@@ -286,26 +319,27 @@ export const ip4ToInt = (ip) => {
  * @param value {string}
  * @returns {*|number}
  */
-export const toNumber = (value) => value && parseInt(value, 10);
+export const toNumber = (value: any) => value && parseInt(value, 10);
 
 /**
  * @param value {string}
  * @returns {*|number}
  */
-export const toFloatNumber = (value) => value && parseFloat(value, 10);
+
+export const toFloatNumber = (value: any) => value && parseFloat(value, 10);
 
 /**
  * @param value {string}
  * @returns {boolean}
  */
-export const isValidAbsolutePath = (value) => R_WIN_ABSOLUTE_PATH.test(value)
+export const isValidAbsolutePath = (value: any) => R_WIN_ABSOLUTE_PATH.test(value)
     || R_UNIX_ABSOLUTE_PATH.test(value);
 
 /**
  * @param value {string}
  * @returns {*|string}
  */
-export const normalizeMac = (value) => {
+export const normalizeMac = (value: any) => {
     if (value && R_MAC_WITHOUT_COLON.test(value)) {
         return value.match(/.{2}/g).join(':');
     }

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+
 import { NavLink } from 'react-router-dom';
-import PropTypes from 'prop-types';
+
 import enhanceWithClickOutside from 'react-click-outside';
 import classnames from 'classnames';
 import { Trans, withTranslation } from 'react-i18next';
 import { SETTINGS_URLS, FILTERS_URLS, MENU_URLS } from '../../helpers/constants';
+
 import Dropdown from '../ui/Dropdown';
 
 const MENU_ITEMS = [
@@ -80,7 +82,14 @@ const FILTERS_ITEMS = [
     },
 ];
 
-class Menu extends Component {
+interface MenuProps {
+    isMenuOpen: boolean;
+    closeMenu: (...args: unknown[]) => unknown;
+    pathname: string;
+    t?: (...args: unknown[]) => unknown;
+}
+
+class Menu extends Component<MenuProps> {
     handleClickOutside = () => {
         this.props.closeMenu();
     };
@@ -89,16 +98,23 @@ class Menu extends Component {
         this.props.closeMenu();
     };
 
-    getActiveClassForDropdown = (URLS) => {
+    getActiveClassForDropdown = (URLS: any) => {
         const isActivePage = Object.values(URLS)
-            .some((item) => item === this.props.pathname);
+
+            .some((item: any) => item === this.props.pathname);
 
         return isActivePage ? 'active' : '';
     };
 
     getNavLink = ({
-        route, exact, text, order, className, icon,
-    }) => (
+        route,
+        exact,
+        text,
+        order,
+        className,
+        icon,
+    }: any) => (
+
         <NavLink
             to={route}
             key={route}
@@ -107,41 +123,54 @@ class Menu extends Component {
             onClick={this.closeMenu}
         >
             {icon && (
+
                 <svg className="nav-icon">
+
                     <use xlinkHref={`#${icon}`} />
                 </svg>
             )}
+
             <Trans>{text}</Trans>
         </NavLink>
     );
 
     getDropdown = ({
-        label, order, URLS, icon, ITEMS,
-    }) => (
+        label,
+        order,
+        URLS,
+        icon,
+        ITEMS,
+    }: any) => (
+
         <Dropdown
+
             label={this.props.t(label)}
             baseClassName='dropdown'
             controlClassName={`nav-link ${this.getActiveClassForDropdown(URLS)}`}
             icon={icon}>
-            {ITEMS.map((item) => (
-                this.getNavLink({
-                    ...item,
-                    order,
-                    className: 'dropdown-item',
-                })))}
+            {ITEMS.map((item: any) => this.getNavLink({
+                ...item,
+                order,
+                className: 'dropdown-item',
+            }))}
         </Dropdown>
     );
 
     render() {
         const menuClass = classnames({
             'header__column mobile-menu': true,
+
             'mobile-menu--active': this.props.isMenuOpen,
         });
         return (
+
             <>
+
                 <div className={menuClass}>
+
                     <ul className="nav nav-tabs border-0 flex-column flex-lg-row flex-nowrap">
                         {MENU_ITEMS.map((item) => (
+
                             <li
                                 className={`nav-item order-${item.order}`}
                                 key={item.text}
@@ -153,6 +182,7 @@ class Menu extends Component {
                                 })}
                             </li>
                         ))}
+
                         <li className="nav-item order-1">
                             {this.getDropdown({
                                 order: 1,
@@ -162,6 +192,7 @@ class Menu extends Component {
                                 ITEMS: SETTINGS_ITEMS,
                             })}
                         </li>
+
                         <li className="nav-item order-2">
                             {this.getDropdown({
                                 order: 2,
@@ -177,12 +208,5 @@ class Menu extends Component {
         );
     }
 }
-
-Menu.propTypes = {
-    isMenuOpen: PropTypes.bool.isRequired,
-    closeMenu: PropTypes.func.isRequired,
-    pathname: PropTypes.string.isRequired,
-    t: PropTypes.func,
-};
 
 export default withTranslation()(enhanceWithClickOutside(Menu));

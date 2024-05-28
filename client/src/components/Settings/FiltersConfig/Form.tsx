@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import { Field, reduxForm } from 'redux-form';
 import { Trans, withTranslation } from 'react-i18next';
 import flow from 'lodash/flow';
@@ -11,7 +11,7 @@ import {
     FORM_NAME,
 } from '../../../helpers/constants';
 
-const getTitleForInterval = (interval, t) => {
+const getTitleForInterval = (interval: any, t: any) => {
     if (interval === 0) {
         return t('disabled');
     }
@@ -22,7 +22,8 @@ const getTitleForInterval = (interval, t) => {
     return t('interval_hours', { count: interval });
 };
 
-const getIntervalSelect = (processing, t, handleChange, toNumber) => (
+const getIntervalSelect = (processing: any, t: any, handleChange: any, toNumber: any) => (
+
     <Field
         name="interval"
         className="custom-select"
@@ -32,6 +33,7 @@ const getIntervalSelect = (processing, t, handleChange, toNumber) => (
         disabled={processing}
     >
         {FILTERS_INTERVALS_HOURS.map((interval) => (
+
             <option value={interval} key={interval}>
                 {getTitleForInterval(interval, t)}
             </option>
@@ -39,26 +41,43 @@ const getIntervalSelect = (processing, t, handleChange, toNumber) => (
     </Field>
 );
 
-const Form = (props) => {
+interface FormProps {
+    handleSubmit: (...args: unknown[]) => unknown;
+    handleChange?: (...args: unknown[]) => unknown;
+    change: (...args: unknown[]) => unknown;
+    submitting: boolean;
+    invalid: boolean;
+    processing: boolean;
+    t: (...args: unknown[]) => unknown;
+}
+
+const Form = (props: FormProps) => {
     const {
         handleSubmit, handleChange, processing, t,
     } = props;
 
     const components = {
+
         a: <a href={FILTERS_RELATIVE_LINK} rel="noopener noreferrer" />,
     };
 
     return (
+
         <form onSubmit={handleSubmit}>
+
             <div className="row">
+
                 <div className="col-12">
+
                     <div className="form__group form__group--settings">
+
                         <Field
                             name="enabled"
                             type="checkbox"
                             modifier="checkbox--settings"
                             component={CheckboxField}
                             placeholder={t('block_domain_use_filters_and_hosts')}
+
                             subtitle={<Trans components={components}>
                                 filters_block_toggle_hint
                             </Trans>}
@@ -67,9 +86,13 @@ const Form = (props) => {
                         />
                     </div>
                 </div>
+
                 <div className="col-12 col-md-5">
+
                     <div className="form__group form__group--inner mb-5">
+
                         <label className="form__label">
+
                             <Trans>filters_interval</Trans>
                         </label>
                         {getIntervalSelect(processing, t, handleChange, toNumber)}
@@ -78,16 +101,6 @@ const Form = (props) => {
             </div>
         </form>
     );
-};
-
-Form.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    handleChange: PropTypes.func,
-    change: PropTypes.func.isRequired,
-    submitting: PropTypes.bool.isRequired,
-    invalid: PropTypes.bool.isRequired,
-    processing: PropTypes.bool.isRequired,
-    t: PropTypes.func.isRequired,
 };
 
 export default flow([

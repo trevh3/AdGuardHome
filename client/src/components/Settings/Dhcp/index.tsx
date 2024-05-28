@@ -3,6 +3,7 @@ import { Trans, useTranslation } from 'react-i18next';
 
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
+
 import { destroy } from 'redux-form';
 import {
     DHCP_DESCRIPTION_PLACEHOLDERS,
@@ -10,10 +11,15 @@ import {
     STATUS_RESPONSE,
     FORM_NAME,
 } from '../../../helpers/constants';
+
 import Leases from './Leases';
+
 import StaticLeases from './StaticLeases/index';
+
 import Card from '../../ui/Card';
+
 import PageTitle from '../../ui/PageTitle';
+
 import Loading from '../../ui/Loading';
 import {
     findActiveDhcp,
@@ -24,14 +30,19 @@ import {
     resetDhcpLeases,
     toggleDhcp,
     toggleLeaseModal,
+
 } from '../../../actions';
+
 import FormDHCPv4 from './FormDHCPv4';
+
 import FormDHCPv6 from './FormDHCPv6';
+
 import Interfaces from './Interfaces';
 import {
     calculateDhcpPlaceholdersIpv4,
     calculateDhcpPlaceholdersIpv6,
     subnetMaskToBitMask,
+
 } from '../../../helpers/helpers';
 import './index.css';
 
@@ -58,14 +69,18 @@ const Dhcp = () => {
         dhcp_available,
         interfaces,
         modalType,
+
     } = useSelector((state) => state.dhcp, shallowEqual);
 
     const interface_name = useSelector(
+
         (state) => state.form[FORM_NAME.DHCP_INTERFACES]?.values?.interface_name,
     );
     const isInterfaceIncludesIpv4 = useSelector(
+
         (state) => !!state.dhcp?.interfaces?.[interface_name]?.ipv4_addresses,
     );
+
     const dhcp = useSelector((state) => state.form[FORM_NAME.DHCPv4], shallowEqual);
 
     const [ipv4placeholders, setIpv4Placeholders] = useState(DHCP_DESCRIPTION_PLACEHOLDERS.ipv4);
@@ -102,13 +117,13 @@ const Dhcp = () => {
         // eslint-disable-next-line no-alert
         if (window.confirm(t('dhcp_reset'))) {
             Object.values(DHCP_FORM_NAMES)
-                .forEach((formName) => dispatch(destroy(formName)));
+                .forEach((formName: any) => dispatch(destroy(formName)));
             dispatch(resetDhcp());
             dispatch(getDhcpStatus());
         }
     };
 
-    const handleSubmit = (values) => {
+    const handleSubmit = (values: any) => {
         dispatch(setDhcpConfig({
             interface_name,
             ...values,
@@ -123,12 +138,14 @@ const Dhcp = () => {
 
     const enteredSomeV4Value = Object.values(v4)
         .some(Boolean);
+
     const enteredSomeV6Value = Object.values(v6)
         .some(Boolean);
     const enteredSomeValue = enteredSomeV4Value || enteredSomeV6Value || interfaceName;
 
     const getToggleDhcpButton = () => {
         const filledConfig = interface_name && (Object.values(v4)
+
             .every(Boolean) || Object.values(v6)
             .every(Boolean));
 
@@ -155,6 +172,7 @@ const Dhcp = () => {
             disabled={processingDhcp || processingConfig
             || (!enabled && (!filledConfig || !check))}
         >
+
             <Trans>{enabled ? 'dhcp_disable' : 'dhcp_enable'}</Trans>
         </button>;
     };
@@ -177,10 +195,14 @@ const Dhcp = () => {
 
     if (!processing && !dhcp_available) {
         return <div className="text-center pt-5">
+
             <h2>
+
                 <Trans>unavailable_dhcp</Trans>
             </h2>
+
             <h4>
+
                 <Trans>unavailable_dhcp_desc</Trans>
             </h4>
         </div>;
@@ -189,51 +211,66 @@ const Dhcp = () => {
     const toggleDhcpButton = getToggleDhcpButton();
 
     const inputtedIPv4values = dhcp?.values?.v4?.gateway_ip && dhcp?.values?.v4?.subnet_mask;
+
     const isEmptyConfig = !Object.values(dhcp?.values?.v4 ?? {}).some(Boolean);
     const disabledLeasesButton = Boolean(dhcp?.syncErrors || interfaces?.syncErrors
         || !isInterfaceIncludesIpv4 || isEmptyConfig || processingConfig || !inputtedIPv4values);
     const cidr = inputtedIPv4values ? `${dhcp?.values?.v4?.gateway_ip}/${subnetMaskToBitMask(dhcp?.values?.v4?.subnet_mask)}` : '';
 
     return <>
+
         <PageTitle title={t('dhcp_settings')} subtitle={t('dhcp_description')} containerClass="page-title--dhcp">
             {toggleDhcpButton}
+
             <button
                 type="button"
                 className={statusButtonClass}
                 onClick={onClick}
                 disabled={enabled || !interface_name || processingConfig}
             >
+
                 <Trans>check_dhcp_servers</Trans>
             </button>
+
             <button
                 type="button"
                 className='btn btn-sm btn-outline-secondary'
                 disabled={!enteredSomeValue || processingConfig}
                 onClick={clear}
             >
+
                 <Trans>reset_settings</Trans>
             </button>
         </PageTitle>
         {!processing && !processingInterfaces
+
         && <>
             {!enabled
             && check
             && (check.v4.other_server.found !== STATUS_RESPONSE.NO
                     || check.v6.other_server.found !== STATUS_RESPONSE.NO)
+
             && <div className="mb-5">
+
                 <hr />
+
                 <div className="text-danger">
+
                     <Trans>dhcp_warning</Trans>
                 </div>
             </div>}
+
             <Interfaces
                 initialValues={{ interface_name: interfaceName }}
             />
+
             <Card
                 title={t('dhcp_ipv4_settings')}
                 bodyType="card-body box-body--settings"
             >
+
                 <div>
+
                     <FormDHCPv4
                         onSubmit={handleSubmit}
                         initialValues={{ v4: initialV4 }}
@@ -242,11 +279,14 @@ const Dhcp = () => {
                     />
                 </div>
             </Card>
+
             <Card
                 title={t('dhcp_ipv6_settings')}
                 bodyType="card-body box-body--settings"
             >
+
                 <div>
+
                     <FormDHCPv6
                         onSubmit={handleSubmit}
                         initialValues={{ v6: initialV6 }}
@@ -256,25 +296,34 @@ const Dhcp = () => {
                 </div>
             </Card>
             {enabled
+
             && <Card
                 title={t('dhcp_leases')}
                 bodyType="card-body box-body--settings"
             >
+
                 <div className="row">
+
                     <div className="col">
+
                         <Leases leases={leases} disabledLeasesButton={disabledLeasesButton}/>
                     </div>
                 </div>
             </Card>}
+
             <Card
                 title={t('dhcp_static_leases')}
                 bodyType="card-body box-body--settings"
             >
+
                 <div className="row">
+
                     <div className="col-12">
+
                         <StaticLeases
                             staticLeases={staticLeases}
                             isModalOpen={isModalOpen}
+
                             toggleModal={toggleModal}
                             modalType={modalType}
                             processingAdding={processingAdding}
@@ -285,20 +334,25 @@ const Dhcp = () => {
                             rangeEnd={dhcp?.values?.v4?.range_end}
                             gatewayIp={dhcp?.values?.v4?.gateway_ip}
                         />
+
                         <div className="btn-list mt-2">
+
                             <button
                                 type="button"
                                 className="btn btn-success btn-standard mt-3"
                                 onClick={toggleModal}
                                 disabled={disabledLeasesButton}
                             >
+
                                 <Trans>dhcp_add_static_lease</Trans>
                             </button>
+
                             <button
                                 type="button"
                                 className="btn btn-secondary btn-standard mt-3"
                                 onClick={handleReset}
                             >
+
                                 <Trans>dhcp_reset_leases</Trans>
                             </button>
                         </div>

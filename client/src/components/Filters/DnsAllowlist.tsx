@@ -1,23 +1,41 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 
 import PageTitle from '../ui/PageTitle';
+
 import Card from '../ui/Card';
+
 import Modal from './Modal';
+
 import Actions from './Actions';
+
 import Table from './Table';
 
 import { MODAL_TYPE } from '../../helpers/constants';
+
 import { getCurrentFilter } from '../../helpers/helpers';
 
-class DnsAllowlist extends Component {
+interface DnsAllowlistProps {
+    getFilteringStatus: (...args: unknown[]) => unknown;
+    filtering: object;
+    removeFilter: (...args: unknown[]) => unknown;
+    toggleFilterStatus: (...args: unknown[]) => unknown;
+    addFilter: (...args: unknown[]) => unknown;
+    toggleFilteringModal: (...args: unknown[]) => unknown;
+    handleRulesChange: (...args: unknown[]) => unknown;
+    refreshFilters: (...args: unknown[]) => unknown;
+    editFilter: (...args: unknown[]) => unknown;
+    t: (...args: unknown[]) => unknown;
+}
+
+class DnsAllowlist extends Component<DnsAllowlistProps> {
     componentDidMount() {
         this.props.getFilteringStatus();
     }
 
-    handleSubmit = (values) => {
+    handleSubmit = (values: any) => {
         const { name, url } = values;
+
         const { filtering } = this.props;
         const whitelist = true;
 
@@ -28,15 +46,17 @@ class DnsAllowlist extends Component {
         }
     };
 
-    handleDelete = (url) => {
+    handleDelete = (url: any) => {
         if (window.confirm(this.props.t('list_confirm_delete'))) {
             const whitelist = true;
+
             this.props.removeFilter(url, whitelist);
         }
     };
 
-    toggleFilter = (url, data) => {
+    toggleFilter = (url: any, data: any) => {
         const whitelist = true;
+
         this.props.toggleFilterStatus(url, data, whitelist);
     };
 
@@ -50,10 +70,15 @@ class DnsAllowlist extends Component {
 
     render() {
         const {
+
             t,
+
             toggleFilteringModal,
+
             addFilter,
+
             toggleFilterStatus,
+
             filtering: {
                 whitelistFilters,
                 isModalOpen,
@@ -76,16 +101,24 @@ class DnsAllowlist extends Component {
         const whitelist = true;
 
         return (
+
             <>
+
                 <PageTitle
                     title={t('dns_allowlists')}
                     subtitle={t('dns_allowlists_desc')}
                 />
+
                 <div className="content">
+
                     <div className="row">
+
                         <div className="col-md-12">
+
                             <Card subtitle={t('filters_and_hosts_hint')}>
+
                                 <Table
+
                                     filters={whitelistFilters}
                                     loading={loading}
                                     processingConfigFilter={processingConfigFilter}
@@ -95,6 +128,7 @@ class DnsAllowlist extends Component {
                                     toggleFilter={this.toggleFilter}
                                     whitelist={whitelist}
                                 />
+
                                 <Actions
                                     handleAdd={this.openAddFiltersModal}
                                     handleRefresh={this.handleRefresh}
@@ -105,7 +139,9 @@ class DnsAllowlist extends Component {
                         </div>
                     </div>
                 </div>
+
                 <Modal
+
                     filters={whitelistFilters}
                     isOpen={isModalOpen}
                     toggleFilteringModal={toggleFilteringModal}
@@ -122,18 +158,5 @@ class DnsAllowlist extends Component {
         );
     }
 }
-
-DnsAllowlist.propTypes = {
-    getFilteringStatus: PropTypes.func.isRequired,
-    filtering: PropTypes.object.isRequired,
-    removeFilter: PropTypes.func.isRequired,
-    toggleFilterStatus: PropTypes.func.isRequired,
-    addFilter: PropTypes.func.isRequired,
-    toggleFilteringModal: PropTypes.func.isRequired,
-    handleRulesChange: PropTypes.func.isRequired,
-    refreshFilters: PropTypes.func.isRequired,
-    editFilter: PropTypes.func.isRequired,
-    t: PropTypes.func.isRequired,
-};
 
 export default withTranslation()(DnsAllowlist);

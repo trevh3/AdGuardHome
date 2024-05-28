@@ -6,9 +6,10 @@ import {
     updateRewrite,
     toggleRewritesModal,
 } from '../actions/rewrites';
+
 import Rewrites from '../components/Filters/Rewrites';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     const { rewrites } = state;
     const props = { rewrites };
     return props;

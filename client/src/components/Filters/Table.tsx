@@ -1,23 +1,41 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+
 import ReactTable from 'react-table';
 import { withTranslation, Trans } from 'react-i18next';
+
 import CellWrap from '../ui/CellWrap';
 import { MODAL_TYPE } from '../../helpers/constants';
+
 import { formatDetailedDateTime } from '../../helpers/helpers';
+
 import { isValidAbsolutePath } from '../../helpers/form';
 import { LOCAL_STORAGE_KEYS, LocalStorageHelper } from '../../helpers/localStorageHelper';
 
-class Table extends Component {
-    getDateCell = (row) => CellWrap(row, formatDetailedDateTime);
+interface TableProps {
+    filters: unknown[];
+    loading: boolean;
+    processingConfigFilter: boolean;
+    toggleFilteringModal: (...args: unknown[]) => unknown;
+    handleDelete: (...args: unknown[]) => unknown;
+    toggleFilter: (...args: unknown[]) => unknown;
+    t: (...args: unknown[]) => unknown;
+    whitelist?: boolean;
+}
 
-    renderCheckbox = ({ original }) => {
+class Table extends Component<TableProps> {
+    getDateCell = (row: any) => CellWrap(row, formatDetailedDateTime);
+
+    renderCheckbox = ({
+        original,
+    }: any) => {
         const { processingConfigFilter, toggleFilter } = this.props;
         const { url, name, enabled } = original;
         const data = { name, url, enabled: !enabled };
 
         return (
+
             <label className="checkbox">
+
                 <input
                     type="checkbox"
                     className="checkbox__input"
@@ -25,6 +43,7 @@ class Table extends Component {
                     checked={enabled}
                     disabled={processingConfigFilter}
                 />
+
                 <span className="checkbox__label" />
             </label>
         );
@@ -32,6 +51,7 @@ class Table extends Component {
 
     columns = [
         {
+
             Header: <Trans>enabled_table_header</Trans>,
             accessor: 'enabled',
             Cell: this.renderCheckbox,
@@ -40,19 +60,25 @@ class Table extends Component {
             resizable: false,
         },
         {
+
             Header: <Trans>name_table_header</Trans>,
             accessor: 'name',
             minWidth: 180,
             Cell: CellWrap,
         },
         {
+
             Header: <Trans>list_url_table_header</Trans>,
             accessor: 'url',
             minWidth: 180,
             // eslint-disable-next-line react/prop-types
-            Cell: ({ value }) => (
+            Cell: ({
+                value,
+            }: any) => (
+
                 <div className="logs__row">
                     {isValidAbsolutePath(value) ? value
+
                         : <a
                             href={value}
                             target="_blank"
@@ -65,13 +91,15 @@ class Table extends Component {
             ),
         },
         {
+
             Header: <Trans>rules_count_table_header</Trans>,
             accessor: 'rulesCount',
             className: 'text-center',
             minWidth: 100,
-            Cell: (props) => props.value.toLocaleString(),
+            Cell: (props: any) => props.value.toLocaleString(),
         },
         {
+
             Header: <Trans>last_time_updated_table_header</Trans>,
             accessor: 'lastUpdated',
             className: 'text-center',
@@ -79,19 +107,23 @@ class Table extends Component {
             Cell: this.getDateCell,
         },
         {
+
             Header: <Trans>actions_table_header</Trans>,
             accessor: 'actions',
             className: 'text-center',
             width: 100,
             sortable: false,
             resizable: false,
-            Cell: (row) => {
+            Cell: (row: any) => {
                 const { original } = row;
                 const { url } = original;
+
                 const { t, toggleFilteringModal, handleDelete } = this.props;
 
                 return (
+
                     <div className="logs__row logs__row--center">
+
                         <button
                             type="button"
                             className="btn btn-icon btn-outline-primary btn-sm mr-2"
@@ -102,17 +134,22 @@ class Table extends Component {
                             })
                             }
                         >
+
                             <svg className="icons icon12">
+
                                 <use xlinkHref="#edit" />
                             </svg>
                         </button>
+
                         <button
                             type="button"
                             className="btn btn-icon btn-outline-secondary btn-sm"
                             onClick={() => handleDelete(url)}
                             title={t('delete_table_action')}
                         >
+
                             <svg className="icons icon12">
+
                                 <use xlinkHref="#delete" />
                             </svg>
                         </button>
@@ -124,6 +161,7 @@ class Table extends Component {
 
     render() {
         const {
+
             loading, filters, t, whitelist,
         } = this.props;
 
@@ -132,12 +170,13 @@ class Table extends Component {
             : LOCAL_STORAGE_KEYS.BLOCKLIST_PAGE_SIZE;
 
         return (
+
             <ReactTable
                 data={filters}
                 columns={this.columns}
                 showPagination
                 defaultPageSize={LocalStorageHelper.getItem(localStorageKey) || 10}
-                onPageSizeChange={(size) => LocalStorageHelper.setItem(localStorageKey, size)}
+                onPageSizeChange={(size: any) => LocalStorageHelper.setItem(localStorageKey, size)}
                 loading={loading}
                 minRows={6}
                 ofText="/"
@@ -151,16 +190,5 @@ class Table extends Component {
         );
     }
 }
-
-Table.propTypes = {
-    filters: PropTypes.array.isRequired,
-    loading: PropTypes.bool.isRequired,
-    processingConfigFilter: PropTypes.bool.isRequired,
-    toggleFilteringModal: PropTypes.func.isRequired,
-    handleDelete: PropTypes.func.isRequired,
-    toggleFilter: PropTypes.func.isRequired,
-    t: PropTypes.func.isRequired,
-    whitelist: PropTypes.bool,
-};
 
 export default withTranslation()(Table);

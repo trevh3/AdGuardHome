@@ -332,7 +332,9 @@ export const RESPONSE_FILTER = {
 };
 
 export const RESPONSE_FILTER_QUERIES = Object.values(RESPONSE_FILTER)
-    .reduce((acc, { QUERY }) => {
+    .reduce((acc: any, {
+        QUERY,
+    }: any) => {
         acc[QUERY] = QUERY;
         return acc;
     }, {});

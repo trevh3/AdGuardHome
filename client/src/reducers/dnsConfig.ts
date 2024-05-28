@@ -8,9 +8,17 @@ const DEFAULT_BLOCKING_IPV6 = '::';
 
 const dnsConfig = handleActions(
     {
-        [actions.getDnsConfigRequest]: (state) => ({ ...state, processingGetConfig: true }),
-        [actions.getDnsConfigFailure]: (state) => ({ ...state, processingGetConfig: false }),
-        [actions.getDnsConfigSuccess]: (state, { payload }) => {
+        [actions.getDnsConfigRequest]: (state: any) => ({
+            ...state,
+            processingGetConfig: true,
+        }),
+        [actions.getDnsConfigFailure]: (state: any) => ({
+            ...state,
+            processingGetConfig: false,
+        }),
+        [actions.getDnsConfigSuccess]: (state: any, {
+            payload,
+        }: any) => {
             const {
                 blocking_ipv4,
                 blocking_ipv6,
@@ -38,9 +46,21 @@ const dnsConfig = handleActions(
             };
         },
 
-        [actions.setDnsConfigRequest]: (state) => ({ ...state, processingSetConfig: true }),
-        [actions.setDnsConfigFailure]: (state) => ({ ...state, processingSetConfig: false }),
-        [actions.setDnsConfigSuccess]: (state, { payload }) => ({
+        [actions.setDnsConfigRequest]: (state: any) => ({
+            ...state,
+            processingSetConfig: true,
+        }),
+        [actions.setDnsConfigFailure]: (state: any) => ({
+            ...state,
+            processingSetConfig: false,
+        }),
+        [actions.setDnsConfigSuccess]: (
+
+            state,
+            {
+                payload,
+            }: any,
+        ) => ({
             ...state,
             ...payload,
             processingSetConfig: false,

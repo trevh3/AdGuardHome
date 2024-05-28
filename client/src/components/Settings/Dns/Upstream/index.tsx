@@ -1,7 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+
 import Form from './Form';
+
 import Card from '../../../ui/Card';
 import { setDnsConfig } from '../../../../actions/dnsConfig';
 
@@ -16,11 +18,12 @@ const Upstream = () => {
         resolve_clients,
         local_ptr_upstreams,
         use_private_ptr_resolvers,
+
     } = useSelector((state) => state.dnsConfig, shallowEqual);
 
     const upstream_dns_file = useSelector((state) => state.dnsConfig.upstream_dns_file);
 
-    const handleSubmit = (values) => {
+    const handleSubmit = (values: any) => {
         const {
             fallback_dns,
             bootstrap_dns,
@@ -50,8 +53,11 @@ const Upstream = () => {
         title={t('upstream_dns')}
         bodyType="card-body box-body--settings"
     >
+
         <div className="row">
+
             <div className="col">
+
                 <Form
                     initialValues={{
                         upstream_dns: upstreamDns,

@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
+
 import { handleActions } from 'redux-actions';
+
 import { reducer as formReducer } from 'redux-form';
 
 import * as actions from '../actions/install';
@@ -9,9 +11,17 @@ import {
 } from '../helpers/constants';
 
 const install = handleActions({
-    [actions.getDefaultAddressesRequest]: (state) => ({ ...state, processingDefault: true }),
-    [actions.getDefaultAddressesFailure]: (state) => ({ ...state, processingDefault: false }),
-    [actions.getDefaultAddressesSuccess]: (state, { payload }) => {
+    [actions.getDefaultAddressesRequest]: (state: any) => ({
+        ...state,
+        processingDefault: true,
+    }),
+    [actions.getDefaultAddressesFailure]: (state: any) => ({
+        ...state,
+        processingDefault: false,
+    }),
+    [actions.getDefaultAddressesSuccess]: (state: any, {
+        payload,
+    }: any) => {
         const { interfaces, version } = payload;
         const web = { ...state.web, port: payload.web_port };
         const dns = { ...state.dns, port: payload.dns_port };
@@ -28,16 +38,39 @@ const install = handleActions({
         return newState;
     },
 
-    [actions.nextStep]: (state) => ({ ...state, step: state.step + 1 }),
-    [actions.prevStep]: (state) => ({ ...state, step: state.step - 1 }),
+    [actions.nextStep]: (state: any) => ({
+        ...state,
+        step: state.step + 1,
+    }),
+    [actions.prevStep]: (state: any) => ({
+        ...state,
+        step: state.step - 1,
+    }),
 
-    [actions.setAllSettingsRequest]: (state) => ({ ...state, processingSubmit: true }),
-    [actions.setAllSettingsFailure]: (state) => ({ ...state, processingSubmit: false }),
-    [actions.setAllSettingsSuccess]: (state) => ({ ...state, processingSubmit: false }),
+    [actions.setAllSettingsRequest]: (state: any) => ({
+        ...state,
+        processingSubmit: true,
+    }),
+    [actions.setAllSettingsFailure]: (state: any) => ({
+        ...state,
+        processingSubmit: false,
+    }),
+    [actions.setAllSettingsSuccess]: (state: any) => ({
+        ...state,
+        processingSubmit: false,
+    }),
 
-    [actions.checkConfigRequest]: (state) => ({ ...state, processingCheck: true }),
-    [actions.checkConfigFailure]: (state) => ({ ...state, processingCheck: false }),
-    [actions.checkConfigSuccess]: (state, { payload }) => {
+    [actions.checkConfigRequest]: (state: any) => ({
+        ...state,
+        processingCheck: true,
+    }),
+    [actions.checkConfigFailure]: (state: any) => ({
+        ...state,
+        processingCheck: false,
+    }),
+    [actions.checkConfigSuccess]: (state: any, {
+        payload,
+    }: any) => {
         const web = { ...state.web, ...payload.web };
         const dns = { ...state.dns, ...payload.dns };
         const staticIp = { ...state.staticIp, ...payload.static_ip };

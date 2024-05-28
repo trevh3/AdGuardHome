@@ -1,19 +1,25 @@
 import React from 'react';
+
 import { Link } from 'react-router-dom';
+
 import { normalizeWhois } from './helpers';
 import { WHOIS_ICONS } from './constants';
 
-const getFormattedWhois = (whois) => {
+const getFormattedWhois = (whois: any) => {
     const whoisInfo = normalizeWhois(whois);
     return (
         Object.keys(whoisInfo)
             .map((key) => {
                 const icon = WHOIS_ICONS[key];
                 return (
+
                     <span className="logs__whois text-muted" key={key} title={whoisInfo[key]}>
                     {icon && (
+
                         <>
+
                             <svg className="logs__whois-icon icons icon--18">
+
                                 <use xlinkHref={`#${icon}`} />
                             </svg>
                             &nbsp;
@@ -34,7 +40,7 @@ const getFormattedWhois = (whois) => {
  * @param {boolean} [isLogs]
  * @returns {JSXElement}
  */
-export const renderFormattedClientCell = (value, info, isDetailed = false, isLogs = false) => {
+export const renderFormattedClientCell = (value: any, info: any, isDetailed = false, isLogs = false) => {
     let whoisContainer = null;
     let nameContainer = value;
 
@@ -44,6 +50,7 @@ export const renderFormattedClientCell = (value, info, isDetailed = false, isLog
 
         if (name) {
             const nameValue = <div className="logs__text logs__text--link logs__text--nowrap logs__text--client" title={`${name} (${value})`}>
+
                 {name}&nbsp;<small>{`(${value})`}</small>
             </div>;
 
@@ -51,6 +58,7 @@ export const renderFormattedClientCell = (value, info, isDetailed = false, isLog
                 nameContainer = nameValue;
             } else {
                 nameContainer = !whoisAvailable && isDetailed
+
                     ? <small title={value}>{value}</small>
                     : nameValue;
             }
@@ -64,6 +72,7 @@ export const renderFormattedClientCell = (value, info, isDetailed = false, isLog
     }
 
     return <div className="logs__text mw-100" title={value}>
+
         <Link to={`logs?search="${encodeURIComponent(value)}"`}>{nameContainer}</Link>
         {whoisContainer}
     </div>;

@@ -1,4 +1,4 @@
-export const getFullDayName = (t, abbreviation) => {
+export const getFullDayName = (t: any, abbreviation: any) => {
     const dayMap = {
         sun: t('sunday'),
         mon: t('monday'),
@@ -12,7 +12,7 @@ export const getFullDayName = (t, abbreviation) => {
     return dayMap[abbreviation] || '';
 };
 
-export const getShortDayName = (t, abbreviation) => {
+export const getShortDayName = (t: any, abbreviation: any) => {
     const dayMap = {
         sun: t('sunday_short'),
         mon: t('monday_short'),
@@ -26,18 +26,20 @@ export const getShortDayName = (t, abbreviation) => {
     return dayMap[abbreviation] || '';
 };
 
-export const getTimeFromMs = (value) => {
+export const getTimeFromMs = (value: any) => {
     const selectedTime = new Date(value);
     const hours = selectedTime.getUTCHours();
     const minutes = selectedTime.getUTCMinutes();
 
     return {
+
         hours: hours.toString().padStart(2, '0'),
+
         minutes: minutes.toString().padStart(2, '0'),
     };
 };
 
-export const convertTimeToMs = (hours, minutes) => {
+export const convertTimeToMs = (hours: any, minutes: any) => {
     const selectedTime = new Date(0);
     selectedTime.setUTCHours(parseInt(hours, 10));
     selectedTime.setUTCMinutes(parseInt(minutes, 10));

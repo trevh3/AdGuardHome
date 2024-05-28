@@ -1,13 +1,17 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+
 import { HashLink as Link } from 'react-router-hash-link';
 import { Trans, useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 
 import Statistics from './Statistics';
+
 import Counters from './Counters';
+
 import Clients from './Clients';
+
 import QueriedDomains from './QueriedDomains';
+
 import BlockedDomains from './BlockedDomains';
 import {
     DISABLE_PROTECTION_TIMINGS,
@@ -20,14 +24,30 @@ import {
     msToMinutes,
     msToHours,
     msToDays,
+
 } from '../../helpers/helpers';
 
 import PageTitle from '../ui/PageTitle';
+
 import Loading from '../ui/Loading';
 import './Dashboard.css';
+
 import Dropdown from '../ui/Dropdown';
+
 import UpstreamResponses from './UpstreamResponses';
+
 import UpstreamAvgTime from './UpstreamAvgTime';
+
+interface DashboardProps {
+    dashboard: object;
+    stats: object;
+    access: object;
+    getStats: (...args: unknown[]) => unknown;
+    getStatsConfig: (...args: unknown[]) => unknown;
+    toggleProtection: (...args: unknown[]) => unknown;
+    getClients: (...args: unknown[]) => unknown;
+    getAccessList: (...args: unknown[]) => unknown;
+}
 
 const Dashboard = ({
     getAccessList,
@@ -37,8 +57,8 @@ const Dashboard = ({
     dashboard: { protectionEnabled, processingProtection, protectionDisabledDuration },
     toggleProtection,
     stats,
-    access,
-}) => {
+    access
+}: DashboardProps) => {
     const { t } = useTranslation();
 
     const getAllStats = () => {
@@ -77,7 +97,9 @@ const Dashboard = ({
             title={t('refresh_btn')}
             onClick={() => getAllStats()}
     >
+
         <svg className="icons icon12">
+
             <use xlinkHref="#refresh" />
         </svg>
     </button>;
@@ -112,8 +134,10 @@ const Dashboard = ({
     ];
 
     const getDisableProtectionItems = () => (
+
         Object.values(DISABLE_PROTECTION_ITEMS)
-            .map((item, index) => (
+            .map((item: any, index: any) => (
+
                 <div
                     key={`disable_timings_${index}`}
                     className="dropdown-item"
@@ -126,7 +150,7 @@ const Dashboard = ({
             ))
     );
 
-    const getRemaningTimeText = (milliseconds) => {
+    const getRemaningTimeText = (milliseconds: any) => {
         if (!milliseconds) {
             return '';
         }
@@ -140,11 +164,14 @@ const Dashboard = ({
         return hh ? `${formattedHH}:${mm}:${ss}` : `${mm}:${ss}`;
     };
 
-    const getProtectionBtnText = (status) => (status ? t('disable_protection') : t('enable_protection'));
+    const getProtectionBtnText = (status: any) => (status ? t('disable_protection') : t('enable_protection'));
 
     return <>
+
         <PageTitle title={t('dashboard')} containerClass="page-title--dashboard">
+
             <div className="page-title__protection">
+
                 <button
                     type="button"
                     className={buttonClass}
@@ -169,20 +196,28 @@ const Dashboard = ({
                     {getDisableProtectionItems()}
                 </Dropdown>}
             </div>
+
             <button
                 type="button"
                 className="btn btn-outline-primary btn-sm"
                 onClick={getAllStats}
             >
+
                 <Trans>refresh_statics</Trans>
             </button>
         </PageTitle>
+
         {statsProcessing && <Loading />}
+
         {!statsProcessing && <div className="row row-cards dashboard">
+
             <div className="col-lg-12">
                 {stats.interval === 0 && (
+
                     <div className="alert alert-warning" role="alert">
+
                         <Trans components={[
+
                             <Link
                                 to={`${SETTINGS_URLS.settings}#stats-config`}
                                 key="0"
@@ -194,6 +229,7 @@ const Dashboard = ({
                         </Trans>
                     </div>
                 )}
+
                 <Statistics
                     interval={msToDays(stats.interval)}
                     dnsQueries={stats.dnsQueries}
@@ -207,15 +243,20 @@ const Dashboard = ({
                     refreshButton={refreshButton}
                 />
             </div>
+
             <div className="col-lg-6">
+
                 <Counters
                     subtitle={subtitle}
                     refreshButton={refreshButton}
                 />
             </div>
+
             <div className="col-lg-6">
+
                 <Clients
                     subtitle={subtitle}
+
                     dnsQueries={stats.numDnsQueries}
                     topClients={stats.topClients}
                     clients={dashboard.clients}
@@ -225,7 +266,9 @@ const Dashboard = ({
                     disallowedClients={access.disallowed_clients}
                 />
             </div>
+
             <div className="col-lg-6">
+
                 <QueriedDomains
                     subtitle={subtitle}
                     dnsQueries={stats.numDnsQueries}
@@ -233,7 +276,9 @@ const Dashboard = ({
                     refreshButton={refreshButton}
                 />
             </div>
+
             <div className="col-lg-6">
+
                 <BlockedDomains
                     subtitle={subtitle}
                     topBlockedDomains={stats.topBlockedDomains}
@@ -244,14 +289,18 @@ const Dashboard = ({
                     refreshButton={refreshButton}
                 />
             </div>
+
             <div className="col-lg-6">
+
                 <UpstreamResponses
                     subtitle={subtitle}
                     topUpstreamsResponses={stats.topUpstreamsResponses}
                     refreshButton={refreshButton}
                 />
             </div>
+
             <div className="col-lg-6">
+
                 <UpstreamAvgTime
                     subtitle={subtitle}
                     topUpstreamsAvgTime={stats.topUpstreamsAvgTime}
@@ -260,17 +309,6 @@ const Dashboard = ({
             </div>
         </div>}
     </>;
-};
-
-Dashboard.propTypes = {
-    dashboard: PropTypes.object.isRequired,
-    stats: PropTypes.object.isRequired,
-    access: PropTypes.object.isRequired,
-    getStats: PropTypes.func.isRequired,
-    getStatsConfig: PropTypes.func.isRequired,
-    toggleProtection: PropTypes.func.isRequired,
-    getClients: PropTypes.func.isRequired,
-    getAccessList: PropTypes.func.isRequired,
 };
 
 export default Dashboard;

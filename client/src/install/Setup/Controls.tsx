@@ -1,21 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Trans } from 'react-i18next';
 
 import * as actionCreators from '../../actions/install';
 
-class Controls extends Component {
-    renderPrevButton(step) {
+interface ControlsProps {
+    install: object;
+    nextStep?: (...args: unknown[]) => unknown;
+    prevStep?: (...args: unknown[]) => unknown;
+    openDashboard?: (...args: unknown[]) => unknown;
+    submitting?: boolean;
+    invalid?: boolean;
+    pristine?: boolean;
+    ip?: string;
+    port?: number;
+}
+
+class Controls extends Component<ControlsProps> {
+    renderPrevButton(step: any) {
         switch (step) {
             case 2:
             case 3:
                 return (
+
                     <button
                             type="button"
                             className="btn btn-secondary btn-lg setup__button"
+
                             onClick={this.props.prevStep}
                         >
+
                             <Trans>back</Trans>
                         </button>
                 );
@@ -24,30 +38,39 @@ class Controls extends Component {
         }
     }
 
-    renderNextButton(step) {
+    renderNextButton(step: any) {
         const {
+
             nextStep,
+
             invalid,
+
             pristine,
+
             install,
+
             ip,
+
             port,
         } = this.props;
 
         switch (step) {
             case 1:
                 return (
+
                     <button
                         type="button"
                         className="btn btn-success btn-lg setup__button"
                         onClick={nextStep}
                     >
+
                         <Trans>get_started</Trans>
                     </button>
                 );
             case 2:
             case 3:
                 return (
+
                     <button
                         type="submit"
                         className="btn btn-success btn-lg setup__button"
@@ -59,26 +82,32 @@ class Controls extends Component {
                             || install.web.status
                         }
                     >
+
                         <Trans>next</Trans>
                     </button>
                 );
             case 4:
                 return (
+
                     <button
                         type="button"
                         className="btn btn-success btn-lg setup__button"
                         onClick={nextStep}
                     >
+
                         <Trans>next</Trans>
                     </button>
                 );
             case 5:
                 return (
+
                     <button
                         type="button"
                         className="btn btn-success btn-lg setup__button"
+
                         onClick={() => this.props.openDashboard(ip, port)}
                     >
+
                         <Trans>open_dashboard</Trans>
                     </button>
                 );
@@ -91,7 +120,9 @@ class Controls extends Component {
         const { install } = this.props;
 
         return (
+
             <div className="setup__nav">
+
                 <div className="btn-list">
                     {this.renderPrevButton(install.step)}
                     {this.renderNextButton(install.step)}
@@ -101,19 +132,7 @@ class Controls extends Component {
     }
 }
 
-Controls.propTypes = {
-    install: PropTypes.object.isRequired,
-    nextStep: PropTypes.func,
-    prevStep: PropTypes.func,
-    openDashboard: PropTypes.func,
-    submitting: PropTypes.bool,
-    invalid: PropTypes.bool,
-    pristine: PropTypes.bool,
-    ip: PropTypes.string,
-    port: PropTypes.number,
-};
-
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any) => {
     const { install } = state;
     const props = { install };
     return props;

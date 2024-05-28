@@ -1,28 +1,42 @@
 import React, { useCallback } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+
 import { Field, reduxForm } from 'redux-form';
 import { useTranslation } from 'react-i18next';
 
 import {
     renderInputField,
     toNumber,
+
 } from '../../../helpers/form';
 import { FORM_NAME, UINT32_RANGE } from '../../../helpers/constants';
 import { validateIpv6, validateRequiredValue } from '../../../helpers/validators';
+
+interface FormDHCPv6Props {
+    handleSubmit: (...args: unknown[]) => unknown;
+    submitting: boolean;
+    initialValues: object;
+    processingConfig: boolean;
+    change: (...args: unknown[]) => unknown;
+    reset: (...args: unknown[]) => unknown;
+    ipv6placeholders: object;
+}
 
 const FormDHCPv6 = ({
     handleSubmit,
     submitting,
     processingConfig,
-    ipv6placeholders,
-}) => {
+    ipv6placeholders
+}: FormDHCPv6Props) => {
     const { t } = useTranslation();
+
     const dhcp = useSelector((state) => state.form[FORM_NAME.DHCPv6], shallowEqual);
+
     const interfaces = useSelector((state) => state.form[FORM_NAME.DHCP_INTERFACES], shallowEqual);
     const interface_name = interfaces?.values?.interface_name;
 
     const isInterfaceIncludesIpv6 = useSelector(
+
         (state) => !!state.dhcp?.interfaces?.[interface_name]?.ipv6_addresses,
     );
 
@@ -40,14 +54,22 @@ const FormDHCPv6 = ({
     }, [isEmptyConfig]);
 
     return <form onSubmit={handleSubmit}>
+
         <div className="row">
+
             <div className="col-lg-6">
+
                 <div className="form__group form__group--settings">
+
                     <div className="row">
+
                         <div className="col-12">
+
                             <label>{t('dhcp_form_range_title')}</label>
                         </div>
+
                         <div className="col">
+
                             <Field
                                 name="v6.range_start"
                                 component={renderInputField}
@@ -58,7 +80,9 @@ const FormDHCPv6 = ({
                                 disabled={!isInterfaceIncludesIpv6}
                             />
                         </div>
+
                         <div className="col">
+
                             <Field
                                 name="v6.range_end"
                                 component="input"
@@ -73,9 +97,13 @@ const FormDHCPv6 = ({
                 </div>
             </div>
         </div>
+
         <div className="row">
+
             <div className="col-lg-6 form__group form__group--settings">
+
                 <label>{t('dhcp_form_lease_title')}</label>
+
                 <Field
                     name="v6.lease_duration"
                     component={renderInputField}
@@ -90,7 +118,9 @@ const FormDHCPv6 = ({
                 />
             </div>
         </div>
+
         <div className="btn-list">
+
             <button
                 type="submit"
                 className="btn btn-success btn-standard"
@@ -100,16 +130,6 @@ const FormDHCPv6 = ({
             </button>
         </div>
     </form>;
-};
-
-FormDHCPv6.propTypes = {
-    handleSubmit: PropTypes.func.isRequired,
-    submitting: PropTypes.bool.isRequired,
-    initialValues: PropTypes.object.isRequired,
-    processingConfig: PropTypes.bool.isRequired,
-    change: PropTypes.func.isRequired,
-    reset: PropTypes.func.isRequired,
-    ipv6placeholders: PropTypes.object.isRequired,
 };
 
 export default reduxForm({

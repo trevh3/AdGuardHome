@@ -4,25 +4,55 @@ import * as actions from '../actions/services';
 
 const services = handleActions(
     {
-        [actions.getBlockedServicesRequest]: (state) => ({ ...state, processing: true }),
-        [actions.getBlockedServicesFailure]: (state) => ({ ...state, processing: false }),
-        [actions.getBlockedServicesSuccess]: (state, { payload }) => ({
+        [actions.getBlockedServicesRequest]: (state: any) => ({
+            ...state,
+            processing: true,
+        }),
+        [actions.getBlockedServicesFailure]: (state: any) => ({
+            ...state,
+            processing: false,
+        }),
+        [actions.getBlockedServicesSuccess]: (
+
+            state,
+            {
+                payload,
+            }: any,
+        ) => ({
             ...state,
             list: payload,
             processing: false,
         }),
 
-        [actions.getAllBlockedServicesRequest]: (state) => ({ ...state, processingAll: true }),
-        [actions.getAllBlockedServicesFailure]: (state) => ({ ...state, processingAll: false }),
-        [actions.getAllBlockedServicesSuccess]: (state, { payload }) => ({
+        [actions.getAllBlockedServicesRequest]: (state: any) => ({
+            ...state,
+            processingAll: true,
+        }),
+        [actions.getAllBlockedServicesFailure]: (state: any) => ({
+            ...state,
+            processingAll: false,
+        }),
+        [actions.getAllBlockedServicesSuccess]: (
+
+            state,
+            {
+                payload,
+            }: any,
+        ) => ({
             ...state,
             allServices: payload.blocked_services,
             processingAll: false,
         }),
 
-        [actions.updateBlockedServicesRequest]: (state) => ({ ...state, processingSet: true }),
-        [actions.updateBlockedServicesFailure]: (state) => ({ ...state, processingSet: false }),
-        [actions.updateBlockedServicesSuccess]: (state) => ({
+        [actions.updateBlockedServicesRequest]: (state: any) => ({
+            ...state,
+            processingSet: true,
+        }),
+        [actions.updateBlockedServicesFailure]: (state: any) => ({
+            ...state,
+            processingSet: false,
+        }),
+        [actions.updateBlockedServicesSuccess]: (state: any) => ({
             ...state,
             processingSet: false,
         }),

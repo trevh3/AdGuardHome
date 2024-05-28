@@ -7,11 +7,14 @@ import '../components/ui/ReactTable.css';
 import configureStore from '../configureStore';
 import reducers from '../reducers/login';
 import '../i18n';
+
 import Login from './Login';
 
 const store = configureStore(reducers, {}); // set initial state
 ReactDOM.render(
+
     <Provider store={store}>
+
         <Login />
     </Provider>,
     document.getElementById('root'),

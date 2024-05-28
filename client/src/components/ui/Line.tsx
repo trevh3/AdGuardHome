@@ -6,15 +6,24 @@ import subHours from 'date-fns/sub_hours';
 import dateFormat from 'date-fns/format';
 import round from 'lodash/round';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import './Line.css';
+
 import { msToDays, msToHours } from '../../helpers/helpers';
 import { TIME_UNITS } from '../../helpers/constants';
 
+interface LineProps {
+    data: unknown[];
+    color?: string;
+    width?: number;
+    height?: number;
+}
+
 const Line = ({
-    data, color = 'black',
-}) => {
+    data,
+    color = 'black'
+}: LineProps) => {
     const interval = useSelector((state) => state.stats.interval);
+
     const timeUnits = useSelector((state) => state.stats.timeUnits);
 
     return <ResponsiveLine
@@ -51,27 +60,27 @@ const Line = ({
             }
 
             const daysAgo = subDays(Date.now(), msToDays(interval) - 1);
+
             return dateFormat(addDays(daysAgo, x), 'D MMM YYYY');
         }}
+
         yFormat={(y) => round(y, 2)}
         sliceTooltip={(slice) => {
             const { xFormatted, yFormatted } = slice.slice.points[0].data;
+
             return <div className="line__tooltip">
+
                 <span className="line__tooltip-text">
+
                     <strong>{yFormatted}</strong>
+
                     <br />
+
                     <small>{xFormatted}</small>
                 </span>
             </div>;
         }}
     />;
-};
-
-Line.propTypes = {
-    data: PropTypes.array.isRequired,
-    color: PropTypes.string,
-    width: PropTypes.number,
-    height: PropTypes.number,
 };
 
 export default Line;

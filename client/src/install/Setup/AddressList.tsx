@@ -1,31 +1,47 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { getIpList, getDnsAddress, getWebAddress } from '../../helpers/helpers';
 import { ALL_INTERFACES_IP } from '../../helpers/constants';
 
+interface renderItemProps {
+    ip: string;
+    port: number;
+    isDns: boolean;
+}
+
 const renderItem = ({
-    ip, port, isDns,
-}) => {
+    ip,
+    port,
+    isDns
+}: renderItemProps) => {
     const webAddress = getWebAddress(ip, port);
     const dnsAddress = getDnsAddress(ip, port);
 
     return <li key={ip}>{isDns
+
         ? <strong>{dnsAddress}</strong>
+
         : <a href={webAddress} target="_blank" rel="noopener noreferrer">{webAddress}</a>
     }
     </li>;
 };
 
+interface AddressListProps {
+    interfaces: object;
+    address: string;
+    port: number;
+    isDns?: boolean;
+}
+
 const AddressList = ({
     address,
     interfaces,
     port,
-    isDns,
-}) => <ul className="list-group pl-4">{
+    isDns
+}: AddressListProps) => <ul className="list-group pl-4">{
     address === ALL_INTERFACES_IP
         ? getIpList(interfaces)
-            .map((ip) => renderItem({
+            .map((ip: any) => renderItem({
                 ip,
                 port,
                 isDns,
@@ -37,18 +53,5 @@ const AddressList = ({
         })
 }
 </ul>;
-
-AddressList.propTypes = {
-    interfaces: PropTypes.object.isRequired,
-    address: PropTypes.string.isRequired,
-    port: PropTypes.number.isRequired,
-    isDns: PropTypes.bool,
-};
-
-renderItem.propTypes = {
-    ip: PropTypes.string.isRequired,
-    port: PropTypes.number.isRequired,
-    isDns: PropTypes.bool.isRequired,
-};
 
 export default AddressList;

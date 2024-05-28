@@ -1,37 +1,67 @@
 import React, { Component, Fragment } from 'react';
 import { withTranslation } from 'react-i18next';
-import PropTypes from 'prop-types';
 
 import { ClientsTable } from './ClientsTable';
+
 import AutoClients from './AutoClients';
+
 import PageTitle from '../../ui/PageTitle';
+
 import Loading from '../../ui/Loading';
 
-class Clients extends Component {
+interface ClientsProps {
+    t: (...args: unknown[]) => unknown;
+    dashboard: object;
+    stats: object;
+    clients: object;
+    toggleClientModal: (...args: unknown[]) => unknown;
+    deleteClient: (...args: unknown[]) => unknown;
+    addClient: (...args: unknown[]) => unknown;
+    updateClient: (...args: unknown[]) => unknown;
+    getClients: (...args: unknown[]) => unknown;
+    getStats: (...args: unknown[]) => unknown;
+}
+
+class Clients extends Component<ClientsProps> {
     componentDidMount() {
         this.props.getClients();
+
         this.props.getStats();
     }
 
     render() {
         const {
+
             t,
+
             dashboard,
+
             stats,
+
             clients,
+
             addClient,
+
             updateClient,
+
             deleteClient,
+
             toggleClientModal,
+
             getStats,
         } = this.props;
 
         return (
+
             <Fragment>
+
                 <PageTitle title={t('client_settings')} />
+
                 {(stats.processingStats || dashboard.processingClients) && <Loading />}
                 {!stats.processingStats && !dashboard.processingClients && (
+
                     <Fragment>
+
                         <ClientsTable
                             clients={dashboard.clients}
                             normalizedTopClients={stats.normalizedTopClients}
@@ -48,7 +78,9 @@ class Clients extends Component {
                             getStats={getStats}
                             supportedTags={dashboard.supportedTags}
                         />
+
                         <AutoClients
+
                             autoClients={dashboard.autoClients}
                             normalizedTopClients={stats.normalizedTopClients}
                         />
@@ -58,18 +90,5 @@ class Clients extends Component {
         );
     }
 }
-
-Clients.propTypes = {
-    t: PropTypes.func.isRequired,
-    dashboard: PropTypes.object.isRequired,
-    stats: PropTypes.object.isRequired,
-    clients: PropTypes.object.isRequired,
-    toggleClientModal: PropTypes.func.isRequired,
-    deleteClient: PropTypes.func.isRequired,
-    addClient: PropTypes.func.isRequired,
-    updateClient: PropTypes.func.isRequired,
-    getClients: PropTypes.func.isRequired,
-    getStats: PropTypes.func.isRequired,
-};
 
 export default withTranslation()(Clients);

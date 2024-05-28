@@ -1,13 +1,21 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import debounce from 'lodash/debounce';
 
 import { DEBOUNCE_TIMEOUT } from '../../../helpers/constants';
+
 import Form from './Form';
+
 import { getObjDiff } from '../../../helpers/helpers';
 
-const FiltersConfig = (props) => {
+interface FiltersConfigProps {
+    initialValues: object;
+    processing: boolean;
+    setFiltersConfig: (...args: unknown[]) => unknown;
+    t: (...args: unknown[]) => unknown;
+}
+
+const FiltersConfig = (props: FiltersConfigProps) => {
     const { initialValues, processing } = props;
 
     const handleFormChange = debounce((values) => {
@@ -19,6 +27,7 @@ const FiltersConfig = (props) => {
     }, DEBOUNCE_TIMEOUT);
 
     return (
+
         <Form
             initialValues={initialValues}
             onSubmit={handleFormChange}
@@ -26,13 +35,6 @@ const FiltersConfig = (props) => {
             processing={processing}
         />
     );
-};
-
-FiltersConfig.propTypes = {
-    initialValues: PropTypes.object.isRequired,
-    processing: PropTypes.bool.isRequired,
-    setFiltersConfig: PropTypes.func.isRequired,
-    t: PropTypes.func.isRequired,
 };
 
 export default withTranslation()(FiltersConfig);

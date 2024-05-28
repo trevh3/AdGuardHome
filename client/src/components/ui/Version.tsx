@@ -1,6 +1,7 @@
 import React from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+
 import { getVersion } from '../../actions';
 import './Version.css';
 
@@ -11,10 +12,12 @@ const Version = () => {
         dnsVersion,
         processingVersion,
         checkUpdateFlag,
+
     } = useSelector((state) => state?.dashboard ?? {}, shallowEqual);
 
     const {
         dnsVersion: installDnsVersion,
+
     } = useSelector((state) => state?.install ?? {}, shallowEqual);
 
     const version = dnsVersion || installDnsVersion;
@@ -24,14 +27,20 @@ const Version = () => {
     };
 
     return (
+
         <div className="version">
+
             <div className="version__text">
                 {version && (
+
                     <>
+
                         <Trans>version</Trans>:&nbsp;
+
                         <span className="version__value" title={version}>{version}</span>
                     </>
                 )}
+
                 {checkUpdateFlag && <button
                     type="button"
                     className="btn btn-icon btn-icon-sm btn-outline-primary btn-sm ml-2"
@@ -39,7 +48,9 @@ const Version = () => {
                     disabled={processingVersion}
                     title={t('check_updates_now')}
                 >
+
                     <svg className="icons icon12">
+
                         <use xlinkHref="#refresh" />
                     </svg>
                 </button>}

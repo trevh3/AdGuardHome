@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+
 import { HashRouter, Route } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading-bar';
 import { hot } from 'react-hot-loader/root';
@@ -10,15 +11,21 @@ import './index.css';
 
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
-import propTypes from 'prop-types';
 import Toasts from '../Toasts';
+
 import Footer from '../ui/Footer';
+
 import Status from '../ui/Status';
+
 import UpdateTopline from '../ui/UpdateTopline';
+
 import UpdateOverlay from '../ui/UpdateOverlay';
+
 import EncryptionTopline from '../ui/EncryptionTopline';
+
 import Icons from '../ui/Icons';
 import i18n from '../../i18n';
+
 import Loading from '../ui/Loading';
 import {
     FILTERS_URLS,
@@ -26,8 +33,11 @@ import {
     SETTINGS_URLS,
     THEMES,
 } from '../../helpers/constants';
+
 import { getLogsUrlParams, setHtmlLangAttr, setUITheme } from '../../helpers/helpers';
+
 import Header from '../Header';
+
 import { changeLanguage, getDnsStatus, getTimerStatus } from '../../actions';
 
 import Dashboard from '../../containers/Dashboard';
@@ -35,13 +45,16 @@ import SetupGuide from '../../containers/SetupGuide';
 import Settings from '../../containers/Settings';
 import Dns from '../../containers/Dns';
 import Encryption from '../../containers/Encryption';
+
 import Dhcp from '../Settings/Dhcp';
 import Clients from '../../containers/Clients';
 import DnsBlocklist from '../../containers/DnsBlocklist';
 import DnsAllowlist from '../../containers/DnsAllowlist';
 import DnsRewrites from '../../containers/DnsRewrites';
 import CustomRules from '../../containers/CustomRules';
+
 import Services from '../Filters/Services';
+
 import Logs from '../Logs';
 import ProtectionTimer from '../ProtectionTimer';
 
@@ -101,7 +114,17 @@ const ROUTES = [
     },
 ];
 
-const renderRoute = ({ path, component, exact }, idx) => <Route
+interface renderRouteProps {
+    path: string | string[];
+    component: React.ReactElement;
+    exact?: boolean;
+}
+
+const renderRoute = ({
+    path,
+    component,
+    exact
+}: renderRouteProps, idx: any) => <Route
         key={idx}
         exact={exact}
         path={path}
@@ -116,10 +139,12 @@ const App = () => {
         isUpdateAvailable,
         processing,
         theme,
+
     } = useSelector((state) => state.dashboard, shallowEqual);
 
     const { processing: processingEncryption } = useSelector((
         state,
+
     ) => state.encryption, shallowEqual);
 
     const updateAvailable = isCoreRunning && isUpdateAvailable;
@@ -157,7 +182,7 @@ const App = () => {
         setLanguage();
     }, [language]);
 
-    const handleAutoTheme = (e, accountTheme) => {
+    const handleAutoTheme = (e: any, accountTheme: any) => {
         if (accountTheme !== THEMES.auto) {
             return;
         }
@@ -196,34 +221,44 @@ const App = () => {
     };
 
     return <HashRouter hashType="noslash">
+
         {updateAvailable && <>
+
             <UpdateTopline />
+
             <UpdateOverlay />
         </>}
+
         {!processingEncryption && <EncryptionTopline />}
+
         <LoadingBar className="loading-bar" updateTime={1000} />
+
         <Header />
+
         <ProtectionTimer />
+
         <div className="container container--wrap pb-5 pt-5">
+
             {processing && <Loading />}
+
             {!isCoreRunning && <div className="row row-cards">
+
                 <div className="col-lg-12">
+
                     <Status reloadPage={reloadPage} message="dns_start" />
+
                     <Loading />
                 </div>
             </div>}
             {!processing && isCoreRunning && ROUTES.map(renderRoute)}
         </div>
+
         <Footer />
+
         <Toasts />
+
         <Icons />
     </HashRouter>;
-};
-
-renderRoute.propTypes = {
-    path: propTypes.oneOfType([propTypes.string, propTypes.arrayOf(propTypes.string)]).isRequired,
-    component: propTypes.element.isRequired,
-    exact: propTypes.bool,
 };
 
 export default hot(App);

@@ -1,13 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import { Field, reduxForm } from 'redux-form';
 import { Trans, withTranslation } from 'react-i18next';
 import flow from 'lodash/flow';
+
 import { renderInputField } from '../../../helpers/form';
 import { validateAnswer, validateDomain, validateRequiredValue } from '../../../helpers/validators';
 import { FORM_NAME } from '../../../helpers/constants';
 
-const Form = (props) => {
+interface FormProps {
+    pristine: boolean;
+    handleSubmit: (...args: unknown[]) => unknown;
+    reset: (...args: unknown[]) => unknown;
+    toggleRewritesModal: (...args: unknown[]) => unknown;
+    submitting: boolean;
+    processingAdd: boolean;
+    t: (...args: unknown[]) => unknown;
+    initialValues?: object;
+}
+
+const Form = (props: FormProps) => {
     const {
         t,
         handleSubmit,
@@ -19,12 +31,18 @@ const Form = (props) => {
     } = props;
 
     return (
+
         <form onSubmit={handleSubmit}>
+
             <div className="modal-body">
+
                 <div className="form__desc form__desc--top">
+
                     <Trans>domain_desc</Trans>
                 </div>
+
                 <div className="form__group">
+
                     <Field
                         id="domain"
                         name="domain"
@@ -37,13 +55,20 @@ const Form = (props) => {
                 </div>
 
                 <Trans>examples_title</Trans>:
+
                 <ol className="leading-loose">
+
                     <li>
+
                         <code>example.org</code> – <Trans>example_rewrite_domain</Trans>
                     </li>
+
                     <li>
+
                         <code>*.example.org</code> –&nbsp;
+
                         <span>
+
                             <Trans components={[<code key="0">text</code>]}>
                                 example_rewrite_wildcard
                             </Trans>
@@ -52,6 +77,7 @@ const Form = (props) => {
                 </ol>
 
                 <div className="form__group">
+
                     <Field
                         id="answer"
                         name="answer"
@@ -63,16 +89,22 @@ const Form = (props) => {
                     />
                 </div>
             </div>
+
             <ul>{['rewrite_ip_address',
                 'rewrite_domain_name',
                 'rewrite_A',
                 'rewrite_AAAA']
+
                 .map((str) => <li key={str}>
+
                     <Trans components={[<code key="0">text</code>]}>{str}</Trans>
                 </li>)
             }</ul>
+
             <div className="modal-footer">
+
                 <div className="btn-list">
+
                     <button
                         type="button"
                         className="btn btn-secondary btn-standard"
@@ -82,30 +114,22 @@ const Form = (props) => {
                             toggleRewritesModal();
                         }}
                     >
+
                         <Trans>cancel_btn</Trans>
                     </button>
+
                     <button
                         type="submit"
                         className="btn btn-success btn-standard"
                         disabled={submitting || pristine || processingAdd}
                     >
+
                         <Trans>save_btn</Trans>
                     </button>
                 </div>
             </div>
         </form>
     );
-};
-
-Form.propTypes = {
-    pristine: PropTypes.bool.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    reset: PropTypes.func.isRequired,
-    toggleRewritesModal: PropTypes.func.isRequired,
-    submitting: PropTypes.bool.isRequired,
-    processingAdd: PropTypes.bool.isRequired,
-    t: PropTypes.func.isRequired,
-    initialValues: PropTypes.object,
 };
 
 export default flow([

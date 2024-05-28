@@ -3,35 +3,59 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { nanoid } from 'nanoid';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
+
 import { Link, useHistory } from 'react-router-dom';
-import propTypes from 'prop-types';
 
 import { checkFiltered, getBlockingClientName } from '../../../helpers/helpers';
 import { BLOCK_ACTIONS } from '../../../helpers/constants';
+
 import { toggleBlocking, toggleBlockingForClient } from '../../../actions';
+
 import IconTooltip from './IconTooltip';
+
 import { renderFormattedClientCell } from '../../../helpers/renderFormattedClientCell';
 import { toggleClientBlock } from '../../../actions/access';
 import { getBlockClientInfo } from './helpers';
 import { getStats } from '../../../actions/stats';
 import { updateLogs } from '../../../actions/queryLogs';
 
+interface ClientCellProps {
+    client: string;
+    client_id?: string;
+    client_info?: {
+        name: string;
+        whois: {
+            country?: string;
+            city?: string;
+            orgname?: string;
+        };
+        disallowed: boolean;
+        disallowed_rule: string;
+    };
+    domain: string;
+    reason: string;
+}
+
 const ClientCell = ({
     client,
     client_id,
     client_info,
     domain,
-    reason,
-}) => {
+    reason
+}: ClientCellProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const history = useHistory();
+
     const autoClients = useSelector((state) => state.dashboard.autoClients, shallowEqual);
+
     const isDetailed = useSelector((state) => state.queryLogs.isDetailed);
+
     const allowedСlients = useSelector((state) => state.access.allowed_clients, shallowEqual);
     const [isOptionsOpened, setOptionsOpened] = useState(false);
 
-    const autoClient = autoClients.find((autoClient) => autoClient.name === client);
+    const autoClient = autoClients.find((autoClient: any) => autoClient.name === client);
+
     const clients = useSelector((state) => state.dashboard.clients);
     const source = autoClient?.source;
     const whoisAvailable = client_info && Object.keys(client_info.whois).length > 0;
@@ -57,7 +81,7 @@ const ClientCell = ({
 
     const isFiltered = checkFiltered(reason);
 
-    const clientIds = clients.map((c) => c.ids).flat();
+    const clientIds = clients.map((c: any) => c.ids).flat();
 
     const nameClass = classNames('w-90 o-hidden d-flex flex-column', {
         'mt-2': isDetailed && !client_info?.name && !whoisAvailable,
@@ -68,7 +92,7 @@ const ClientCell = ({
         'my-3': isDetailed,
     });
 
-    const renderBlockingButton = (isFiltered, domain) => {
+    const renderBlockingButton = (isFiltered: any, domain: any) => {
         const buttonType = isFiltered ? BLOCK_ACTIONS.UNBLOCK : BLOCK_ACTIONS.BLOCK;
 
         const {
@@ -130,26 +154,29 @@ const ClientCell = ({
             });
         }
 
-        const getOptions = (options) => {
+        const getOptions = (options: any) => {
             if (options.length === 0) {
                 return null;
             }
-            return (
-                <>
-                    {options.map(({
-                        name, onClick, disabled, className,
-                    }) => (
-                        <button
-                            key={name}
-                            className={classNames('button-action--arrow-option px-4 py-1', className)}
-                            onClick={onClick}
-                            disabled={disabled}
-                        >
-                            {t(name)}
-                        </button>
-                    ))}
-                </>
-            );
+
+            return <>
+                {options.map(({
+                    name,
+                    onClick,
+                    disabled,
+                    className,
+                }: any) => (
+
+                    <button
+                        key={name}
+                        className={classNames('button-action--arrow-option px-4 py-1', className)}
+                        onClick={onClick}
+                        disabled={disabled}
+                    >
+                        {t(name)}
+                    </button>
+                ))}
+            </>;
         };
 
         const content = getOptions(BUTTON_OPTIONS);
@@ -159,17 +186,22 @@ const ClientCell = ({
         });
 
         return (
+
             <div className={containerClass}>
+
                 <button
                     type="button"
                     className="btn btn-icon btn-sm px-0"
                     onClick={() => setOptionsOpened(true)}
                 >
+
                     <svg className="icon24 icon--lightgray button-action__icon">
+
                         <use xlinkHref="#bullets" />
                     </svg>
                 </button>
                 {isOptionsOpened && (
+
                     <IconTooltip
                         className="icon24"
                         tooltipClass="button-action--arrow-option-container"
@@ -188,10 +220,12 @@ const ClientCell = ({
     };
 
     return (
+
         <div
             className="o-hidden h-100 logs__cell logs__cell--client"
             role="gridcell"
         >
+
             <IconTooltip
                 className={hintClass}
                 columnClass="grid grid--limited"
@@ -202,11 +236,14 @@ const ClientCell = ({
                 content={processedData}
                 placement="bottom"
             />
+
             <div className={nameClass}>
+
                 <div data-tip={true} data-for={id}>
                     {renderFormattedClientCell(client, clientInfo, isDetailed, true)}
                 </div>
                 {isDetailed && clientName && !whoisAvailable && (
+
                     <Link
                         className="detailed-info d-none d-sm-block logs__text logs__text--link logs__text--client"
                         to={`logs?search="${encodeURIComponent(clientName)}"`}
@@ -219,23 +256,6 @@ const ClientCell = ({
             {renderBlockingButton(isFiltered, domain)}
         </div>
     );
-};
-
-ClientCell.propTypes = {
-    client: propTypes.string.isRequired,
-    client_id: propTypes.string,
-    client_info: propTypes.shape({
-        name: propTypes.string.isRequired,
-        whois: propTypes.shape({
-            country: propTypes.string,
-            city: propTypes.string,
-            orgname: propTypes.string,
-        }).isRequired,
-        disallowed: propTypes.bool.isRequired,
-        disallowed_rule: propTypes.string.isRequired,
-    }),
-    domain: propTypes.string.isRequired,
-    reason: propTypes.string.isRequired,
 };
 
 export default ClientCell;

@@ -1,17 +1,18 @@
 import axios from 'axios';
 
+import { BASE_URL } from 'constants';
+
 import { getPathWithQueryString } from '../helpers/helpers';
 import {
     QUERY_LOGS_PAGE_LIMIT, HTML_PAGES, R_PATH_LAST_PART, THEMES,
 } from '../helpers/constants';
-import { BASE_URL } from 'constants';
 import i18n from '../i18n';
 import { LANGUAGES } from '../helpers/twosky';
 
 class Api {
     baseUrl = BASE_URL;
 
-    async makeRequest(path, method = 'POST', config) {
+    async makeRequest(path: any, method = 'POST', config: any) {
         const url = `${this.baseUrl}/${path}`;
 
         const axiosConfig = config || {};
@@ -29,6 +30,7 @@ class Api {
             return response.data;
         } catch (error) {
             const errorPath = url;
+
             if (error.response) {
                 const { pathname } = document.location;
                 const shouldRedirect = pathname !== HTML_PAGES.LOGIN
@@ -43,12 +45,13 @@ class Api {
 
                 throw new Error(`${errorPath} | ${error.response.data} | ${error.response.status}`);
             }
+
             throw new Error(`${errorPath} | ${error.message || error}`);
         }
     }
 
     // Global methods
-    GLOBAL_STATUS = { path: 'status', method: 'GET' }
+    GLOBAL_STATUS = { path: 'status', method: 'GET' };
 
     GLOBAL_TEST_UPSTREAM_DNS = { path: 'test_upstream_dns', method: 'POST' };
 
@@ -58,10 +61,11 @@ class Api {
 
     getGlobalStatus() {
         const { path, method } = this.GLOBAL_STATUS;
+
         return this.makeRequest(path, method);
     }
 
-    testUpstream(servers) {
+    testUpstream(servers: any) {
         const { path, method } = this.GLOBAL_TEST_UPSTREAM_DNS;
         const config = {
             data: servers,
@@ -69,7 +73,7 @@ class Api {
         return this.makeRequest(path, method, config);
     }
 
-    getGlobalVersion(data) {
+    getGlobalVersion(data: any) {
         const { path, method } = this.GLOBAL_VERSION;
         const config = {
             data,
@@ -79,6 +83,7 @@ class Api {
 
     getUpdate() {
         const { path, method } = this.GLOBAL_UPDATE;
+
         return this.makeRequest(path, method);
     }
 
@@ -101,10 +106,11 @@ class Api {
 
     getFilteringStatus() {
         const { path, method } = this.FILTERING_STATUS;
+
         return this.makeRequest(path, method);
     }
 
-    refreshFilters(config) {
+    refreshFilters(config: any) {
         const { path, method } = this.FILTERING_REFRESH;
         const parameters = {
             data: config,
@@ -113,7 +119,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    addFilter(config) {
+    addFilter(config: any) {
         const { path, method } = this.FILTERING_ADD_FILTER;
         const parameters = {
             data: config,
@@ -122,7 +128,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    removeFilter(config) {
+    removeFilter(config: any) {
         const { path, method } = this.FILTERING_REMOVE_FILTER;
         const parameters = {
             data: config,
@@ -131,7 +137,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    setRules(rules) {
+    setRules(rules: any) {
         const { path, method } = this.FILTERING_SET_RULES;
         const parameters = {
             data: rules,
@@ -139,7 +145,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    setFiltersConfig(config) {
+    setFiltersConfig(config: any) {
         const { path, method } = this.FILTERING_CONFIG;
         const parameters = {
             data: config,
@@ -147,7 +153,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    setFilterUrl(config) {
+    setFilterUrl(config: any) {
         const { path, method } = this.FILTERING_SET_URL;
         const parameters = {
             data: config,
@@ -155,9 +161,10 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    checkHost(params) {
+    checkHost(params: any) {
         const { path, method } = this.FILTERING_CHECK_HOST;
         const url = getPathWithQueryString(path, params);
+
         return this.makeRequest(url, method);
     }
 
@@ -170,16 +177,19 @@ class Api {
 
     getParentalStatus() {
         const { path, method } = this.PARENTAL_STATUS;
+
         return this.makeRequest(path, method);
     }
 
     enableParentalControl() {
         const { path, method } = this.PARENTAL_ENABLE;
+
         return this.makeRequest(path, method);
     }
 
     disableParentalControl() {
         const { path, method } = this.PARENTAL_DISABLE;
+
         return this.makeRequest(path, method);
     }
 
@@ -192,16 +202,19 @@ class Api {
 
     getSafebrowsingStatus() {
         const { path, method } = this.SAFEBROWSING_STATUS;
+
         return this.makeRequest(path, method);
     }
 
     enableSafebrowsing() {
         const { path, method } = this.SAFEBROWSING_ENABLE;
+
         return this.makeRequest(path, method);
     }
 
     disableSafebrowsing() {
         const { path, method } = this.SAFEBROWSING_DISABLE;
+
         return this.makeRequest(path, method);
     }
 
@@ -212,6 +225,7 @@ class Api {
 
     getSafesearchStatus() {
         const { path, method } = this.SAFESEARCH_STATUS;
+
         return this.makeRequest(path, method);
     }
 
@@ -228,7 +242,7 @@ class Api {
      * @param {*} data - SafeSearchConfig
      * @returns 200 ok
      */
-    updateSafesearch(data) {
+    updateSafesearch(data: any) {
         const { path, method } = this.SAFESEARCH_UPDATE;
         return this.makeRequest(path, method, { data });
     }
@@ -245,7 +259,7 @@ class Api {
 
     // Language
 
-    async changeLanguage(config) {
+    async changeLanguage(config: any) {
         const profile = await this.getProfile();
         profile.language = config.language;
 
@@ -254,7 +268,7 @@ class Api {
 
     // Theme
 
-    async changeTheme(config) {
+    async changeTheme(config: any) {
         const profile = await this.getProfile();
         profile.theme = config.theme;
 
@@ -282,15 +296,17 @@ class Api {
 
     getDhcpStatus() {
         const { path, method } = this.DHCP_STATUS;
+
         return this.makeRequest(path, method);
     }
 
     getDhcpInterfaces() {
         const { path, method } = this.DHCP_INTERFACES;
+
         return this.makeRequest(path, method);
     }
 
-    setDhcpConfig(config) {
+    setDhcpConfig(config: any) {
         const { path, method } = this.DHCP_SET_CONFIG;
         const parameters = {
             data: config,
@@ -298,7 +314,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    findActiveDhcp(req) {
+    findActiveDhcp(req: any) {
         const { path, method } = this.DHCP_FIND_ACTIVE;
         const parameters = {
             data: req,
@@ -306,7 +322,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    addStaticLease(config) {
+    addStaticLease(config: any) {
         const { path, method } = this.DHCP_ADD_STATIC_LEASE;
         const parameters = {
             data: config,
@@ -314,7 +330,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    removeStaticLease(config) {
+    removeStaticLease(config: any) {
         const { path, method } = this.DHCP_REMOVE_STATIC_LEASE;
         const parameters = {
             data: config,
@@ -322,7 +338,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    updateStaticLease(config) {
+    updateStaticLease(config: any) {
         const { path, method } = this.DHCP_UPDATE_STATIC_LEASE;
         const parameters = {
             data: config,
@@ -332,11 +348,13 @@ class Api {
 
     resetDhcp() {
         const { path, method } = this.DHCP_RESET;
+
         return this.makeRequest(path, method);
     }
 
     resetDhcpLeases() {
         const { path, method } = this.DHCP_LEASES_RESET;
+
         return this.makeRequest(path, method);
     }
 
@@ -349,10 +367,11 @@ class Api {
 
     getDefaultAddresses() {
         const { path, method } = this.INSTALL_GET_ADDRESSES;
+
         return this.makeRequest(path, method);
     }
 
-    setAllSettings(config) {
+    setAllSettings(config: any) {
         const { path, method } = this.INSTALL_CONFIGURE;
         const parameters = {
             data: config,
@@ -360,7 +379,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    checkConfig(config) {
+    checkConfig(config: any) {
         const { path, method } = this.INSTALL_CHECK_CONFIG;
         const parameters = {
             data: config,
@@ -377,10 +396,11 @@ class Api {
 
     getTlsStatus() {
         const { path, method } = this.TLS_STATUS;
+
         return this.makeRequest(path, method);
     }
 
-    setTlsConfig(config) {
+    setTlsConfig(config: any) {
         const { path, method } = this.TLS_CONFIG;
         const parameters = {
             data: config,
@@ -388,7 +408,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    validateTlsConfig(config) {
+    validateTlsConfig(config: any) {
         const { path, method } = this.TLS_VALIDATE;
         const parameters = {
             data: config,
@@ -409,10 +429,11 @@ class Api {
 
     getClients() {
         const { path, method } = this.GET_CLIENTS;
+
         return this.makeRequest(path, method);
     }
 
-    addClient(config) {
+    addClient(config: any) {
         const { path, method } = this.ADD_CLIENT;
         const parameters = {
             data: config,
@@ -420,7 +441,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    deleteClient(config) {
+    deleteClient(config: any) {
         const { path, method } = this.DELETE_CLIENT;
         const parameters = {
             data: config,
@@ -428,7 +449,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    updateClient(config) {
+    updateClient(config: any) {
         const { path, method } = this.UPDATE_CLIENT;
         const parameters = {
             data: config,
@@ -436,9 +457,10 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    findClients(params) {
+    findClients(params: any) {
         const { path, method } = this.FIND_CLIENTS;
         const url = getPathWithQueryString(path, params);
+
         return this.makeRequest(url, method);
     }
 
@@ -449,10 +471,11 @@ class Api {
 
     getAccessList() {
         const { path, method } = this.ACCESS_LIST;
+
         return this.makeRequest(path, method);
     }
 
-    setAccessList(config) {
+    setAccessList(config: any) {
         const { path, method } = this.ACCESS_SET;
         const parameters = {
             data: config,
@@ -471,10 +494,11 @@ class Api {
 
     getRewritesList() {
         const { path, method } = this.REWRITES_LIST;
+
         return this.makeRequest(path, method);
     }
 
-    addRewrite(config) {
+    addRewrite(config: any) {
         const { path, method } = this.REWRITE_ADD;
         const parameters = {
             data: config,
@@ -482,7 +506,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    updateRewrite(config) {
+    updateRewrite(config: any) {
         const { path, method } = this.REWRITE_UPDATE;
         const parameters = {
             data: config,
@@ -490,7 +514,7 @@ class Api {
         return this.makeRequest(path, method, parameters);
     }
 
-    deleteRewrite(config) {
+    deleteRewrite(config: any) {
         const { path, method } = this.REWRITE_DELETE;
         const parameters = {
             data: config,
@@ -507,15 +531,17 @@ class Api {
 
     getAllBlockedServices() {
         const { path, method } = this.BLOCKED_SERVICES_ALL;
+
         return this.makeRequest(path, method);
     }
 
     getBlockedServices() {
         const { path, method } = this.BLOCKED_SERVICES_GET;
+
         return this.makeRequest(path, method);
     }
 
-    updateBlockedServices(config) {
+    updateBlockedServices(config: any) {
         const { path, method } = this.BLOCKED_SERVICES_UPDATE;
         const parameters = {
             data: config,
@@ -534,15 +560,17 @@ class Api {
 
     getStats() {
         const { path, method } = this.GET_STATS;
+
         return this.makeRequest(path, method);
     }
 
     getStatsConfig() {
         const { path, method } = this.GET_STATS_CONFIG;
+
         return this.makeRequest(path, method);
     }
 
-    setStatsConfig(data) {
+    setStatsConfig(data: any) {
         const { path, method } = this.UPDATE_STATS_CONFIG;
         const config = {
             data,
@@ -552,6 +580,7 @@ class Api {
 
     resetStats() {
         const { path, method } = this.STATS_RESET;
+
         return this.makeRequest(path, method);
     }
 
@@ -564,20 +593,22 @@ class Api {
 
     QUERY_LOG_CLEAR = { path: 'querylog_clear', method: 'POST' };
 
-    getQueryLog(params) {
+    getQueryLog(params: any) {
         const { path, method } = this.GET_QUERY_LOG;
         // eslint-disable-next-line no-param-reassign
         params.limit = QUERY_LOGS_PAGE_LIMIT;
         const url = getPathWithQueryString(path, params);
+
         return this.makeRequest(url, method);
     }
 
     getQueryLogConfig() {
         const { path, method } = this.GET_QUERY_LOG_CONFIG;
+
         return this.makeRequest(path, method);
     }
 
-    setQueryLogConfig(data) {
+    setQueryLogConfig(data: any) {
         const { path, method } = this.UPDATE_QUERY_LOG_CONFIG;
         const config = {
             data,
@@ -587,13 +618,14 @@ class Api {
 
     clearQueryLog() {
         const { path, method } = this.QUERY_LOG_CLEAR;
+
         return this.makeRequest(path, method);
     }
 
     // Login
     LOGIN = { path: 'login', method: 'POST' };
 
-    login(data) {
+    login(data: any) {
         const { path, method } = this.LOGIN;
         const config = {
             data,
@@ -608,10 +640,11 @@ class Api {
 
     getProfile() {
         const { path, method } = this.GET_PROFILE;
+
         return this.makeRequest(path, method);
     }
 
-    setProfile(data) {
+    setProfile(data: any) {
         const theme = data.theme ? data.theme : THEMES.auto;
         const defaultLanguage = i18n.language ? i18n.language : LANGUAGES.en;
         const language = data.language ? data.language : defaultLanguage;
@@ -629,10 +662,11 @@ class Api {
 
     getDnsConfig() {
         const { path, method } = this.GET_DNS_CONFIG;
+
         return this.makeRequest(path, method);
     }
 
-    setDnsConfig(data) {
+    setDnsConfig(data: any) {
         const { path, method } = this.SET_DNS_CONFIG;
         const config = {
             data,
@@ -642,7 +676,7 @@ class Api {
 
     SET_PROTECTION = { path: 'protection', method: 'POST' };
 
-    setProtection(data) {
+    setProtection(data: any) {
         const { enabled, duration } = data;
         const { path, method } = this.SET_PROTECTION;
 
@@ -654,6 +688,7 @@ class Api {
 
     clearCache() {
         const { path, method } = this.CLEAR_CACHE;
+
         return this.makeRequest(path, method);
     }
 }
