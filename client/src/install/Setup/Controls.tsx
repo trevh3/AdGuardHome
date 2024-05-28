@@ -5,7 +5,16 @@ import { Trans } from 'react-i18next';
 import * as actionCreators from '../../actions/install';
 
 interface ControlsProps {
-    install: object;
+    install: {
+        step: number;
+        processingSubmit: boolean;
+        dns: {
+            status: string;
+        };
+        web: {
+            status: string;
+        };
+    };
     nextStep?: (...args: unknown[]) => unknown;
     prevStep?: (...args: unknown[]) => unknown;
     openDashboard?: (...args: unknown[]) => unknown;
@@ -22,16 +31,12 @@ class Controls extends Component<ControlsProps> {
             case 2:
             case 3:
                 return (
-
                     <button
-                            type="button"
-                            className="btn btn-secondary btn-lg setup__button"
-
-                            onClick={this.props.prevStep}
-                        >
-
-                            <Trans>back</Trans>
-                        </button>
+                        type="button"
+                        className="btn btn-secondary btn-lg setup__button"
+                        onClick={this.props.prevStep}>
+                        <Trans>back</Trans>
+                    </button>
                 );
             default:
                 return false;
@@ -40,7 +45,6 @@ class Controls extends Component<ControlsProps> {
 
     renderNextButton(step: any) {
         const {
-
             nextStep,
 
             invalid,
@@ -57,57 +61,34 @@ class Controls extends Component<ControlsProps> {
         switch (step) {
             case 1:
                 return (
-
-                    <button
-                        type="button"
-                        className="btn btn-success btn-lg setup__button"
-                        onClick={nextStep}
-                    >
-
+                    <button type="button" className="btn btn-success btn-lg setup__button" onClick={nextStep}>
                         <Trans>get_started</Trans>
                     </button>
                 );
             case 2:
             case 3:
                 return (
-
                     <button
                         type="submit"
                         className="btn btn-success btn-lg setup__button"
                         disabled={
-                            invalid
-                            || pristine
-                            || install.processingSubmit
-                            || install.dns.status
-                            || install.web.status
-                        }
-                    >
-
+                            invalid || pristine || install.processingSubmit || install.dns.status || install.web.status
+                        }>
                         <Trans>next</Trans>
                     </button>
                 );
             case 4:
                 return (
-
-                    <button
-                        type="button"
-                        className="btn btn-success btn-lg setup__button"
-                        onClick={nextStep}
-                    >
-
+                    <button type="button" className="btn btn-success btn-lg setup__button" onClick={nextStep}>
                         <Trans>next</Trans>
                     </button>
                 );
             case 5:
                 return (
-
                     <button
                         type="button"
                         className="btn btn-success btn-lg setup__button"
-
-                        onClick={() => this.props.openDashboard(ip, port)}
-                    >
-
+                        onClick={() => this.props.openDashboard(ip, port)}>
                         <Trans>open_dashboard</Trans>
                     </button>
                 );
@@ -120,9 +101,7 @@ class Controls extends Component<ControlsProps> {
         const { install } = this.props;
 
         return (
-
             <div className="setup__nav">
-
                 <div className="btn-list">
                     {this.renderPrevButton(install.step)}
                     {this.renderNextButton(install.step)}
@@ -134,11 +113,7 @@ class Controls extends Component<ControlsProps> {
 
 const mapStateToProps = (state: any) => {
     const { install } = state;
-    const props = { install };
-    return props;
+    return { install };
 };
 
-export default connect(
-    mapStateToProps,
-    actionCreators,
-)(Controls);
+export default connect(mapStateToProps, actionCreators)(Controls);

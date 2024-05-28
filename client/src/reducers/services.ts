@@ -12,13 +12,7 @@ const services = handleActions(
             ...state,
             processing: false,
         }),
-        [actions.getBlockedServicesSuccess]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.getBlockedServicesSuccess]: (state, { payload }: any) => ({
             ...state,
             list: payload,
             processing: false,
@@ -32,13 +26,7 @@ const services = handleActions(
             ...state,
             processingAll: false,
         }),
-        [actions.getAllBlockedServicesSuccess]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.getAllBlockedServicesSuccess]: (state, { payload }: any) => ({
             ...state,
             allServices: payload.blocked_services,
             processingAll: false,

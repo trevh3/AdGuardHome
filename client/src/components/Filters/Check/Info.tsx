@@ -13,7 +13,6 @@ import {
     checkSafeBrowsing,
     checkParental,
     getRulesToFilterList,
-
 } from '../../../helpers/helpers';
 import { BLOCK_ACTIONS, FILTERED, FILTERED_STATUS } from '../../../helpers/constants';
 
@@ -30,17 +29,18 @@ const renderBlockingButton = (isFiltered: any, domain: any) => {
         await dispatch(toggleBlocking(buttonType, domain));
     };
 
-    const buttonClass = classNames('mt-3 button-action button-action--main button-action--active button-action--small', {
-        'button-action--unblock': isFiltered,
-    });
+    const buttonClass = classNames(
+        'mt-3 button-action button-action--main button-action--active button-action--small',
+        {
+            'button-action--unblock': isFiltered,
+        },
+    );
 
-    return <button type="button"
-                className={buttonClass}
-                onClick={onClick}
-                disabled={processingRules}
-        >
+    return (
+        <button type="button" className={buttonClass} onClick={onClick} disabled={processingRules}>
             {t(buttonType)}
-        </button>;
+        </button>
+    );
 };
 
 const getTitle = () => {
@@ -76,27 +76,23 @@ const getTitle = () => {
         return REASON_TO_TITLE_MAP[reason];
     }
 
-    return <>
+    return (
+        <>
+            <div>{t('check_reason', { reason })}</div>
 
-        <div>{t('check_reason', { reason })}</div>
-
-        <div>
-            {t('rule_label')}:
-            &nbsp;
-            {ruleAndFilterNames}
-        </div>
-    </>;
+            <div>
+                {t('rule_label')}: &nbsp;
+                {ruleAndFilterNames}
+            </div>
+        </>
+    );
 };
 
 const Info = () => {
-    const {
-        hostname,
-        reason,
-        service_name,
-        cname,
-        ip_addrs,
-
-    } = useSelector((state) => state.filtering.check, shallowEqual);
+    const { hostname, reason, service_name, cname, ip_addrs } = useSelector(
+        (state) => state.filtering.check,
+        shallowEqual,
+    );
     const { t } = useTranslation();
 
     const title = getTitle();
@@ -107,29 +103,29 @@ const Info = () => {
         'logs__row--green': checkWhiteList(reason),
     });
 
-    const onlyFiltered = checkSafeSearch(reason)
-        || checkSafeBrowsing(reason)
-        || checkParental(reason);
+    const onlyFiltered = checkSafeSearch(reason) || checkSafeBrowsing(reason) || checkParental(reason);
 
     const isFiltered = checkFiltered(reason);
 
-    return <div className={className}>
+    return (
+        <div className={className}>
+            <div>
+                <strong>{hostname}</strong>
+            </div>
 
-        <div><strong>{hostname}</strong></div>
+            <div>{title}</div>
+            {!onlyFiltered && (
+                <>
+                    {service_name && <div>{t('check_service', { service: service_name })}</div>}
 
-        <div>{title}</div>
-        {!onlyFiltered
+                    {cname && <div>{t('check_cname', { cname })}</div>}
 
-        && <>
-
-            {service_name && <div>{t('check_service', { service: service_name })}</div>}
-
-            {cname && <div>{t('check_cname', { cname })}</div>}
-
-            {ip_addrs && <div>{t('check_ip', { ip: ip_addrs.join(', ') })}</div>}
-            {renderBlockingButton(isFiltered, hostname)}
-        </>}
-    </div>;
+                    {ip_addrs && <div>{t('check_ip', { ip: ip_addrs.join(', ') })}</div>}
+                    {renderBlockingButton(isFiltered, hostname)}
+                </>
+            )}
+        </div>
+    );
 };
 
 export default Info;

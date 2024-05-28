@@ -1,12 +1,7 @@
 import { handleActions } from 'redux-actions';
 
 import { normalizeTopClients } from '../helpers/helpers';
-import {
-    DAY,
-    HOUR,
-    STATS_INTERVALS_DAYS,
-    TIME_UNITS,
-} from '../helpers/constants';
+import { DAY, HOUR, STATS_INTERVALS_DAYS, TIME_UNITS } from '../helpers/constants';
 
 import * as actions from '../actions/stats';
 
@@ -37,19 +32,11 @@ const stats = handleActions(
             ...state,
             processingGetConfig: false,
         }),
-        [actions.getStatsConfigSuccess]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.getStatsConfigSuccess]: (state, { payload }: any) => ({
             ...state,
             ...payload,
 
-            customInterval: !STATS_INTERVALS_DAYS.includes(payload.interval)
-                ? payload.interval / HOUR
-                : null,
+            customInterval: !STATS_INTERVALS_DAYS.includes(payload.interval) ? payload.interval / HOUR : null,
 
             processingGetConfig: false,
         }),
@@ -62,13 +49,7 @@ const stats = handleActions(
             ...state,
             processingSetConfig: false,
         }),
-        [actions.setStatsConfigSuccess]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.setStatsConfigSuccess]: (state, { payload }: any) => ({
             ...state,
             ...payload,
             processingSetConfig: false,
@@ -82,9 +63,7 @@ const stats = handleActions(
             ...state,
             processingStats: false,
         }),
-        [actions.getStatsSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.getStatsSuccess]: (state: any, { payload }: any) => {
             const {
                 dns_queries: dnsQueries,
                 blocked_filtering: blockedFiltering,

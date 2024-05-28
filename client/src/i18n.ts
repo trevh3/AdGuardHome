@@ -120,8 +120,7 @@ const resources = {
 
 const availableLanguages = Object.keys(LANGUAGES);
 
-i18n
-    .use(langDetect)
+i18n.use(langDetect)
     .use(initReactI18next)
     .init(
         {

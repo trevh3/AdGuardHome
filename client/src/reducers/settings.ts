@@ -12,9 +12,7 @@ const settings = handleActions(
             ...state,
             processing: false,
         }),
-        [actions.initSettingsSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.initSettingsSuccess]: (state: any, { payload }: any) => {
             const { settingsList } = payload;
             const newState = {
                 ...state,
@@ -23,9 +21,7 @@ const settings = handleActions(
             };
             return newState;
         },
-        [actions.toggleSettingStatus]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.toggleSettingStatus]: (state: any, { payload }: any) => {
             const { settingsList } = state;
             const { settingKey, value } = payload;
 

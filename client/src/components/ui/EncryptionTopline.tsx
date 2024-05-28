@@ -67,13 +67,16 @@ const EncryptionTopline = () => {
     const { toplineType, i18nKey } = EXPIRATION_STATE[expirationStateKey];
 
     return (
-
-            <Topline type={toplineType}>
-
-                <Trans components={[<a href="#encryption" key="0">link</a>]}>
-                    {i18nKey}
-                </Trans>
-            </Topline>
+        <Topline type={toplineType}>
+            <Trans
+                components={[
+                    <a href="#encryption" key="0">
+                        link
+                    </a>,
+                ]}>
+                {i18nKey}
+            </Trans>
+        </Topline>
     );
 };
 

@@ -47,7 +47,6 @@ class Rewrites extends Component<RewritesProps> {
 
     render() {
         const {
-
             t,
 
             rewrites,
@@ -67,23 +66,12 @@ class Rewrites extends Component<RewritesProps> {
         } = rewrites;
 
         return (
-
             <Fragment>
+                <PageTitle title={t('dns_rewrites')} subtitle={t('rewrite_desc')} />
 
-                <PageTitle
-                    title={t('dns_rewrites')}
-                    subtitle={t('rewrite_desc')}
-                />
-
-                <Card
-                    id="rewrites"
-                    bodyType="card-body box-body--settings"
-                >
-
+                <Card id="rewrites" bodyType="card-body box-body--settings">
                     <Fragment>
-
                         <Table
-
                             list={list}
                             processing={processing}
                             processingAdd={processingAdd}
@@ -97,9 +85,7 @@ class Rewrites extends Component<RewritesProps> {
                             type="button"
                             className="btn btn-success btn-standard mt-3"
                             onClick={() => toggleRewritesModal({ type: MODAL_TYPE.ADD_REWRITE })}
-                            disabled={processingAdd}
-                        >
-
+                            disabled={processingAdd}>
                             <Trans>rewrite_add</Trans>
                         </button>
 

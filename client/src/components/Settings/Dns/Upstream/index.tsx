@@ -18,7 +18,6 @@ const Upstream = () => {
         resolve_clients,
         local_ptr_upstreams,
         use_private_ptr_resolvers,
-
     } = useSelector((state) => state.dnsConfig, shallowEqual);
 
     const upstream_dns_file = useSelector((state) => state.dnsConfig.upstream_dns_file);
@@ -47,32 +46,30 @@ const Upstream = () => {
         dispatch(setDnsConfig(dnsConfig));
     };
 
-    const upstreamDns = upstream_dns_file ? t('upstream_dns_configured_in_file', { path: upstream_dns_file }) : upstream_dns;
+    const upstreamDns = upstream_dns_file
+        ? t('upstream_dns_configured_in_file', { path: upstream_dns_file })
+        : upstream_dns;
 
-    return <Card
-        title={t('upstream_dns')}
-        bodyType="card-body box-body--settings"
-    >
-
-        <div className="row">
-
-            <div className="col">
-
-                <Form
-                    initialValues={{
-                        upstream_dns: upstreamDns,
-                        fallback_dns,
-                        bootstrap_dns,
-                        upstream_mode,
-                        resolve_clients,
-                        local_ptr_upstreams,
-                        use_private_ptr_resolvers,
-                    }}
-                    onSubmit={handleSubmit}
-                />
+    return (
+        <Card title={t('upstream_dns')} bodyType="card-body box-body--settings">
+            <div className="row">
+                <div className="col">
+                    <Form
+                        initialValues={{
+                            upstream_dns: upstreamDns,
+                            fallback_dns,
+                            bootstrap_dns,
+                            upstream_mode,
+                            resolve_clients,
+                            local_ptr_upstreams,
+                            use_private_ptr_resolvers,
+                        }}
+                        onSubmit={handleSubmit}
+                    />
+                </div>
             </div>
-        </div>
-    </Card>;
+        </Card>
+    );
 };
 
 export default Upstream;

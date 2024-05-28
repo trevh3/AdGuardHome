@@ -1,9 +1,7 @@
 import { handleActions } from 'redux-actions';
 
 import * as actions from '../actions/queryLogs';
-import {
-    DEFAULT_LOGS_FILTER, DAY, QUERY_LOG_INTERVALS_DAYS, HOUR,
-} from '../helpers/constants';
+import { DEFAULT_LOGS_FILTER, DAY, QUERY_LOG_INTERVALS_DAYS, HOUR } from '../helpers/constants';
 
 const queryLogs = handleActions(
     {
@@ -15,20 +13,12 @@ const queryLogs = handleActions(
             ...state,
             processingGetLogs: false,
         }),
-        [actions.toggleDetailedLogs]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.toggleDetailedLogs]: (state, { payload }: any) => ({
             ...state,
             isDetailed: payload,
         }),
 
-        [actions.setFilteredLogsSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.setFilteredLogsSuccess]: (state: any, { payload }: any) => {
             const { logs, oldest, filter } = payload;
 
             const isFiltered = filter && Object.keys(filter).some((key) => filter[key]);
@@ -44,13 +34,7 @@ const queryLogs = handleActions(
             };
         },
 
-        [actions.setLogsFilterRequest]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.setLogsFilterRequest]: (state, { payload }: any) => ({
             ...state,
             filter: payload,
         }),
@@ -63,12 +47,8 @@ const queryLogs = handleActions(
             ...state,
             processingGetLogs: false,
         }),
-        [actions.getLogsSuccess]: (state: any, {
-            payload,
-        }: any) => {
-            const {
-                logs, oldest, older_than,
-            } = payload;
+        [actions.getLogsSuccess]: (state: any, { payload }: any) => {
+            const { logs, oldest, older_than } = payload;
 
             return {
                 ...state,
@@ -101,19 +81,11 @@ const queryLogs = handleActions(
             ...state,
             processingGetConfig: false,
         }),
-        [actions.getLogsConfigSuccess]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.getLogsConfigSuccess]: (state, { payload }: any) => ({
             ...state,
             ...payload,
 
-            customInterval: !QUERY_LOG_INTERVALS_DAYS.includes(payload.interval)
-                ? payload.interval / HOUR
-                : null,
+            customInterval: !QUERY_LOG_INTERVALS_DAYS.includes(payload.interval) ? payload.interval / HOUR : null,
 
             processingGetConfig: false,
         }),
@@ -126,13 +98,7 @@ const queryLogs = handleActions(
             ...state,
             processingSetConfig: false,
         }),
-        [actions.setLogsConfigSuccess]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.setLogsConfigSuccess]: (state, { payload }: any) => ({
             ...state,
             ...payload,
             processingSetConfig: false,

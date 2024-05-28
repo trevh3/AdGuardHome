@@ -24,18 +24,13 @@ interface ModalProps {
     onSubmit: (...args: unknown[]) => unknown;
 }
 
-export const Modal = ({
-    isOpen,
-    currentDay,
-    schedule,
-    onClose,
-    onSubmit
-}: ModalProps) => {
+export const Modal = ({ isOpen, currentDay, schedule, onClose, onSubmit }: ModalProps) => {
     const [t] = useTranslation();
 
-    const intialTimezone = schedule.time_zone === LOCAL_TIMEZONE_VALUE
-        ? Intl.DateTimeFormat().resolvedOptions().timeZone
-        : schedule.time_zone;
+    const intialTimezone =
+        schedule.time_zone === LOCAL_TIMEZONE_VALUE
+            ? Intl.DateTimeFormat().resolvedOptions().timeZone
+            : schedule.time_zone;
 
     const [timezone, setTimezone] = useState(intialTimezone);
     const [days, setDays] = useState(new Set());
@@ -99,133 +94,85 @@ export const Modal = ({
     };
 
     return (
-
         <ReactModal
             className="Modal__Bootstrap modal-dialog modal-dialog-centered modal-dialog--schedule"
             closeTimeoutMS={0}
             isOpen={isOpen}
-            onRequestClose={onClose}
-        >
-
+            onRequestClose={onClose}>
             <div className="modal-content">
-
                 <div className="modal-header">
-
-                    <h4 className="modal-title">
-                        {currentDay ? t('schedule_edit') : t('schedule_new')}
-                    </h4>
+                    <h4 className="modal-title">{currentDay ? t('schedule_edit') : t('schedule_new')}</h4>
 
                     <button type="button" className="close" onClick={onClose}>
-
                         <span className="sr-only">Close</span>
                     </button>
                 </div>
 
                 <form onSubmit={onFormSubmit}>
-
                     <div className="modal-body">
-
-                        <Timezone
-                            timezone={timezone}
-                            setTimezone={setTimezone}
-                        />
+                        <Timezone timezone={timezone} setTimezone={setTimezone} />
 
                         <div className="schedule__days">
                             {DAYS_OF_WEEK.map((day) => (
-
                                 <button
                                     type="button"
                                     key={day}
                                     className="btn schedule__button-day"
                                     data-active={activeDay(day)}
-                                    onClick={() => addDays(day)}
-                                >
+                                    onClick={() => addDays(day)}>
                                     {getShortDayName(t, day)}
                                 </button>
                             ))}
                         </div>
 
                         <div className="schedule__time-wrap">
-
                             <div className="schedule__time-row">
+                                <TimeSelect value={startTime} onChange={(v) => setStartTime(v)} />
 
-                                <TimeSelect
-                                    value={startTime}
-                                    onChange={(v) => setStartTime(v)}
-                                />
-
-                                <TimeSelect
-                                    value={endTime}
-                                    onChange={(v) => setEndTime(v)}
-                                />
+                                <TimeSelect value={endTime} onChange={(v) => setEndTime(v)} />
                             </div>
 
-                            {wrongPeriod && (
-
-                                <div className="schedule__error">
-                                    {t('schedule_invalid_select')}
-                                </div>
-                            )}
+                            {wrongPeriod && <div className="schedule__error">{t('schedule_invalid_select')}</div>}
                         </div>
 
                         <div className="schedule__info">
-
-                            <div className="schedule__info-title">
-                                {t('schedule_modal_time_off')}
-                            </div>
+                            <div className="schedule__info-title">{t('schedule_modal_time_off')}</div>
 
                             <div className="schedule__info-row">
-
                                 <svg className="icons schedule__info-icon">
-
                                     <use xlinkHref="#calendar" />
                                 </svg>
                                 {days.size ? (
-                                    Array.from(days).map((day) => getFullDayName(t, day)).join(', ')
+                                    Array.from(days)
+                                        .map((day) => getFullDayName(t, day))
+                                        .join(', ')
                                 ) : (
-
-                                    <span>
-                                        —
-                                    </span>
+                                    <span>—</span>
                                 )}
                             </div>
 
                             <div className="schedule__info-row">
-
                                 <svg className="icons schedule__info-icon">
-
                                     <use xlinkHref="#watch" />
                                 </svg>
                                 {wrongPeriod ? (
-
-                                    <span>
-                                        —
-                                    </span>
+                                    <span>—</span>
                                 ) : (
-
-                                    <TimePeriod
-                                        startTimeMs={startTime}
-                                        endTimeMs={endTime}
-                                    />
+                                    <TimePeriod startTimeMs={startTime} endTimeMs={endTime} />
                                 )}
                             </div>
                         </div>
 
-                        <div className="schedule__notice">
-                            {t('schedule_modal_description')}
-                        </div>
+                        <div className="schedule__notice">{t('schedule_modal_description')}</div>
                     </div>
 
                     <div className="modal-footer">
-
                         <div className="btn-list">
-
                             <button
                                 type="button"
                                 className="btn btn-success btn-standard"
                                 disabled={days.size === 0 || wrongPeriod}
-                                onClick={onFormSubmit}
-                            >
+                                onClick={onFormSubmit}>
                                 {currentDay ? t('schedule_save') : t('schedule_add')}
                             </button>
                         </div>

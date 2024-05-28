@@ -16,9 +16,7 @@ const dnsConfig = handleActions(
             ...state,
             processingGetConfig: false,
         }),
-        [actions.getDnsConfigSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.getDnsConfigSuccess]: (state: any, { payload }: any) => {
             const {
                 blocking_ipv4,
                 blocking_ipv6,
@@ -54,13 +52,7 @@ const dnsConfig = handleActions(
             ...state,
             processingSetConfig: false,
         }),
-        [actions.setDnsConfigSuccess]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.setDnsConfigSuccess]: (state, { payload }: any) => ({
             ...state,
             ...payload,
             processingSetConfig: false,

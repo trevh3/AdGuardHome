@@ -9,22 +9,15 @@ interface PageTitleProps {
     containerClass?: string;
 }
 
-const PageTitle = ({
-    title,
-    subtitle,
-    children,
-    containerClass
-}: PageTitleProps) => <div className="page-header">
+const PageTitle = ({ title, subtitle, children, containerClass }: PageTitleProps) => (
+    <div className="page-header">
+        <div className={containerClass}>
+            <h1 className="page-title pr-2">{title}</h1>
+            {children}
+        </div>
 
-    <div className={containerClass}>
-
-        <h1 className="page-title pr-2">{title}</h1>
-        {children}
+        {subtitle && <div className="page-subtitle">{subtitle}</div>}
     </div>
-
-    {subtitle && <div className="page-subtitle">
-        {subtitle}
-    </div>}
-</div>;
+);
 
 export default PageTitle;

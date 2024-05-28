@@ -89,8 +89,7 @@ export const getTrackerData = (domainName: any) => {
         return null;
     }
 
-    const parts = domainName.split(/\./g)
-        .reverse();
+    const parts = domainName.split(/\./g).reverse();
     let hostToCheck = '';
 
     // Check every subdomain

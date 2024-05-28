@@ -15,11 +15,7 @@ interface ScheduleFormProps {
     clientForm?: boolean;
 }
 
-export const ScheduleForm = ({
-    schedule,
-    onScheduleSubmit,
-    clientForm
-}: ScheduleFormProps) => {
+export const ScheduleForm = ({ schedule, onScheduleSubmit, clientForm }: ScheduleFormProps) => {
     const [t] = useTranslation();
     const [modalOpen, setModalOpen] = useState(false);
     const [currentDay, setCurrentDay] = useState();
@@ -58,9 +54,7 @@ export const ScheduleForm = ({
     };
 
     return (
-
         <div>
-
             <div className="schedule__current-timezone">
                 {t('schedule_current_timezone', { value: schedule?.time_zone || LOCAL_TIMEZONE_VALUE })}
             </div>
@@ -74,33 +68,20 @@ export const ScheduleForm = ({
                     }
 
                     return (
-
                         <div key={day} className="schedule__row">
+                            <div className="schedule__day">{getFullDayName(t, day)}</div>
 
-                            <div className="schedule__day">
-                                {getFullDayName(t, day)}
-                            </div>
+                            <div className="schedule__day schedule__day--mobile">{getShortDayName(t, day)}</div>
 
-                            <div className="schedule__day schedule__day--mobile">
-                                {getShortDayName(t, day)}
-                            </div>
-
-                            <TimePeriod
-                                startTimeMs={data.start}
-                                endTimeMs={data.end}
-                            />
+                            <TimePeriod startTimeMs={data.start} endTimeMs={data.end} />
 
                             <div className="schedule__actions">
-
                                 <button
                                     type="button"
                                     className="btn btn-icon btn-outline-primary btn-sm schedule__button"
                                     title={t('edit_table_action')}
-                                    onClick={() => onEdit(day)}
-                                >
-
+                                    onClick={() => onEdit(day)}>
                                     <svg className="icons icon12">
-
                                         <use xlinkHref="#edit" />
                                     </svg>
                                 </button>
@@ -109,11 +90,8 @@ export const ScheduleForm = ({
                                     type="button"
                                     className="btn btn-icon btn-outline-secondary btn-sm schedule__button"
                                     title={t('delete_table_action')}
-                                    onClick={() => onDelete(day)}
-                                >
-
+                                    onClick={() => onDelete(day)}>
                                     <svg className="icons">
-
                                         <use xlinkHref="#delete" />
                                     </svg>
                                 </button>
@@ -130,13 +108,11 @@ export const ScheduleForm = ({
                     { 'btn-outline-success btn-sm': clientForm },
                     { 'btn-success btn-standard': !clientForm },
                 )}
-                onClick={onAdd}
-            >
+                onClick={onAdd}>
                 {t('schedule_new')}
             </button>
 
             {modalOpen && (
-
                 <Modal
                     isOpen={modalOpen}
                     onClose={onModalClose}

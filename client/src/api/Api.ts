@@ -3,9 +3,7 @@ import axios from 'axios';
 import { BASE_URL } from 'constants';
 
 import { getPathWithQueryString } from '../helpers/helpers';
-import {
-    QUERY_LOGS_PAGE_LIMIT, HTML_PAGES, R_PATH_LAST_PART, THEMES,
-} from '../helpers/constants';
+import { QUERY_LOGS_PAGE_LIMIT, HTML_PAGES, R_PATH_LAST_PART, THEMES } from '../helpers/constants';
 import i18n from '../i18n';
 import { LANGUAGES } from '../helpers/twosky';
 
@@ -33,12 +31,10 @@ class Api {
 
             if (error.response) {
                 const { pathname } = document.location;
-                const shouldRedirect = pathname !== HTML_PAGES.LOGIN
-                        && pathname !== HTML_PAGES.INSTALL;
+                const shouldRedirect = pathname !== HTML_PAGES.LOGIN && pathname !== HTML_PAGES.INSTALL;
 
                 if (error.response.status === 403 && shouldRedirect) {
-                    const loginPageUrl = window.location.href
-                        .replace(R_PATH_LAST_PART, HTML_PAGES.LOGIN);
+                    const loginPageUrl = window.location.href.replace(R_PATH_LAST_PART, HTML_PAGES.LOGIN);
                     window.location.replace(loginPageUrl);
                     return false;
                 }

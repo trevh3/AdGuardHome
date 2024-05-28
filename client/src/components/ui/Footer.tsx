@@ -35,14 +35,8 @@ const Footer = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const currentTheme = useSelector((state) => (
-
-        state.dashboard ? state.dashboard.theme : THEMES.auto
-    ));
-    const profileName = useSelector((state) => (
-
-        state.dashboard ? state.dashboard.name : ''
-    ));
+    const currentTheme = useSelector((state) => (state.dashboard ? state.dashboard.theme : THEMES.auto));
+    const profileName = useSelector((state) => (state.dashboard ? state.dashboard.name : ''));
     const isLoggedIn = profileName !== '';
     const [currentThemeLocal, setCurrentThemeLocal] = useState(THEMES.auto);
 
@@ -66,29 +60,31 @@ const Footer = () => {
         }
     };
 
-    const renderCopyright = () => <div className="footer__column">
-
-        <div className="footer__copyright">
-            {t('copyright')} &copy; {getYear()}{' '}
-
-            <a target="_blank" rel="noopener noreferrer" href="https://link.adtidy.org/forward.html?action=home&from=ui&app=home">AdGuard</a>
+    const renderCopyright = () => (
+        <div className="footer__column">
+            <div className="footer__copyright">
+                {t('copyright')} &copy; {getYear()}{' '}
+                <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://link.adtidy.org/forward.html?action=home&from=ui&app=home">
+                    AdGuard
+                </a>
+            </div>
         </div>
-    </div>;
+    );
 
-    const renderLinks = (linksData: any) => linksData.map(({
-        name,
-        href,
-        className = '',
-
-    }: any) => <a
-            key={name}
-            href={href}
-            className={cn('footer__link', className)}
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            {t(name)}
-        </a>);
+    const renderLinks = (linksData: any) =>
+        linksData.map(({ name, href, className = '' }: any) => (
+            <a
+                key={name}
+                href={href}
+                className={cn('footer__link', className)}
+                target="_blank"
+                rel="noopener noreferrer">
+                {t(name)}
+            </a>
+        ));
 
     const renderThemeButtons = () => {
         const currentValue = isLoggedIn ? currentTheme : currentThemeLocal;
@@ -110,65 +106,43 @@ const Footer = () => {
 
         return Object.values(THEMES)
 
-            .map((theme: any) => <button
-            key={theme}
-            type="button"
-            className="btn btn-sm btn-secondary footer__theme-button"
-            onClick={() => onThemeChange(theme)}
-
-            title={content[theme].desc}
-        >
-
-            <svg
-                className={cn(
-                    'footer__theme-icon',
-                    { 'footer__theme-icon--active': currentValue === theme },
-                )}
-            >
-
-                <use xlinkHref={content[theme].icon} />
-            </svg>
-        </button>);
+            .map((theme: any) => (
+                <button
+                    key={theme}
+                    type="button"
+                    className="btn btn-sm btn-secondary footer__theme-button"
+                    onClick={() => onThemeChange(theme)}
+                    title={content[theme].desc}>
+                    <svg className={cn('footer__theme-icon', { 'footer__theme-icon--active': currentValue === theme })}>
+                        <use xlinkHref={content[theme].icon} />
+                    </svg>
+                </button>
+            ));
     };
 
     return (
-
         <>
-
             <footer className="footer">
-
                 <div className="container">
-
                     <div className="footer__row">
-
-                        <div className="footer__column footer__column--links">
-                            {renderLinks(linksData)}
-                        </div>
+                        <div className="footer__column footer__column--links">{renderLinks(linksData)}</div>
 
                         <div className="footer__column footer__column--theme">
-
                             <div className="footer__themes">
-
-                                <div className="btn-group">
-                                    {renderThemeButtons()}
-                                </div>
+                                <div className="btn-group">{renderThemeButtons()}</div>
                             </div>
                         </div>
 
                         <div className="footer__column footer__column--language">
-
                             <select
                                 className="form-control select select--language"
                                 value={i18n.language}
-                                onChange={changeLanguage}
-                            >
-                                {Object.keys(LANGUAGES)
-                                    .map((lang) => (
-
-                                        <option key={lang} value={lang}>
-                                            {LANGUAGES[lang]}
-                                        </option>
-                                    ))}
+                                onChange={changeLanguage}>
+                                {Object.keys(LANGUAGES).map((lang) => (
+                                    <option key={lang} value={lang}>
+                                        {LANGUAGES[lang]}
+                                    </option>
+                                ))}
                             </select>
                         </div>
                     </div>
@@ -176,14 +150,11 @@ const Footer = () => {
             </footer>
 
             <div className="footer">
-
                 <div className="container">
-
                     <div className="footer__row">
                         {renderCopyright()}
 
                         <div className="footer__column footer__column--language">
-
                             <Version />
                         </div>
                     </div>

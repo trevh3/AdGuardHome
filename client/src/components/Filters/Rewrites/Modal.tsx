@@ -29,30 +29,22 @@ const Modal = (props: ModalProps) => {
     } = props;
 
     return (
-
         <ReactModal
             className="Modal__Bootstrap modal-dialog modal-dialog-centered"
             closeTimeoutMS={0}
             isOpen={isModalOpen}
-            onRequestClose={() => toggleRewritesModal()}
-        >
-
+            onRequestClose={() => toggleRewritesModal()}>
             <div className="modal-content">
-
                 <div className="modal-header">
-
                     <h4 className="modal-title">
                         {modalType === MODAL_TYPE.EDIT_REWRITE ? (
-
                             <Trans>rewrite_edit</Trans>
                         ) : (
-
                             <Trans>rewrite_add</Trans>
                         )}
                     </h4>
 
                     <button type="button" className="close" onClick={() => toggleRewritesModal()}>
-
                         <span className="sr-only">Close</span>
                     </button>
                 </div>

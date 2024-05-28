@@ -32,24 +32,24 @@ const Dns = () => {
         dispatch(getDnsConfig());
     }, []);
 
-    return <>
+    return (
+        <>
+            <PageTitle title={t('dns_settings')} />
+            {isDataLoading ? (
+                <Loading />
+            ) : (
+                <>
+                    <Upstream />
 
-        <PageTitle title={t('dns_settings')} />
-        {isDataLoading
+                    <Config />
 
-            ? <Loading />
+                    <CacheConfig />
 
-            : <>
-
-                <Upstream />
-
-                <Config />
-
-                <CacheConfig />
-
-                <Access />
-            </>}
-    </>;
+                    <Access />
+                </>
+            )}
+        </>
+    );
 };
 
 export default Dns;

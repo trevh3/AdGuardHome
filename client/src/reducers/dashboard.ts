@@ -6,13 +6,7 @@ import { STANDARD_DNS_PORT, STANDARD_WEB_PORT } from '../helpers/constants';
 
 const dashboard = handleActions(
     {
-        [actions.setDnsRunningStatus]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.setDnsRunningStatus]: (state, { payload }: any) => ({
             ...state,
             isCoreRunning: payload,
         }),
@@ -24,9 +18,7 @@ const dashboard = handleActions(
             ...state,
             processing: false,
         }),
-        [actions.dnsStatusSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.dnsStatusSuccess]: (state: any, { payload }: any) => {
             const {
                 version,
                 dns_port: dnsPort,
@@ -51,13 +43,9 @@ const dashboard = handleActions(
 
             return newState;
         },
-        [actions.timerStatusSuccess]: (state: any, {
-            payload,
-        }: any) => {
-            const {
-                protection_enabled: protectionEnabled,
-                protection_disabled_duration: protectionDisabledDuration,
-            } = payload;
+        [actions.timerStatusSuccess]: (state: any, { payload }: any) => {
+            const { protection_enabled: protectionEnabled, protection_disabled_duration: protectionDisabledDuration } =
+                payload;
             const newState = {
                 ...state,
                 protectionEnabled,
@@ -75,9 +63,7 @@ const dashboard = handleActions(
             ...state,
             processingVersion: false,
         }),
-        [actions.getVersionSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.getVersionSuccess]: (state: any, { payload }: any) => {
             const currentVersion = state.dnsVersion === 'undefined' ? 0 : state.dnsVersion;
 
             if (!payload.disabled && !areEqualVersions(currentVersion, payload.new_version)) {
@@ -130,9 +116,7 @@ const dashboard = handleActions(
             ...state,
             processingProtection: false,
         }),
-        [actions.toggleProtectionSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.toggleProtectionSuccess]: (state: any, { payload }: any) => {
             const newState = {
                 ...state,
                 protectionEnabled: !state.protectionEnabled,
@@ -143,13 +127,7 @@ const dashboard = handleActions(
             return newState;
         },
 
-        [actions.setDisableDurationTime]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.setDisableDurationTime]: (state, { payload }: any) => ({
             ...state,
             protectionDisabledDuration: payload.timeToEnableProtection,
         }),
@@ -162,9 +140,7 @@ const dashboard = handleActions(
             ...state,
             processingClients: false,
         }),
-        [actions.getClientsSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.getClientsSuccess]: (state: any, { payload }: any) => {
             const newState = {
                 ...state,
                 ...payload,
@@ -181,25 +157,13 @@ const dashboard = handleActions(
             ...state,
             processingProfile: false,
         }),
-        [actions.getProfileSuccess]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.getProfileSuccess]: (state, { payload }: any) => ({
             ...state,
             name: payload.name,
             theme: payload.theme,
             processingProfile: false,
         }),
-        [actions.changeThemeSuccess]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.changeThemeSuccess]: (state, { payload }: any) => ({
             ...state,
             theme: payload.theme,
         }),

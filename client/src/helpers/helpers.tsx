@@ -56,126 +56,127 @@ export const formatDateTime = (dateTime: any, options = DEFAULT_DATE_FORMAT_OPTI
  */
 export const formatDetailedDateTime = (dateTime: any) => formatDateTime(dateTime, DETAILED_DATE_FORMAT_OPTIONS);
 
-export const normalizeLogs = (logs: any) => logs.map((log: any) => {
-    const {
-        answer,
-        answer_dnssec,
-        client,
-        client_proto,
-        client_id,
-        client_info,
-        elapsedMs,
-        question,
-        reason,
-        status,
-        time,
-        filterId,
-        rule,
-        rules,
-        service_name,
-        original_answer,
-        upstream,
-        cached,
-        ecs,
-    } = log;
+export const normalizeLogs = (logs: any) =>
+    logs.map((log: any) => {
+        const {
+            answer,
+            answer_dnssec,
+            client,
+            client_proto,
+            client_id,
+            client_info,
+            elapsedMs,
+            question,
+            reason,
+            status,
+            time,
+            filterId,
+            rule,
+            rules,
+            service_name,
+            original_answer,
+            upstream,
+            cached,
+            ecs,
+        } = log;
 
-    const { name: domain, unicode_name: unicodeName, type } = question;
+        const { name: domain, unicode_name: unicodeName, type } = question;
 
-    const processResponse = (data: any) => (data ? data.map((response: any) => {
-        const { value, type, ttl } = response;
-        return `${type}: ${value} (ttl=${ttl})`;
-    }) : []);
+        const processResponse = (data: any) =>
+            data
+                ? data.map((response: any) => {
+                      const { value, type, ttl } = response;
+                      return `${type}: ${value} (ttl=${ttl})`;
+                  })
+                : [];
 
-    let newRules = rules;
-    /* TODO 'filterId' and 'rule' are deprecated, will be removed in 0.106 */
-    if (rule !== undefined && filterId !== undefined && rules !== undefined && rules.length === 0) {
-        newRules = {
-            filter_list_id: filterId,
-            text: rule,
-        };
-    }
-
-    return {
-        time,
-        domain,
-        unicodeName,
-        type,
-        response: processResponse(answer),
-        reason,
-        client,
-        client_proto,
-        client_id,
-        client_info,
+        let newRules = rules;
         /* TODO 'filterId' and 'rule' are deprecated, will be removed in 0.106 */
-        filterId,
-        rule,
-        rules: newRules,
-        status,
-        service_name,
-        originalAnswer: original_answer,
-        originalResponse: processResponse(original_answer),
-        tracker: getTrackerData(domain),
-        answer_dnssec,
-        elapsedMs,
-        upstream,
-        cached,
-        ecs,
-    };
-});
-
-export const normalizeHistory = (history: any) => history.map((item, idx) => ({
-    x: idx,
-    y: item,
-}));
-
-export const normalizeTopStats = (stats: any) => stats.map((item: any) => ({
-    name: Object.keys(item)[0],
-
-    count: Object.values(item)[0],
-}));
-
-export const addClientInfo = (data: any, clients: any, ...params: any[]) => data.map((row: any) => {
-    let info = '';
-    params.find((param) => {
-        const id = row[param];
-        if (id) {
-            const client = clients.find((item: any) => item[id]) || '';
-            info = client?.[id] ?? '';
+        if (rule !== undefined && filterId !== undefined && rules !== undefined && rules.length === 0) {
+            newRules = {
+                filter_list_id: filterId,
+                text: rule,
+            };
         }
 
-        return info;
+        return {
+            time,
+            domain,
+            unicodeName,
+            type,
+            response: processResponse(answer),
+            reason,
+            client,
+            client_proto,
+            client_id,
+            client_info,
+            /* TODO 'filterId' and 'rule' are deprecated, will be removed in 0.106 */
+            filterId,
+            rule,
+            rules: newRules,
+            status,
+            service_name,
+            originalAnswer: original_answer,
+            originalResponse: processResponse(original_answer),
+            tracker: getTrackerData(domain),
+            answer_dnssec,
+            elapsedMs,
+            upstream,
+            cached,
+            ecs,
+        };
     });
 
-    return {
-        ...row,
-        info,
-    };
-});
+export const normalizeHistory = (history: any) =>
+    history.map((item, idx) => ({
+        x: idx,
+        y: item,
+    }));
 
-export const normalizeFilters = (filters: any) => (filters ? filters.map((filter: any) => {
-    const {
-        id,
-        url,
-        enabled,
-        last_updated,
-        name = 'Default name',
-        rules_count = 0,
-    } = filter;
+export const normalizeTopStats = (stats: any) =>
+    stats.map((item: any) => ({
+        name: Object.keys(item)[0],
 
-    return {
-        id,
-        url,
-        enabled,
-        lastUpdated: last_updated,
-        name,
-        rulesCount: rules_count,
-    };
-}) : []);
+        count: Object.values(item)[0],
+    }));
+
+export const addClientInfo = (data: any, clients: any, ...params: any[]) =>
+    data.map((row: any) => {
+        let info = '';
+        params.find((param) => {
+            const id = row[param];
+            if (id) {
+                const client = clients.find((item: any) => item[id]) || '';
+                info = client?.[id] ?? '';
+            }
+
+            return info;
+        });
+
+        return {
+            ...row,
+            info,
+        };
+    });
+
+export const normalizeFilters = (filters: any) =>
+    filters
+        ? filters.map((filter: any) => {
+              const { id, url, enabled, last_updated, name = 'Default name', rules_count = 0 } = filter;
+
+              return {
+                  id,
+                  url,
+                  enabled,
+                  lastUpdated: last_updated,
+                  name,
+                  rulesCount: rules_count,
+              };
+          })
+        : [];
 
 export const normalizeFilteringStatus = (filteringStatus: any) => {
-    const {
-        enabled, filters, user_rules: userRules, interval, whitelist_filters,
-    } = filteringStatus;
+    const { enabled, filters, user_rules: userRules, interval, whitelist_filters } = filteringStatus;
     const newUserRules = Array.isArray(userRules) ? userRules.join('\n') : '';
 
     return {
@@ -194,10 +195,11 @@ export const getPercent = (amount: any, number: any) => {
     return 0;
 };
 
-export const captitalizeWords = (text: any) => text.split(/[ -_]/g)
-    .map((str: any) => str.charAt(0)
-        .toUpperCase() + str.substr(1))
-    .join(' ');
+export const captitalizeWords = (text: any) =>
+    text
+        .split(/[ -_]/g)
+        .map((str: any) => str.charAt(0).toUpperCase() + str.substr(1))
+        .join(' ');
 
 export const getInterfaceIp = (option: any) => {
     const onlyIPv6 = option.ip_addresses.every((ip: any) => ip.includes(':'));
@@ -214,9 +216,10 @@ export const getInterfaceIp = (option: any) => {
     return interfaceIP;
 };
 
-export const getIpList = (interfaces: any) => Object.values(interfaces)
-    .reduce((acc: any, curr: any) => acc.concat(curr.ip_addresses), [])
-    .sort();
+export const getIpList = (interfaces: any) =>
+    Object.values(interfaces)
+        .reduce((acc: any, curr: any) => acc.concat(curr.ip_addresses), [])
+        .sort();
 
 /**
  * @param {string} ip
@@ -267,22 +270,19 @@ export const checkRedirect = (url: any, attempts: any) => {
     }
 
     const rmTimeout = (t: any) => t && clearTimeout(t);
-    const setRecursiveTimeout = (time: any, ...args: any[]) => setTimeout(
-        checkRedirect,
-        time,
-        ...args,
-    );
+    const setRecursiveTimeout = (time: any, ...args: any[]) => setTimeout(checkRedirect, time, ...args);
 
     let timeout: any;
 
-    axios.get(url)
+    axios
+        .get(url)
         .then((response) => {
             rmTimeout(timeout);
             if (response) {
                 window.location.replace(url);
                 return;
             }
-            timeout = setRecursiveTimeout(CHECK_TIMEOUT, url, count += 1);
+            timeout = setRecursiveTimeout(CHECK_TIMEOUT, url, (count += 1));
         })
         .catch((error) => {
             rmTimeout(timeout);
@@ -290,16 +290,14 @@ export const checkRedirect = (url: any, attempts: any) => {
                 window.location.replace(url);
                 return;
             }
-            timeout = setRecursiveTimeout(CHECK_TIMEOUT, url, count += 1);
+            timeout = setRecursiveTimeout(CHECK_TIMEOUT, url, (count += 1));
         });
 
     return false;
 };
 
 export const redirectToCurrentProtocol = (values: any, httpPort = 80) => {
-    const {
-        protocol, hostname, hash, port,
-    } = window.location;
+    const { protocol, hostname, hash, port } = window.location;
     const { enabled, force_https, port_https } = values;
     const httpsPort = port_https !== STANDARD_HTTPS_PORT ? `:${port_https}` : '';
 
@@ -316,29 +314,33 @@ export const redirectToCurrentProtocol = (values: any, httpPort = 80) => {
  * @param {string} text
  * @returns []string
  */
-export const splitByNewLine = (text: any) => text.split('\n')
-    .filter((n: any) => n.trim());
+export const splitByNewLine = (text: any) => text.split('\n').filter((n: any) => n.trim());
 
 /**
  * @param {string} text
  * @returns {string}
  */
-export const trimMultilineString = (text: any) => splitByNewLine(text)
-    .map((line: any) => line.trim())
-    .join('\n');
+export const trimMultilineString = (text: any) =>
+    splitByNewLine(text)
+        .map((line: any) => line.trim())
+        .join('\n');
 
 /**
  * @param {string} text
  * @returns {string}
  */
-export const removeEmptyLines = (text: any) => splitByNewLine(text)
-    .join('\n');
+export const removeEmptyLines = (text: any) => splitByNewLine(text).join('\n');
 
 /**
  * @param {string} input
  * @returns {string}
  */
-export const trimLinesAndRemoveEmpty = (input: any) => input.split('\n').map((line: any) => line.trim()).filter(Boolean).join('\n');
+export const trimLinesAndRemoveEmpty = (input: any) =>
+    input
+        .split('\n')
+        .map((line: any) => line.trim())
+        .filter(Boolean)
+        .join('\n');
 
 /**
  * Normalizes the topClients array
@@ -352,15 +354,23 @@ export const trimLinesAndRemoveEmpty = (input: any) => input.split('\n').map((li
  * @returns {Object.<string, number>} normalizedTopClients.auto - auto clients
  * @returns {Object.<string, number>} normalizedTopClients.configured - configured clients
  */
-export const normalizeTopClients = (topClients: any) => topClients.reduce((acc: any, clientObj: any) => {
-    const { name, count, info: { name: infoName } } = clientObj;
-    acc.auto[name] = count;
-    acc.configured[infoName] = count;
-    return acc;
-}, {
-    auto: {},
-    configured: {},
-});
+export const normalizeTopClients = (topClients: any) =>
+    topClients.reduce(
+        (acc: any, clientObj: any) => {
+            const {
+                name,
+                count,
+                info: { name: infoName },
+            } = clientObj;
+            acc.auto[name] = count;
+            acc.configured[infoName] = count;
+            return acc;
+        },
+        {
+            auto: {},
+            configured: {},
+        },
+    );
 
 export const sortClients = (clients: any) => {
     const compare = (a: any, b: any) => {
@@ -400,14 +410,11 @@ export const secondsToMilliseconds = (seconds: any) => {
 
 export const msToDays = (milliseconds: any) => Math.floor(milliseconds / 1000 / 60 / 60 / 24);
 
-export const normalizeRulesTextarea = (text: any) => text?.replace(/^\n/g, '')
-    .replace(/\n\s*\n/g, '\n');
+export const normalizeRulesTextarea = (text: any) => text?.replace(/^\n/g, '').replace(/\n\s*\n/g, '\n');
 
 export const normalizeWhois = (whois: any) => {
     if (Object.keys(whois).length > 0) {
-        const {
-            city, country, ...values
-        } = whois;
+        const { city, country, ...values } = whois;
         let location = country || '';
 
         if (city && location) {
@@ -463,10 +470,8 @@ export const getParamsForClientsSearch = (data: any, param: any, additionalParam
  * @param {function} [normalizeOnBlur]
  * @returns {function}
  */
-export const createOnBlurHandler = (event: any, input: any, normalizeOnBlur: any) => (
-    normalizeOnBlur
-        ? input.onBlur(normalizeOnBlur(event.target.value))
-        : input.onBlur());
+export const createOnBlurHandler = (event: any, input: any, normalizeOnBlur: any) =>
+    normalizeOnBlur ? input.onBlur(normalizeOnBlur(event.target.value)) : input.onBlur();
 
 export const checkFiltered = (reason: any) => reason.indexOf(FILTERED) === 0;
 export const checkRewrite = (reason: any) => reason === FILTERED_STATUS.REWRITE;
@@ -504,14 +509,15 @@ export const getCurrentFilter = (url: any, filters: any) => {
  * @returns {object} Returns different values of objects
  */
 
-export const getObjDiff = (initialValues: any, values: any) => Object.entries(values)
+export const getObjDiff = (initialValues: any, values: any) =>
+    Object.entries(values)
 
-    .reduce((acc: any, [key, value]) => {
-        if (value !== initialValues[key]) {
-            acc[key] = value;
-        }
-        return acc;
-    }, {});
+        .reduce((acc: any, [key, value]) => {
+            if (value !== initialValues[key]) {
+                acc[key] = value;
+            }
+            return acc;
+        }, {});
 
 /**
  * @param num {number} to format
@@ -528,10 +534,11 @@ export const formatNumber = (num: any) => {
  * @param value {string}
  * @returns {object}
  */
-export const getMap = (arr: any, key: any, value: any) => arr.reduce((acc: any, curr: any) => {
-    acc[curr[key]] = curr[value];
-    return acc;
-}, {});
+export const getMap = (arr: any, key: any, value: any) =>
+    arr.reduce((acc: any, curr: any) => {
+        acc[curr[key]] = curr[value];
+        return acc;
+    }, {});
 
 /**
  * @param parsedIp {object} ipaddr.js IPv4 or IPv6 object
@@ -580,9 +587,8 @@ export const parseSubnetMask = (subnetMask: any) => {
  * @param {string} subnetMask
  * @returns {*}
  */
-export const subnetMaskToBitMask = (subnetMask: any) => subnetMask
-    .split('.')
-    .reduce((acc: any, cur: any) => acc - Math.log2(256 - Number(cur)), 32);
+export const subnetMaskToBitMask = (subnetMask: any) =>
+    subnetMask.split('.').reduce((acc: any, cur: any) => acc - Math.log2(256 - Number(cur)), 32);
 
 /**
  *
@@ -614,20 +620,24 @@ export const findAddressType = (address: any) => {
  * @param ids {string[]}
  * @returns {Object}
  */
-export const separateIpsAndCidrs = (ids: any) => ids.reduce((acc: any, curr: any) => {
-    const addressType = findAddressType(curr);
+export const separateIpsAndCidrs = (ids: any) =>
+    ids.reduce(
+        (acc: any, curr: any) => {
+            const addressType = findAddressType(curr);
 
-    if (addressType === ADDRESS_TYPES.IP) {
-        acc.ips.push(curr);
-    }
-    if (addressType === ADDRESS_TYPES.CIDR) {
-        acc.cidrs.push(curr);
-    }
-    if (addressType === ADDRESS_TYPES.CLIENT_ID) {
-        acc.clientIds.push(curr);
-    }
-    return acc;
-}, { ips: [], cidrs: [], clientIds: [] });
+            if (addressType === ADDRESS_TYPES.IP) {
+                acc.ips.push(curr);
+            }
+            if (addressType === ADDRESS_TYPES.CIDR) {
+                acc.cidrs.push(curr);
+            }
+            if (addressType === ADDRESS_TYPES.CLIENT_ID) {
+                acc.clientIds.push(curr);
+            }
+            return acc;
+        },
+        { ips: [], cidrs: [], clientIds: [] },
+    );
 
 export const countClientsStatistics = (ids: any, autoClients: any) => {
     const { ips, cidrs, clientIds } = separateIpsAndCidrs(ids);
@@ -642,18 +652,17 @@ export const countClientsStatistics = (ids: any, autoClients: any) => {
         return acc + count;
     }, 0);
 
-    const cidrsCount = Object.entries(autoClients)
-        .reduce((acc: any, curr: any) => {
-            const [id, count] = curr;
-            if (!ipaddr.isValid(id)) {
-                return false;
-            }
-            if (cidrs.some((cidr: any) => isIpInCidr(id, cidr))) {
+    const cidrsCount = Object.entries(autoClients).reduce((acc: any, curr: any) => {
+        const [id, count] = curr;
+        if (!ipaddr.isValid(id)) {
+            return false;
+        }
+        if (cidrs.some((cidr: any) => isIpInCidr(id, cidr))) {
             // eslint-disable-next-line no-param-reassign
-                acc += count;
-            }
-            return acc;
-        }, 0);
+            acc += count;
+        }
+        return acc;
+    }, 0);
 
     return ipsCount + cidrsCount + clientIdsCount;
 };
@@ -664,8 +673,7 @@ export const countClientsStatistics = (ids: any, autoClients: any) => {
  * @returns {string}
  */
 export const formatElapsedMs = (elapsedMs: any, t: any) => {
-    const formattedElapsedMs = parseInt(elapsedMs, 10) || parseFloat(elapsedMs)
-        .toFixed(2);
+    const formattedElapsedMs = parseInt(elapsedMs, 10) || parseFloat(elapsedMs).toFixed(2);
     return `${formattedElapsedMs} ${t('milliseconds_abbreviation')}`;
 };
 
@@ -714,12 +722,13 @@ export const setUITheme = (theme: any) => {
  * @returns {object}
  */
 
-export const replaceEmptyStringsWithZeroes = (values: any) => Object.entries(values)
+export const replaceEmptyStringsWithZeroes = (values: any) =>
+    Object.entries(values)
 
-    .reduce((acc: any, [key, value]) => {
-        acc[key] = value === '' ? 0 : value;
-        return acc;
-    }, {});
+        .reduce((acc: any, [key, value]) => {
+            acc[key] = value === '' ? 0 : value;
+            return acc;
+        }, {});
 
 /**
  * @param value {number || string}
@@ -732,26 +741,26 @@ export const replaceZeroWithEmptyString = (value: any) => (parseInt(value, 10) =
  * @param {string} [response_status]
  * @returns {string}
  */
-export const getLogsUrlParams = (search: any, response_status: any) => `?${queryString.stringify({
-    search: search || undefined,
-    response_status: response_status || undefined,
-})}`;
+export const getLogsUrlParams = (search: any, response_status: any) =>
+    `?${queryString.stringify({
+        search: search || undefined,
+        response_status: response_status || undefined,
+    })}`;
 
-export const processContent = (content: any) => (Array.isArray(content)
-    ? content.filter(([, value]) => value)
-        .reduce((acc, val) => acc.concat(val), [])
-    : content);
+export const processContent = (content: any) =>
+    Array.isArray(content) ? content.filter(([, value]) => value).reduce((acc, val) => acc.concat(val), []) : content;
 /**
  * @param object {object}
  * @param sortKey {string}
  * @returns {string[]}
  */
 
-export const getObjectKeysSorted = (object: any, sortKey: any) => Object.entries(object)
+export const getObjectKeysSorted = (object: any, sortKey: any) =>
+    Object.entries(object)
 
-    .sort(([, { [sortKey]: order1 }], [, { [sortKey]: order2 }]) => order1 - order2)
+        .sort(([, { [sortKey]: order1 }], [, { [sortKey]: order2 }]) => order1 - order2)
 
-    .map(([key]) => key);
+        .map(([key]) => key);
 
 /**
  * @param ip
@@ -778,15 +787,12 @@ const getAddressesComparisonBytes = (item: any) => {
     const IP_V4_COMPARISON_CODE = 0;
     const IP_V6_COMPARISON_CODE = 1;
 
-    const [parsedIp, cidr] = ipaddr.isValid(item)
-        ? getParsedIpWithPrefixLength(item)
-        : ipaddr.parseCIDR(item);
+    const [parsedIp, cidr] = ipaddr.isValid(item) ? getParsedIpWithPrefixLength(item) : ipaddr.parseCIDR(item);
 
-    const [normalizedBytes, ipVersionComparisonCode] = parsedIp.kind() === 'ipv4'
-
-        ? [parsedIp.toIPv4MappedAddress().parts, IP_V4_COMPARISON_CODE]
-
-        : [parsedIp.parts, IP_V6_COMPARISON_CODE];
+    const [normalizedBytes, ipVersionComparisonCode] =
+        parsedIp.kind() === 'ipv4'
+            ? [parsedIp.toIPv4MappedAddress().parts, IP_V4_COMPARISON_CODE]
+            : [parsedIp.parts, IP_V6_COMPARISON_CODE];
 
     return [ipVersionComparisonCode, ...normalizedBytes, cidr];
 };
@@ -799,10 +805,8 @@ const getAddressesComparisonBytes = (item: any) => {
  */
 export const sortIp = (a: any, b: any) => {
     try {
-        const comparisonBytesA = Array.isArray(a)
-            ? getAddressesComparisonBytes(a[0]) : getAddressesComparisonBytes(a);
-        const comparisonBytesB = Array.isArray(b)
-            ? getAddressesComparisonBytes(b[0]) : getAddressesComparisonBytes(b);
+        const comparisonBytesA = Array.isArray(a) ? getAddressesComparisonBytes(a[0]) : getAddressesComparisonBytes(a);
+        const comparisonBytesB = Array.isArray(b) ? getAddressesComparisonBytes(b[0]) : getAddressesComparisonBytes(b);
 
         for (let i = 0; i < comparisonBytesA.length; i += 1) {
             const byteA = comparisonBytesA[i];
@@ -874,19 +878,14 @@ export const getFilterName = (
  * @param {array} whitelistFilters
  * @returns {string[]}
  */
-export const getFilterNames = (rules: any, filters: any, whitelistFilters: any) => rules.map(
-    ({
-        filter_list_id,
-    }: any) => getFilterName(filters, whitelistFilters, filter_list_id),
-);
+export const getFilterNames = (rules: any, filters: any, whitelistFilters: any) =>
+    rules.map(({ filter_list_id }: any) => getFilterName(filters, whitelistFilters, filter_list_id));
 
 /**
  * @param {array} rules
  * @returns {string[]}
  */
-export const getRuleNames = (rules: any) => rules.map(({
-    text,
-}: any) => text);
+export const getRuleNames = (rules: any) => rules.map(({ text }: any) => text);
 
 /**
  * @param {array} rules
@@ -894,15 +893,13 @@ export const getRuleNames = (rules: any) => rules.map(({
  * @param {array} whitelistFilters
  * @returns {object}
  */
-export const getFilterNameToRulesMap = (rules: any, filters: any, whitelistFilters: any) => rules.reduce((acc: any, {
-    text,
-    filter_list_id,
-}: any) => {
-    const filterName = getFilterName(filters, whitelistFilters, filter_list_id);
+export const getFilterNameToRulesMap = (rules: any, filters: any, whitelistFilters: any) =>
+    rules.reduce((acc: any, { text, filter_list_id }: any) => {
+        const filterName = getFilterName(filters, whitelistFilters, filter_list_id);
 
-    acc[filterName] = (acc[filterName] || []).concat(text);
-    return acc;
-}, {});
+        acc[filterName] = (acc[filterName] || []).concat(text);
+        return acc;
+    }, {});
 
 /**
  * @param {array} rules
@@ -911,43 +908,55 @@ export const getFilterNameToRulesMap = (rules: any, filters: any, whitelistFilte
  * @param {object} classes
  * @returns {JSXElement}
  */
-export const getRulesToFilterList = (rules: any, filters: any, whitelistFilters: any, classes = {
-    list: 'filteringRules',
-    rule: 'filteringRules__rule font-monospace',
-    filter: 'filteringRules__filter',
-}) => {
+export const getRulesToFilterList = (
+    rules: any,
+    filters: any,
+    whitelistFilters: any,
+    classes = {
+        list: 'filteringRules',
+        rule: 'filteringRules__rule font-monospace',
+        filter: 'filteringRules__filter',
+    },
+) => {
     const filterNameToRulesMap = getFilterNameToRulesMap(rules, filters, whitelistFilters);
 
     return (
-
         <dl className={classes.list}>
-
             {Object.entries(filterNameToRulesMap).reduce(
+                (acc: any, [filterName, rulesArr]) =>
+                    acc
 
-                (acc: any, [filterName, rulesArr]) => acc
+                        .concat(
+                            rulesArr.map((rule: any, i: any) => (
+                                <dd key={i} className={classes.rule}>
+                                    {rule}
+                                </dd>
+                            )),
+                        )
 
-                    .concat(rulesArr.map((rule: any, i: any) => <dd key={i} className={classes.rule}>{rule}</dd>))
-
-                    .concat(<dt className={classes.filter} key={classes.filter}>{filterName}</dt>),
+                        .concat(
+                            <dt className={classes.filter} key={classes.filter}>
+                                {filterName}
+                            </dt>,
+                        ),
                 [],
             )}
-    </dl>
+        </dl>
     );
 };
 
 /**
-* @param {array} rules
-* @param {array} filters
-* @param {array} whitelistFilters
-* @returns {string}
-*/
+ * @param {array} rules
+ * @param {array} filters
+ * @param {array} whitelistFilters
+ * @returns {string}
+ */
 export const getRulesAndFilterNames = (rules: any, filters: any, whitelistFilters: any) => {
     const filterNameToRulesMap = getFilterNameToRulesMap(rules, filters, whitelistFilters);
 
-    return Object.entries(filterNameToRulesMap).map(
-
-        ([filterName, filterRules]) => filterRules.concat(filterName).join('\n'),
-    ).join('\n\n');
+    return Object.entries(filterNameToRulesMap)
+        .map(([filterName, filterRules]) => filterRules.concat(filterName).join('\n'))
+        .join('\n\n');
 };
 
 /**
@@ -969,10 +978,7 @@ export const calculateDhcpPlaceholdersIpv4 = (ip: any, gateway_ip: any) => {
     addr.octets[LAST_OCTET_IDX] = LAST_OCTET_RANGE_END;
     const range_end = addr.toString();
 
-    const {
-        subnet_mask,
-        lease_duration,
-    } = DHCP_VALUES_PLACEHOLDERS.ipv4;
+    const { subnet_mask, lease_duration } = DHCP_VALUES_PLACEHOLDERS.ipv4;
 
     return {
         gateway_ip: gateway_ip || ip,
@@ -984,11 +990,7 @@ export const calculateDhcpPlaceholdersIpv4 = (ip: any, gateway_ip: any) => {
 };
 
 export const calculateDhcpPlaceholdersIpv6 = () => {
-    const {
-        range_start,
-        range_end,
-        lease_duration,
-    } = DHCP_VALUES_PLACEHOLDERS.ipv6;
+    const { range_start, range_end, lease_duration } = DHCP_VALUES_PLACEHOLDERS.ipv6;
 
     return {
         range_start,
@@ -1005,15 +1007,16 @@ export const calculateDhcpPlaceholdersIpv6 = () => {
  * @returns interfaces Interfaces enriched with ip_addresses property
  */
 
-export const enrichWithConcatenatedIpAddresses = (interfaces: any) => Object.entries(interfaces)
+export const enrichWithConcatenatedIpAddresses = (interfaces: any) =>
+    Object.entries(interfaces)
 
-    .reduce((acc: any, [k, v]) => {
-        const ipv4_addresses = v.ipv4_addresses ?? [];
-        const ipv6_addresses = v.ipv6_addresses ?? [];
+        .reduce((acc: any, [k, v]) => {
+            const ipv4_addresses = v.ipv4_addresses ?? [];
+            const ipv6_addresses = v.ipv6_addresses ?? [];
 
-        acc[k].ip_addresses = ipv4_addresses.concat(ipv6_addresses);
-        return acc;
-    }, interfaces);
+            acc[k].ip_addresses = ipv4_addresses.concat(ipv6_addresses);
+            return acc;
+        }, interfaces);
 
 export const isScrolledIntoView = (el: any) => {
     const rect = el.getBoundingClientRect();
@@ -1045,8 +1048,8 @@ export const getBlockingClientName = (clients: any, ip: any) => {
  * @param {string[]} lines
  * @returns {string[]}
  */
-export const filterOutComments = (lines: any) => lines
-    .filter((line: any) => !line.startsWith(COMMENT_LINE_DEFAULT_TOKEN));
+export const filterOutComments = (lines: any) =>
+    lines.filter((line: any) => !line.startsWith(COMMENT_LINE_DEFAULT_TOKEN));
 
 /**
  * @param {array} services

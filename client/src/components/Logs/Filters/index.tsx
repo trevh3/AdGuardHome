@@ -12,10 +12,7 @@ interface FiltersProps {
     setIsLoading: (...args: unknown[]) => unknown;
 }
 
-const Filters = ({
-    filter,
-    setIsLoading
-}: FiltersProps) => {
+const Filters = ({ filter, setIsLoading }: FiltersProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -26,31 +23,25 @@ const Filters = ({
         setIsLoading(false);
     };
 
-    return <div className="page-header page-header--logs">
+    return (
+        <div className="page-header page-header--logs">
+            <h1 className="page-title page-title--large">
+                {t('query_log')}
 
-        <h1 className="page-title page-title--large">
-            {t('query_log')}
-
-            <button
+                <button
                     type="button"
                     className="btn btn-icon--green logs__refresh"
                     title={t('refresh_btn')}
-                    onClick={refreshLogs}
-            >
+                    onClick={refreshLogs}>
+                    <svg className="icons icon--24">
+                        <use xlinkHref="#update" />
+                    </svg>
+                </button>
+            </h1>
 
-                <svg className="icons icon--24">
-
-                    <use xlinkHref="#update" />
-                </svg>
-            </button>
-        </h1>
-
-        <Form
-                responseStatusClass="d-sm-block"
-                initialValues={filter}
-                setIsLoading={setIsLoading}
-        />
-    </div>;
+            <Form responseStatusClass="d-sm-block" initialValues={filter} setIsLoading={setIsLoading} />
+        </div>
+    );
 };
 
 export default Filters;

@@ -12,10 +12,10 @@ import { replaceEmptyStringsWithZeroes, replaceZeroWithEmptyString } from '../..
 const CacheConfig = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const {
-        cache_size, cache_ttl_max, cache_ttl_min, cache_optimistic,
-
-    } = useSelector((state) => state.dnsConfig, shallowEqual);
+    const { cache_size, cache_ttl_max, cache_ttl_min, cache_optimistic } = useSelector(
+        (state) => state.dnsConfig,
+        shallowEqual,
+    );
 
     const handleFormSubmit = (values: any) => {
         const completedFields = replaceEmptyStringsWithZeroes(values);
@@ -23,16 +23,12 @@ const CacheConfig = () => {
     };
 
     return (
-
         <Card
             title={t('dns_cache_config')}
             subtitle={t('dns_cache_config_desc')}
             bodyType="card-body box-body--settings"
-            id="dns-config"
-        >
-
+            id="dns-config">
             <div className="form">
-
                 <Form
                     initialValues={{
                         cache_size: replaceZeroWithEmptyString(cache_size),

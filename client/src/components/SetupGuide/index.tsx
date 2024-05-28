@@ -16,34 +16,29 @@ interface SetupGuideProps {
 const SetupGuide = ({
     t,
 
-    dashboard: {
-        dnsAddresses,
-    }
+    dashboard: { dnsAddresses },
 }: SetupGuideProps) => (
-
     <div className="guide">
-
         <PageTitle title={t('setup_guide')} />
 
         <Card>
-
             <div className="guide__title">
-
                 <Trans>install_devices_title</Trans>
             </div>
 
             <div className="guide__desc">
-
                 <Trans>install_devices_desc</Trans>
 
                 <div className="mt-1">
-
                     <Trans>install_devices_address</Trans>:
                 </div>
 
                 <div className="mt-3">
-
-                    {dnsAddresses.map((ip: any) => <li key={ip} className="guide__address">{ip}</li>)}
+                    {dnsAddresses.map((ip: any) => (
+                        <li key={ip} className="guide__address">
+                            {ip}
+                        </li>
+                    ))}
                 </div>
             </div>
 

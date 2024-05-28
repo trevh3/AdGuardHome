@@ -11,9 +11,7 @@ import './i18n';
 const store = configureStore(reducers, {}); // set initial state
 
 ReactDOM.render(
-
     <Provider store={store}>
-
         <App />
     </Provider>,
     document.getElementById('root'),

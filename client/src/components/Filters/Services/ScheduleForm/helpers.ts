@@ -32,7 +32,6 @@ export const getTimeFromMs = (value: any) => {
     const minutes = selectedTime.getUTCMinutes();
 
     return {
-
         hours: hours.toString().padStart(2, '0'),
 
         minutes: minutes.toString().padStart(2, '0'),

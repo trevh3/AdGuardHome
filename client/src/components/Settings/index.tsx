@@ -85,59 +85,55 @@ class Settings extends Component<SettingsProps> {
         this.props.getFilteringStatus();
     }
 
-    renderSettings = (settings: any) => getObjectKeysSorted(SETTINGS, ORDER_KEY)
-        .map((key: any) => {
+    renderSettings = (settings: any) =>
+        getObjectKeysSorted(SETTINGS, ORDER_KEY).map((key: any) => {
             const setting = settings[key];
             const { enabled } = setting;
 
-            return <Checkbox
-                {...setting}
-                key={key}
-
-                handleChange={() => this.props.toggleSetting(key, enabled)}
-            />;
+            return <Checkbox {...setting} key={key} handleChange={() => this.props.toggleSetting(key, enabled)} />;
         });
 
     renderSafeSearch = () => {
-        const { settings: { settingsList: { safesearch } } } = this.props;
+        const {
+            settings: {
+                settingsList: { safesearch },
+            },
+        } = this.props;
         const { enabled } = safesearch || {};
         const searches = { ...(safesearch || {}) };
         delete searches.enabled;
 
-        return <>
+        return (
+            <>
+                <Checkbox
+                    enabled={enabled}
+                    title="enforce_safe_search"
+                    subtitle="enforce_save_search_hint"
+                    handleChange={({ target: { checked: enabled } }) =>
+                        this.props.toggleSetting('safesearch', { ...safesearch, enabled })
+                    }
+                />
 
-            <Checkbox
-
-                enabled={enabled}
-                title='enforce_safe_search'
-                subtitle='enforce_save_search_hint'
-
-                handleChange={({ target: { checked: enabled } }) => this.props.toggleSetting('safesearch', { ...safesearch, enabled })}
-            />
-
-            <div className='form__group--inner'>
-                {Object.keys(searches).map((searchKey) => (
-
-                    <Checkbox
-                        key={searchKey}
-
-                        enabled={searches[searchKey]}
-                        title={captitalizeWords(searchKey)}
-                        subtitle=''
-                        disabled={!safesearch.enabled}
-                        handleChange={({
-                            target: { checked },
-
-                        }: any) => this.props.toggleSetting('safesearch', { ...safesearch, [searchKey]: checked })}
-                    />
-                ))}
-            </div>
-        </>;
+                <div className="form__group--inner">
+                    {Object.keys(searches).map((searchKey) => (
+                        <Checkbox
+                            key={searchKey}
+                            enabled={searches[searchKey]}
+                            title={captitalizeWords(searchKey)}
+                            subtitle=""
+                            disabled={!safesearch.enabled}
+                            handleChange={({ target: { checked } }: any) =>
+                                this.props.toggleSetting('safesearch', { ...safesearch, [searchKey]: checked })
+                            }
+                        />
+                    ))}
+                </div>
+            </>
+        );
     };
 
     render() {
         const {
-
             settings,
 
             setStatsConfig,
@@ -159,29 +155,19 @@ class Settings extends Component<SettingsProps> {
             t,
         } = this.props;
 
-        const isDataReady = !settings.processing
-            && !stats.processingGetConfig
-            && !queryLogs.processingGetConfig;
+        const isDataReady = !settings.processing && !stats.processingGetConfig && !queryLogs.processingGetConfig;
 
         return (
-
             <Fragment>
-
                 <PageTitle title={t('general_settings')} />
 
                 {!isDataReady && <Loading />}
                 {isDataReady && (
-
                     <div className="content">
-
                         <div className="row">
-
                             <div className="col-md-12">
-
                                 <Card bodyType="card-body box-body--settings">
-
                                     <div className="form">
-
                                         <FiltersConfig
                                             initialValues={{
                                                 interval: filtering.interval,
@@ -197,9 +183,7 @@ class Settings extends Component<SettingsProps> {
                             </div>
 
                             <div className="col-md-12">
-
                                 <LogsConfig
-
                                     enabled={queryLogs.enabled}
                                     ignored={queryLogs.ignored}
                                     interval={queryLogs.interval}
@@ -213,9 +197,7 @@ class Settings extends Component<SettingsProps> {
                             </div>
 
                             <div className="col-md-12">
-
                                 <StatsConfig
-
                                     interval={stats.interval}
                                     customInterval={stats.customInterval}
                                     ignored={stats.ignored}

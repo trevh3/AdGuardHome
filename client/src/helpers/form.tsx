@@ -26,8 +26,19 @@ interface renderFieldProps {
 
 export const renderField = (props: renderFieldProps, elementType: any) => {
     const {
-        input, id, className, placeholder, type, disabled, normalizeOnBlur, onScroll,
-        autoComplete, meta: { touched, error }, min, max, step,
+        input,
+        id,
+        className,
+        placeholder,
+        type,
+        disabled,
+        normalizeOnBlur,
+        onScroll,
+        autoComplete,
+        meta: { touched, error },
+        min,
+        max,
+        step,
     } = props;
 
     const onBlur = (event: any) => createOnBlurHandler(event, input, normalizeOnBlur);
@@ -48,12 +59,13 @@ export const renderField = (props: renderFieldProps, elementType: any) => {
     });
 
     return (
-
         <>
             {element}
-            {!disabled && touched && error
-
-            && <span className="form__message form__message--error"><Trans>{error}</Trans></span>}
+            {!disabled && touched && error && (
+                <span className="form__message form__message--error">
+                    <Trans>{error}</Trans>
+                </span>
+            )}
         </>
     );
 };
@@ -90,16 +102,13 @@ export const renderGroupField = ({
     isActionAvailable,
     removeField,
     meta: { touched, error },
-    normalizeOnBlur
+    normalizeOnBlur,
 }: renderGroupFieldProps) => {
     const onBlur = (event: any) => createOnBlurHandler(event, input, normalizeOnBlur);
 
     return (
-
         <>
-
             <div className="input-group">
-
                 <input
                     {...input}
                     id={id}
@@ -110,27 +119,24 @@ export const renderGroupField = ({
                     autoComplete={autoComplete}
                     onBlur={onBlur}
                 />
-                {isActionAvailable
-
-                && <span className="input-group-append">
-
+                {isActionAvailable && (
+                    <span className="input-group-append">
                         <button
                             type="button"
                             className="btn btn-secondary btn-icon btn-icon--green"
-                            onClick={removeField}
-                        >
-
+                            onClick={removeField}>
                             <svg className="icon icon--24">
-
                                 <use xlinkHref="#cross" />
                             </svg>
                         </button>
                     </span>
-                }
+                )}
             </div>
-            {!disabled && touched && error
-
-            && <span className="form__message form__message--error"><Trans>{error}</Trans></span>}
+            {!disabled && touched && error && (
+                <span className="form__message form__message--error">
+                    <Trans>{error}</Trans>
+                </span>
+            )}
         </>
     );
 };
@@ -151,26 +157,23 @@ export const renderRadioField = ({
     placeholder,
     subtitle,
     disabled,
-    meta: { touched, error }
-}: renderRadioFieldProps) => <Fragment>
+    meta: { touched, error },
+}: renderRadioFieldProps) => (
+    <Fragment>
+        <label className="custom-control custom-radio">
+            <input {...input} type="radio" className="custom-control-input" disabled={disabled} />
 
-    <label className="custom-control custom-radio">
+            <span className="custom-control-label">{placeholder}</span>
 
-        <input {...input} type="radio" className="custom-control-input" disabled={disabled} />
-
-        <span className="custom-control-label">{placeholder}</span>
-
-        {subtitle && <span
-            className="checkbox__label-subtitle"
-            dangerouslySetInnerHTML={{ __html: subtitle }}
-        />}
-    </label>
-    {!disabled
-    && touched
-    && error
-
-    && <span className="form__message form__message--error"><Trans>{error}</Trans></span>}
-</Fragment>;
+            {subtitle && <span className="checkbox__label-subtitle" dangerouslySetInnerHTML={{ __html: subtitle }} />}
+        </label>
+        {!disabled && touched && error && (
+            <span className="form__message form__message--error">
+                <Trans>{error}</Trans>
+            </span>
+        )}
+    </Fragment>
+);
 
 interface CheckboxFieldProps {
     input: object;
@@ -193,31 +196,29 @@ export const CheckboxField = ({
     disabled,
     onClick,
     modifier = 'checkbox--form',
-    meta: { touched, error }
-}: CheckboxFieldProps) => <>
+    meta: { touched, error },
+}: CheckboxFieldProps) => (
+    <>
+        <label className={`checkbox ${modifier}`} onClick={onClick}>
+            <span className="checkbox__marker" />
 
-    <label className={`checkbox ${modifier}`} onClick={onClick}>
+            <input {...input} type="checkbox" className="checkbox__input" disabled={disabled} />
 
-        <span className="checkbox__marker" />
+            <span className="checkbox__label">
+                <span className="checkbox__label-text checkbox__label-text--long">
+                    <span className="checkbox__label-title">{placeholder}</span>
 
-        <input {...input} type="checkbox" className="checkbox__input" disabled={disabled} />
-
-        <span className="checkbox__label">
-
-            <span className="checkbox__label-text checkbox__label-text--long">
-
-                <span className="checkbox__label-title">{placeholder}</span>
-
-                {subtitle && <span className="checkbox__label-subtitle">{subtitle}</span>}
+                    {subtitle && <span className="checkbox__label-subtitle">{subtitle}</span>}
+                </span>
             </span>
-        </span>
-    </label>
-    {!disabled
-    && touched
-    && error
-
-    && <div className="form__message form__message--error mt-1"><Trans>{error}</Trans></div>}
-</>;
+        </label>
+        {!disabled && touched && error && (
+            <div className="form__message form__message--error mt-1">
+                <Trans>{error}</Trans>
+            </div>
+        )}
+    </>
+);
 
 interface renderSelectFieldProps {
     input: object;
@@ -230,23 +231,27 @@ interface renderSelectFieldProps {
     };
 }
 
-export const renderSelectField = ({
-    input,
-    meta: { touched, error },
-    children,
-    label
-}: renderSelectFieldProps) => {
+export const renderSelectField = ({ input, meta: { touched, error }, children, label }: renderSelectFieldProps) => {
     const showWarning = touched && error;
 
-    return <>
+    return (
+        <>
+            {label && (
+                <label>
+                    <Trans>{label}</Trans>
+                </label>
+            )}
 
-        {label && <label><Trans>{label}</Trans></label>}
-
-        <select {...input} className='form-control custom-select'>{children}</select>
-        {showWarning
-
-        && <span className="form__message form__message--error form__message--left-pad"><Trans>{error}</Trans></span>}
-    </>;
+            <select {...input} className="form-control custom-select">
+                {children}
+            </select>
+            {showWarning && (
+                <span className="form__message form__message--error form__message--left-pad">
+                    <Trans>{error}</Trans>
+                </span>
+            )}
+        </>
+    );
 };
 
 interface renderServiceFieldProps {
@@ -267,13 +272,10 @@ export const renderServiceField = ({
     disabled,
     modifier,
     icon,
-    meta: { touched, error }
+    meta: { touched, error },
 }: renderServiceFieldProps) => (
-
     <>
-
         <label className={cn('service custom-switch', { [modifier]: modifier })}>
-
             <input
                 {...input}
                 type="checkbox"
@@ -287,18 +289,10 @@ export const renderServiceField = ({
             <span className="service__text" title={placeholder}>
                 {placeholder}
             </span>
-            {icon && (
-
-                <div
-                    dangerouslySetInnerHTML={{ __html: window.atob(icon) }}
-                    className="service__icon"
-                />
-            )}
+            {icon && <div dangerouslySetInnerHTML={{ __html: window.atob(icon) }} className="service__icon" />}
         </label>
         {!disabled && touched && error && (
-
             <span className="form__message form__message--error">
-
                 <Trans>{error}</Trans>
             </span>
         )}
@@ -311,7 +305,7 @@ export const renderServiceField = ({
  * @returns {*}
  */
 export const ip4ToInt = (ip: any) => {
-    const intIp = ip.split('.').reduce((int: any, oct: any) => (int * 256) + parseInt(oct, 10), 0);
+    const intIp = ip.split('.').reduce((int: any, oct: any) => int * 256 + parseInt(oct, 10), 0);
     return Number.isNaN(intIp) ? 0 : intIp;
 };
 
@@ -332,8 +326,7 @@ export const toFloatNumber = (value: any) => value && parseFloat(value, 10);
  * @param value {string}
  * @returns {boolean}
  */
-export const isValidAbsolutePath = (value: any) => R_WIN_ABSOLUTE_PATH.test(value)
-    || R_UNIX_ABSOLUTE_PATH.test(value);
+export const isValidAbsolutePath = (value: any) => R_WIN_ABSOLUTE_PATH.test(value) || R_UNIX_ABSOLUTE_PATH.test(value);
 
 /**
  * @param value {string}

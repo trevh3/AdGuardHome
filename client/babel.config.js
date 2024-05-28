@@ -1,10 +1,7 @@
 export default (api) => {
     api.cache(false);
     return {
-        presets: [
-            '@babel/preset-env',
-            '@babel/preset-react',
-        ],
+        presets: ['@babel/preset-env', '@babel/preset-react'],
         plugins: [
             '@babel/plugin-transform-runtime',
             '@babel/plugin-transform-class-properties',

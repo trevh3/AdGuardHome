@@ -38,33 +38,21 @@ interface AuthProps {
 }
 
 const Auth = (props: AuthProps) => {
-    const {
-        handleSubmit,
-        pristine,
-        invalid,
-        t,
-    } = props;
+    const { handleSubmit, pristine, invalid, t } = props;
 
     return (
-
         <form className="setup__step" onSubmit={handleSubmit}>
-
             <div className="setup__group">
-
                 <div className="setup__subtitle">
-
                     <Trans>install_auth_title</Trans>
                 </div>
 
                 <p className="setup__desc">
-
                     <Trans>install_auth_desc</Trans>
                 </p>
 
                 <div className="form-group">
-
                     <label>
-
                         <Trans>install_auth_username</Trans>
                     </label>
 
@@ -73,16 +61,14 @@ const Auth = (props: AuthProps) => {
                         component={renderInputField}
                         type="text"
                         className="form-control"
-                        placeholder={ t('install_auth_username_enter') }
+                        placeholder={t('install_auth_username_enter')}
                         validate={[required]}
                         autoComplete="username"
                     />
                 </div>
 
                 <div className="form-group">
-
                     <label>
-
                         <Trans>install_auth_password</Trans>
                     </label>
 
@@ -91,16 +77,14 @@ const Auth = (props: AuthProps) => {
                         component={renderInputField}
                         type="password"
                         className="form-control"
-                        placeholder={ t('install_auth_password_enter') }
+                        placeholder={t('install_auth_password_enter')}
                         validate={[required, validatePasswordLength]}
                         autoComplete="new-password"
                     />
                 </div>
 
                 <div className="form-group">
-
                     <label>
-
                         <Trans>install_auth_confirm</Trans>
                     </label>
 
@@ -109,7 +93,7 @@ const Auth = (props: AuthProps) => {
                         component={renderInputField}
                         type="password"
                         className="form-control"
-                        placeholder={ t('install_auth_confirm') }
+                        placeholder={t('install_auth_confirm')}
                         validate={[required]}
                         autoComplete="new-password"
                     />

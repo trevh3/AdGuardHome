@@ -32,7 +32,7 @@ const DomainCell = ({
     time,
     tracker,
     type,
-    ecs
+    ecs,
 }: DomainCellProps) => {
     const { t } = useTranslation();
 
@@ -94,13 +94,7 @@ const DomainCell = ({
         name_table_header: tracker?.name,
         category_label: hasTracker && captitalizeWords(tracker.category),
         source_label: sourceData && (
-
-            <a
-                href={sourceData.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="link--green"
-            >
+            <a href={sourceData.url} target="_blank" rel="noopener noreferrer" className="link--green">
                 {sourceData.name}
             </a>
         ),
@@ -109,13 +103,9 @@ const DomainCell = ({
     const renderGrid = (content: any, idx: any) => {
         const preparedContent = typeof content === 'string' ? t(content) : content;
 
-        const className = classNames(
-            'text-truncate o-hidden',
-            { 'overflow-break': preparedContent?.length > 100 },
-        );
+        const className = classNames('text-truncate o-hidden', { 'overflow-break': preparedContent?.length > 100 });
 
         return (
-
             <div key={idx} className={className}>
                 {preparedContent}
             </div>
@@ -123,20 +113,20 @@ const DomainCell = ({
     };
 
     const getGrid = (contentObj: any, title: any, className: any) => [
-
         <div key={title} className={classNames('pb-2 grid--title', className)}>
             {t(title)}
         </div>,
 
         <div key={`${title}-1`} className="grid grid--limited">
-
             {React.Children.map(Object.entries(contentObj), renderGrid)}
         </div>,
     ];
 
     const requestDetails = getGrid(requestDetailsObj, 'request_details');
 
-    const renderContent = hasTracker ? requestDetails.concat(getGrid(knownTrackerDataObj, 'known_tracker', 'pt-4')) : requestDetails;
+    const renderContent = hasTracker
+        ? requestDetails.concat(getGrid(knownTrackerDataObj, 'known_tracker', 'pt-4'))
+        : requestDetails;
 
     const valueClass = classNames('w-100 text-truncate', {
         'px-2 d-flex justify-content-center flex-column': isDetailed,
@@ -145,13 +135,8 @@ const DomainCell = ({
     const details = [ip, protocol].filter(Boolean).join(', ');
 
     return (
-
-        <div
-            className="d-flex o-hidden logs__cell logs__cell logs__cell--domain"
-            role="gridcell"
-        >
+        <div className="d-flex o-hidden logs__cell logs__cell logs__cell--domain" role="gridcell">
             {dnssec_enabled && (
-
                 <IconTooltip
                     className={lockIconClass}
                     tooltipClass="py-4 px-5 pb-45"
@@ -169,28 +154,21 @@ const DomainCell = ({
                 xlinkHref="privacy"
                 contentItemClass="key-colon"
                 renderContent={renderContent}
-
                 place="bottom"
             />
 
             <div className={valueClass}>
                 {unicodeName ? (
-
                     <div className="text-truncate overflow-break-mobile" title={unicodeName}>
                         {unicodeName}
                     </div>
                 ) : (
-
                     <div className="text-truncate overflow-break-mobile" title={domain}>
                         {domain}
                     </div>
                 )}
                 {details && isDetailed && (
-
-                    <div
-                        className="detailed-info d-none d-sm-block text-truncate"
-                        title={details}
-                    >
+                    <div className="detailed-info d-none d-sm-block text-truncate" title={details}>
                         {details}
                     </div>
                 )}

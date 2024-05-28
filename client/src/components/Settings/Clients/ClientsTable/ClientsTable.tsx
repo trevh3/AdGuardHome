@@ -11,13 +11,7 @@ import ReactTable from 'react-table';
 import { getAllBlockedServices, getBlockedServices } from '../../../../actions/services';
 
 import { initSettings } from '../../../../actions';
-import {
-    splitByNewLine,
-    countClientsStatistics,
-    sortIp,
-    getService,
-
-} from '../../../../helpers/helpers';
+import { splitByNewLine, countClientsStatistics, sortIp, getService } from '../../../../helpers/helpers';
 import { MODAL_TYPE, LOCAL_TIMEZONE_VALUE, TABLES_MIN_ROWS } from '../../../../helpers/constants';
 
 import Card from '../../../ui/Card';
@@ -60,7 +54,7 @@ const ClientsTable = ({
     processingDeleting,
     processingUpdating,
     getStats,
-    supportedTags
+    supportedTags,
 }: ClientsTableProps) => {
     const [t] = useTranslation();
     const dispatch = useDispatch();
@@ -100,9 +94,9 @@ const ClientsTable = ({
 
         if (values) {
             if (values.blocked_services) {
-                config.blocked_services = Object
-                    .keys(values.blocked_services)
-                    .filter((service) => values.blocked_services[service]);
+                config.blocked_services = Object.keys(values.blocked_services).filter(
+                    (service) => values.blocked_services[service],
+                );
             }
 
             if (values.upstreams && typeof values.upstreams === 'string') {
@@ -133,18 +127,17 @@ const ClientsTable = ({
         }
     };
 
-    const getOptionsWithLabels = (options: any) => options.map((option: any) => ({
-        value: option,
-        label: option,
-    }));
+    const getOptionsWithLabels = (options: any) =>
+        options.map((option: any) => ({
+            value: option,
+            label: option,
+        }));
 
     const getClient = (name: any, clients: any) => {
         const client = clients.find((item: any) => name === item.name);
 
         if (client) {
-            const {
-                upstreams, tags, whois_info, ...values
-            } = client;
+            const { upstreams, tags, whois_info, ...values } = client;
             return {
                 upstreams: (upstreams && upstreams.join('\n')) || '',
                 tags: (tags && getOptionsWithLabels(tags)) || [],
@@ -189,14 +182,13 @@ const ClientsTable = ({
                 const { value } = row;
 
                 return (
-
                     <div className="logs__row o-hidden">
-
                         <span className="logs__text">
-
-                            {value.map((address: any) => <div key={address} title={address}>
-                                {address}
-                            </div>)}
+                            {value.map((address: any) => (
+                                <div key={address} title={address}>
+                                    {address}
+                                </div>
+                            ))}
                         </span>
                     </div>
                 );
@@ -213,21 +205,11 @@ const ClientsTable = ({
             Header: t('settings'),
             accessor: 'use_global_settings',
             minWidth: 120,
-            Cell: ({
-                value,
-            }: any) => {
-                const title = value ? (
-
-                    <Trans>settings_global</Trans>
-                ) : (
-
-                    <Trans>settings_custom</Trans>
-                );
+            Cell: ({ value }: any) => {
+                const title = value ? <Trans>settings_global</Trans> : <Trans>settings_custom</Trans>;
 
                 return (
-
                     <div className="logs__row o-hidden">
-
                         <div className="logs__text">{title}</div>
                     </div>
                 );
@@ -246,14 +228,12 @@ const ClientsTable = ({
 
                 if (value && services.allServices) {
                     return (
-
                         <div className="logs__row logs__row--icons">
                             {value.map((service: any) => {
                                 const serviceInfo = getService(services.allServices, service);
 
                                 if (serviceInfo?.icon_svg) {
                                     return (
-
                                         <div
                                             key={serviceInfo.name}
                                             dangerouslySetInnerHTML={{
@@ -271,33 +251,19 @@ const ClientsTable = ({
                     );
                 }
 
-                return (
-
-                    <div className="logs__row logs__row--icons">
-                        –
-                    </div>
-                );
+                return <div className="logs__row logs__row--icons">–</div>;
             },
         },
         {
             Header: t('upstreams'),
             accessor: 'upstreams',
             minWidth: 120,
-            Cell: ({
-                value,
-            }: any) => {
-                const title = value && value.length > 0 ? (
-
-                    <Trans>settings_custom</Trans>
-                ) : (
-
-                    <Trans>settings_global</Trans>
-                );
+            Cell: ({ value }: any) => {
+                const title =
+                    value && value.length > 0 ? <Trans>settings_custom</Trans> : <Trans>settings_global</Trans>;
 
                 return (
-
                     <div className="logs__row o-hidden">
-
                         <div className="logs__text">{title}</div>
                     </div>
                 );
@@ -315,14 +281,13 @@ const ClientsTable = ({
                 }
 
                 return (
-
                     <div className="logs__row o-hidden">
-
                         <span className="logs__text">
-
-                            {value.map((tag: any) => <div key={tag} title={tag} className="logs__tag small">
-                                {tag}
-                            </div>)}
+                            {value.map((tag: any) => (
+                                <div key={tag} title={tag} className="logs__tag small">
+                                    {tag}
+                                </div>
+                            ))}
                         </span>
                     </div>
                 );
@@ -331,10 +296,7 @@ const ClientsTable = ({
         {
             Header: t('requests_count'),
             id: 'statistics',
-            accessor: (row: any) => countClientsStatistics(
-                row.ids,
-                normalizedTopClients.auto,
-            ),
+            accessor: (row: any) => countClientsStatistics(row.ids, normalizedTopClients.auto),
             sortMethod: (a: any, b: any) => b - a,
             minWidth: 120,
             Cell: (row: any) => {
@@ -357,23 +319,19 @@ const ClientsTable = ({
                 const clientName = row.original.name;
 
                 return (
-
                     <div className="logs__row logs__row--center">
-
                         <button
                             type="button"
                             className="btn btn-icon btn-outline-primary btn-sm mr-2"
-                            onClick={() => toggleClientModal({
-                                type: MODAL_TYPE.EDIT_CLIENT,
-                                name: clientName,
-                            })
+                            onClick={() =>
+                                toggleClientModal({
+                                    type: MODAL_TYPE.EDIT_CLIENT,
+                                    name: clientName,
+                                })
                             }
                             disabled={processingUpdating}
-                            title={t('edit_table_action')}
-                        >
-
+                            title={t('edit_table_action')}>
                             <svg className="icons icon12">
-
                                 <use xlinkHref="#edit" />
                             </svg>
                         </button>
@@ -383,11 +341,8 @@ const ClientsTable = ({
                             className="btn btn-icon btn-outline-secondary btn-sm"
                             onClick={() => handleDelete({ name: clientName })}
                             disabled={processingDeleting}
-                            title={t('delete_table_action')}
-                        >
-
+                            title={t('delete_table_action')}>
                             <svg className="icons icon12">
-
                                 <use xlinkHref="#delete" />
                             </svg>
                         </button>
@@ -401,15 +356,8 @@ const ClientsTable = ({
     const tagsOptions = getOptionsWithLabels(supportedTags);
 
     return (
-
-        <Card
-            title={t('clients_title')}
-            subtitle={t('clients_desc')}
-            bodyType="card-body box-body--settings"
-        >
-
+        <Card title={t('clients_title')} subtitle={t('clients_desc')} bodyType="card-body box-body--settings">
             <>
-
                 <ReactTable
                     data={clients || []}
                     columns={columns}
@@ -422,7 +370,9 @@ const ClientsTable = ({
                     className="-striped -highlight card-table-overflow"
                     showPagination
                     defaultPageSize={LocalStorageHelper.getItem(LOCAL_STORAGE_KEYS.CLIENTS_PAGE_SIZE) || 10}
-                    onPageSizeChange={(size: any) => LocalStorageHelper.setItem(LOCAL_STORAGE_KEYS.CLIENTS_PAGE_SIZE, size)}
+                    onPageSizeChange={(size: any) =>
+                        LocalStorageHelper.setItem(LOCAL_STORAGE_KEYS.CLIENTS_PAGE_SIZE, size)
+                    }
                     minRows={TABLES_MIN_ROWS}
                     ofText="/"
                     previousText={t('previous_btn')}
@@ -437,9 +387,7 @@ const ClientsTable = ({
                     type="button"
                     className="btn btn-success btn-standard mt-3"
                     onClick={() => toggleClientModal(MODAL_TYPE.ADD_FILTERS)}
-                    disabled={processingAdding}
-                >
-
+                    disabled={processingAdding}>
                     <Trans>client_add</Trans>
                 </button>
 

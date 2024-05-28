@@ -25,17 +25,13 @@ interface TableProps {
 class Table extends Component<TableProps> {
     getDateCell = (row: any) => CellWrap(row, formatDetailedDateTime);
 
-    renderCheckbox = ({
-        original,
-    }: any) => {
+    renderCheckbox = ({ original }: any) => {
         const { processingConfigFilter, toggleFilter } = this.props;
         const { url, name, enabled } = original;
         const data = { name, url, enabled: !enabled };
 
         return (
-
             <label className="checkbox">
-
                 <input
                     type="checkbox"
                     className="checkbox__input"
@@ -51,7 +47,6 @@ class Table extends Component<TableProps> {
 
     columns = [
         {
-
             Header: <Trans>enabled_table_header</Trans>,
             accessor: 'enabled',
             Cell: this.renderCheckbox,
@@ -60,38 +55,29 @@ class Table extends Component<TableProps> {
             resizable: false,
         },
         {
-
             Header: <Trans>name_table_header</Trans>,
             accessor: 'name',
             minWidth: 180,
             Cell: CellWrap,
         },
         {
-
             Header: <Trans>list_url_table_header</Trans>,
             accessor: 'url',
             minWidth: 180,
             // eslint-disable-next-line react/prop-types
-            Cell: ({
-                value,
-            }: any) => (
-
+            Cell: ({ value }: any) => (
                 <div className="logs__row">
-                    {isValidAbsolutePath(value) ? value
-
-                        : <a
-                            href={value}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="link logs__text"
-                        >
+                    {isValidAbsolutePath(value) ? (
+                        value
+                    ) : (
+                        <a href={value} target="_blank" rel="noopener noreferrer" className="link logs__text">
                             {value}
-                        </a>}
+                        </a>
+                    )}
                 </div>
             ),
         },
         {
-
             Header: <Trans>rules_count_table_header</Trans>,
             accessor: 'rulesCount',
             className: 'text-center',
@@ -99,7 +85,6 @@ class Table extends Component<TableProps> {
             Cell: (props: any) => props.value.toLocaleString(),
         },
         {
-
             Header: <Trans>last_time_updated_table_header</Trans>,
             accessor: 'lastUpdated',
             className: 'text-center',
@@ -107,7 +92,6 @@ class Table extends Component<TableProps> {
             Cell: this.getDateCell,
         },
         {
-
             Header: <Trans>actions_table_header</Trans>,
             accessor: 'actions',
             className: 'text-center',
@@ -121,22 +105,18 @@ class Table extends Component<TableProps> {
                 const { t, toggleFilteringModal, handleDelete } = this.props;
 
                 return (
-
                     <div className="logs__row logs__row--center">
-
                         <button
                             type="button"
                             className="btn btn-icon btn-outline-primary btn-sm mr-2"
                             title={t('edit_table_action')}
-                            onClick={() => toggleFilteringModal({
-                                type: MODAL_TYPE.EDIT_FILTERS,
-                                url,
-                            })
-                            }
-                        >
-
+                            onClick={() =>
+                                toggleFilteringModal({
+                                    type: MODAL_TYPE.EDIT_FILTERS,
+                                    url,
+                                })
+                            }>
                             <svg className="icons icon12">
-
                                 <use xlinkHref="#edit" />
                             </svg>
                         </button>
@@ -145,11 +125,8 @@ class Table extends Component<TableProps> {
                             type="button"
                             className="btn btn-icon btn-outline-secondary btn-sm"
                             onClick={() => handleDelete(url)}
-                            title={t('delete_table_action')}
-                        >
-
+                            title={t('delete_table_action')}>
                             <svg className="icons icon12">
-
                                 <use xlinkHref="#delete" />
                             </svg>
                         </button>
@@ -160,17 +137,13 @@ class Table extends Component<TableProps> {
     ];
 
     render() {
-        const {
-
-            loading, filters, t, whitelist,
-        } = this.props;
+        const { loading, filters, t, whitelist } = this.props;
 
         const localStorageKey = whitelist
             ? LOCAL_STORAGE_KEYS.ALLOWLIST_PAGE_SIZE
             : LOCAL_STORAGE_KEYS.BLOCKLIST_PAGE_SIZE;
 
         return (
-
             <ReactTable
                 data={filters}
                 columns={this.columns}

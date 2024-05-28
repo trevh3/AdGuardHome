@@ -9,7 +9,6 @@ import {
     renderTextareaField,
     CheckboxField,
     toNumber,
-
 } from '../../../../helpers/form';
 import {
     validateIpv4,
@@ -49,17 +48,20 @@ const customIps = [
     },
 ];
 
-const getFields = (processing: any, t: any) => Object.values(BLOCKING_MODES)
+const getFields = (processing: any, t: any) =>
+    Object.values(BLOCKING_MODES)
 
-    .map((mode: any) => <Field
-    key={mode}
-    name="blocking_mode"
-    type="radio"
-    component={renderRadioField}
-    value={mode}
-    placeholder={t(mode)}
-    disabled={processing}
-/>);
+        .map((mode: any) => (
+            <Field
+                key={mode}
+                name="blocking_mode"
+                type="radio"
+                component={renderRadioField}
+                value={mode}
+                placeholder={t(mode)}
+                disabled={processing}
+            />
+        ));
 
 interface FormProps {
     handleSubmit: (...args: unknown[]) => unknown;
@@ -68,38 +70,23 @@ interface FormProps {
     processing: boolean;
 }
 
-const Form = ({
-    handleSubmit,
-    submitting,
-    invalid,
-    processing
-}: FormProps) => {
+const Form = ({ handleSubmit, submitting, invalid, processing }: FormProps) => {
     const { t } = useTranslation();
-    const {
-        blocking_mode,
-        edns_cs_enabled,
-        edns_cs_use_custom,
-
-    } = useSelector((state) => state.form[FORM_NAME.BLOCKING_MODE].values ?? {}, shallowEqual);
+    const { blocking_mode, edns_cs_enabled, edns_cs_use_custom } = useSelector(
+        (state) => state.form[FORM_NAME.BLOCKING_MODE].values ?? {},
+        shallowEqual,
+    );
 
     return (
-
         <form onSubmit={handleSubmit}>
-
             <div className="row">
-
                 <div className="col-12 col-md-7">
-
                     <div className="form__group form__group--settings">
-
-                        <label htmlFor="ratelimit"
-                            className="form__label form__label--with-desc">
-
+                        <label htmlFor="ratelimit" className="form__label form__label--with-desc">
                             <Trans>rate_limit</Trans>
                         </label>
 
                         <div className="form__desc form__desc--top">
-
                             <Trans>rate_limit_desc</Trans>
                         </div>
 
@@ -118,17 +105,12 @@ const Form = ({
                 </div>
 
                 <div className="col-12 col-md-7">
-
                     <div className="form__group form__group--settings">
-
-                        <label htmlFor="ratelimit_subnet_len_ipv4"
-                            className="form__label form__label--with-desc">
-
+                        <label htmlFor="ratelimit_subnet_len_ipv4" className="form__label form__label--with-desc">
                             <Trans>rate_limit_subnet_len_ipv4</Trans>
                         </label>
 
                         <div className="form__desc form__desc--top">
-
                             <Trans>rate_limit_subnet_len_ipv4_desc</Trans>
                         </div>
 
@@ -147,17 +129,12 @@ const Form = ({
                 </div>
 
                 <div className="col-12 col-md-7">
-
                     <div className="form__group form__group--settings">
-
-                        <label htmlFor="ratelimit_subnet_len_ipv6"
-                            className="form__label form__label--with-desc">
-
+                        <label htmlFor="ratelimit_subnet_len_ipv6" className="form__label form__label--with-desc">
                             <Trans>rate_limit_subnet_len_ipv6</Trans>
                         </label>
 
                         <div className="form__desc form__desc--top">
-
                             <Trans>rate_limit_subnet_len_ipv6_desc</Trans>
                         </div>
 
@@ -176,17 +153,12 @@ const Form = ({
                 </div>
 
                 <div className="col-12 col-md-7">
-
                     <div className="form__group form__group--settings">
-
-                        <label htmlFor="ratelimit_whitelist"
-                            className="form__label form__label--with-desc">
-
+                        <label htmlFor="ratelimit_whitelist" className="form__label form__label--with-desc">
                             <Trans>rate_limit_whitelist</Trans>
                         </label>
 
                         <div className="form__desc form__desc--top">
-
                             <Trans>rate_limit_whitelist_desc</Trans>
                         </div>
 
@@ -202,9 +174,7 @@ const Form = ({
                 </div>
 
                 <div className="col-12">
-
                     <div className="form__group form__group--settings">
-
                         <Field
                             name="edns_cs_enabled"
                             type="checkbox"
@@ -217,9 +187,7 @@ const Form = ({
                 </div>
 
                 <div className="col-12 form__group form__group--inner">
-
                     <div className="form__group ">
-
                         <Field
                             name="edns_cs_use_custom"
                             type="checkbox"
@@ -230,74 +198,61 @@ const Form = ({
                         />
                     </div>
 
-                    {edns_cs_use_custom && (<Field
-                        name="edns_cs_custom_ip"
-                        component={renderInputField}
-                        className="form-control"
-                        placeholder={t('form_enter_ip')}
-                        validate={[validateIp, validateRequiredValue]}
-                    />)}
-
+                    {edns_cs_use_custom && (
+                        <Field
+                            name="edns_cs_custom_ip"
+                            component={renderInputField}
+                            className="form-control"
+                            placeholder={t('form_enter_ip')}
+                            validate={[validateIp, validateRequiredValue]}
+                        />
+                    )}
                 </div>
 
-                {checkboxes.map(({ name, placeholder, subtitle }) => <div className="col-12" key={name}>
-
-                    <div className="form__group form__group--settings">
-
-                        <Field
-                            name={name}
-                            type="checkbox"
-                            component={CheckboxField}
-                            placeholder={t(placeholder)}
-                            disabled={processing}
-                            subtitle={t(subtitle)}
-                        />
+                {checkboxes.map(({ name, placeholder, subtitle }) => (
+                    <div className="col-12" key={name}>
+                        <div className="form__group form__group--settings">
+                            <Field
+                                name={name}
+                                type="checkbox"
+                                component={CheckboxField}
+                                placeholder={t(placeholder)}
+                                disabled={processing}
+                                subtitle={t(subtitle)}
+                            />
+                        </div>
                     </div>
-                </div>)}
+                ))}
 
                 <div className="col-12">
-
                     <div className="form__group form__group--settings mb-4">
-
                         <label className="form__label form__label--with-desc">
-
                             <Trans>blocking_mode</Trans>
                         </label>
 
                         <div className="form__desc form__desc--top">
-
                             {Object.values(BLOCKING_MODES)
 
-                                .map((mode: any) => <li key={mode}>
-
-                                <Trans>{`blocking_mode_${mode}`}</Trans>
-                            </li>)}
+                                .map((mode: any) => (
+                                    <li key={mode}>
+                                        <Trans>{`blocking_mode_${mode}`}</Trans>
+                                    </li>
+                                ))}
                         </div>
 
-                        <div className="custom-controls-stacked">
-                            {getFields(processing, t)}
-                        </div>
+                        <div className="custom-controls-stacked">{getFields(processing, t)}</div>
                     </div>
                 </div>
                 {blocking_mode === BLOCKING_MODES.custom_ip && (
-
                     <>
-                        {customIps.map(({
-                            description,
-                            name,
-                            validateIp,
-
-                        }) => <div className="col-12 col-sm-6" key={name}>
-
+                        {customIps.map(({ description, name, validateIp }) => (
+                            <div className="col-12 col-sm-6" key={name}>
                                 <div className="form__group form__group--settings">
-
-                                    <label className="form__label form__label--with-desc"
-
-                                        htmlFor={name}><Trans>{name}</Trans>
+                                    <label className="form__label form__label--with-desc" htmlFor={name}>
+                                        <Trans>{name}</Trans>
                                     </label>
 
                                     <div className="form__desc form__desc--top">
-
                                         <Trans>{description}</Trans>
                                     </div>
 
@@ -309,22 +264,18 @@ const Form = ({
                                         validate={[validateIp, validateRequiredValue]}
                                     />
                                 </div>
-                            </div>)}
+                            </div>
+                        ))}
                     </>
                 )}
 
                 <div className="col-12 col-md-7">
-
                     <div className="form__group form__group--settings">
-
-                        <label htmlFor="blocked_response_ttl"
-                            className="form__label form__label--with-desc">
-
+                        <label htmlFor="blocked_response_ttl" className="form__label form__label--with-desc">
                             <Trans>blocked_response_ttl</Trans>
                         </label>
 
                         <div className="form__desc form__desc--top">
-
                             <Trans>blocked_response_ttl_desc</Trans>
                         </div>
 
@@ -346,9 +297,7 @@ const Form = ({
             <button
                 type="submit"
                 className="btn btn-success btn-standard btn-large"
-                disabled={submitting || invalid || processing}
-            >
-
+                disabled={submitting || invalid || processing}>
                 <Trans>save_btn</Trans>
             </button>
         </form>

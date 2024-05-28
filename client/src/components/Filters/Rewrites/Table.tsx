@@ -19,12 +19,8 @@ interface TableProps {
 }
 
 class Table extends Component<TableProps> {
-    cellWrap = ({
-        value,
-    }: any) => (
-
+    cellWrap = ({ value }: any) => (
         <div className="logs__row o-hidden">
-
             <span className="logs__text" title={value}>
                 {value}
             </span>
@@ -33,20 +29,17 @@ class Table extends Component<TableProps> {
 
     columns = [
         {
-
             Header: this.props.t('domain'),
             accessor: 'domain',
             Cell: this.cellWrap,
         },
         {
-
             Header: this.props.t('answer'),
             accessor: 'answer',
             sortMethod: sortIp,
             Cell: this.cellWrap,
         },
         {
-
             Header: this.props.t('actions_table_header'),
             accessor: 'actions',
             maxWidth: 100,
@@ -59,9 +52,7 @@ class Table extends Component<TableProps> {
                 };
 
                 return (
-
                     <div className="logs__row logs__row--center">
-
                         <button
                             type="button"
                             className="btn btn-icon btn-outline-primary btn-sm mr-2"
@@ -71,14 +62,9 @@ class Table extends Component<TableProps> {
                                     currentRewrite,
                                 });
                             }}
-
                             disabled={this.props.processingUpdate}
-
-                            title={this.props.t('edit_table_action')}
-                        >
-
+                            title={this.props.t('edit_table_action')}>
                             <svg className="icons icon12">
-
                                 <use xlinkHref="#edit" />
                             </svg>
                         </button>
@@ -86,14 +72,9 @@ class Table extends Component<TableProps> {
                         <button
                             type="button"
                             className="btn btn-icon btn-outline-secondary btn-sm"
-
                             onClick={() => this.props.handleDelete(currentRewrite)}
-
-                            title={this.props.t('delete_table_action')}
-                        >
-
+                            title={this.props.t('delete_table_action')}>
                             <svg className="icons">
-
                                 <use xlinkHref="#delete" />
                             </svg>
                         </button>
@@ -104,13 +85,9 @@ class Table extends Component<TableProps> {
     ];
 
     render() {
-        const {
-
-            t, list, processing, processingAdd, processingDelete,
-        } = this.props;
+        const { t, list, processing, processingAdd, processingDelete } = this.props;
 
         return (
-
             <ReactTable
                 data={list || []}
                 columns={this.columns}
@@ -118,7 +95,9 @@ class Table extends Component<TableProps> {
                 className="-striped -highlight card-table-overflow"
                 showPagination
                 defaultPageSize={LocalStorageHelper.getItem(LOCAL_STORAGE_KEYS.REWRITES_PAGE_SIZE) || 10}
-                onPageSizeChange={(size: any) => LocalStorageHelper.setItem(LOCAL_STORAGE_KEYS.REWRITES_PAGE_SIZE, size)}
+                onPageSizeChange={(size: any) =>
+                    LocalStorageHelper.setItem(LOCAL_STORAGE_KEYS.REWRITES_PAGE_SIZE, size)
+                }
                 minRows={TABLES_MIN_ROWS}
                 ofText="/"
                 previousText={t('previous_btn')}

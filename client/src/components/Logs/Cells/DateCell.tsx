@@ -8,9 +8,7 @@ interface DateCellProps {
     time: string;
 }
 
-const DateCell = ({
-    time
-}: DateCellProps) => {
+const DateCell = ({ time }: DateCellProps) => {
     const isDetailed = useSelector((state) => state.queryLogs.isDetailed);
 
     if (!time) {
@@ -21,14 +19,18 @@ const DateCell = ({
 
     const formattedDate = formatDateTime(time, DEFAULT_SHORT_DATE_FORMAT_OPTIONS);
 
-    return <div className="logs__cell logs__cell logs__cell--date text-truncate" role="gridcell">
-
-        <div className="logs__time" title={formattedTime}>{formattedTime}</div>
-        {isDetailed
-
-        && <div className="detailed-info d-none d-sm-block text-truncate"
-                title={formattedDate}>{formattedDate}</div>}
-    </div>;
+    return (
+        <div className="logs__cell logs__cell logs__cell--date text-truncate" role="gridcell">
+            <div className="logs__time" title={formattedTime}>
+                {formattedTime}
+            </div>
+            {isDetailed && (
+                <div className="detailed-info d-none d-sm-block text-truncate" title={formattedDate}>
+                    {formattedDate}
+                </div>
+            )}
+        </div>
+    );
 };
 
 export default DateCell;

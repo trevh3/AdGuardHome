@@ -7,28 +7,22 @@ import { WHOIS_ICONS } from './constants';
 
 const getFormattedWhois = (whois: any) => {
     const whoisInfo = normalizeWhois(whois);
-    return (
-        Object.keys(whoisInfo)
-            .map((key) => {
-                const icon = WHOIS_ICONS[key];
-                return (
-
-                    <span className="logs__whois text-muted" key={key} title={whoisInfo[key]}>
-                    {icon && (
-
-                        <>
-
-                            <svg className="logs__whois-icon icons icon--18">
-
-                                <use xlinkHref={`#${icon}`} />
-                            </svg>
-                            &nbsp;
-                        </>
-                    )}{whoisInfo[key]}
-                </span>
-                );
-            })
-    );
+    return Object.keys(whoisInfo).map((key) => {
+        const icon = WHOIS_ICONS[key];
+        return (
+            <span className="logs__whois text-muted" key={key} title={whoisInfo[key]}>
+                {icon && (
+                    <>
+                        <svg className="logs__whois-icon icons icon--18">
+                            <use xlinkHref={`#${icon}`} />
+                        </svg>
+                        &nbsp;
+                    </>
+                )}
+                {whoisInfo[key]}
+            </span>
+        );
+    });
 };
 
 /**
@@ -49,31 +43,32 @@ export const renderFormattedClientCell = (value: any, info: any, isDetailed = fa
         const whoisAvailable = whois_info && Object.keys(whois_info).length > 0;
 
         if (name) {
-            const nameValue = <div className="logs__text logs__text--link logs__text--nowrap logs__text--client" title={`${name} (${value})`}>
-
-                {name}&nbsp;<small>{`(${value})`}</small>
-            </div>;
+            const nameValue = (
+                <div
+                    className="logs__text logs__text--link logs__text--nowrap logs__text--client"
+                    title={`${name} (${value})`}>
+                    {name}&nbsp;<small>{`(${value})`}</small>
+                </div>
+            );
 
             if (!isLogs) {
                 nameContainer = nameValue;
             } else {
-                nameContainer = !whoisAvailable && isDetailed
-
-                    ? <small title={value}>{value}</small>
-                    : nameValue;
+                nameContainer = !whoisAvailable && isDetailed ? <small title={value}>{value}</small> : nameValue;
             }
         }
 
         if (whoisAvailable && isDetailed) {
-            whoisContainer = <div className="logs__text logs__text--wrap logs__text--whois">
-                    {getFormattedWhois(whois_info)}
-                </div>;
+            whoisContainer = (
+                <div className="logs__text logs__text--wrap logs__text--whois">{getFormattedWhois(whois_info)}</div>
+            );
         }
     }
 
-    return <div className="logs__text mw-100" title={value}>
-
-        <Link to={`logs?search="${encodeURIComponent(value)}"`}>{nameContainer}</Link>
-        {whoisContainer}
-    </div>;
+    return (
+        <div className="logs__text mw-100" title={value}>
+            <Link to={`logs?search="${encodeURIComponent(value)}"`}>{nameContainer}</Link>
+            {whoisContainer}
+        </div>
+    );
 };

@@ -8,17 +8,12 @@ import './Version.css';
 const Version = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const {
-        dnsVersion,
-        processingVersion,
-        checkUpdateFlag,
+    const { dnsVersion, processingVersion, checkUpdateFlag } = useSelector(
+        (state) => state?.dashboard ?? {},
+        shallowEqual,
+    );
 
-    } = useSelector((state) => state?.dashboard ?? {}, shallowEqual);
-
-    const {
-        dnsVersion: installDnsVersion,
-
-    } = useSelector((state) => state?.install ?? {}, shallowEqual);
+    const { dnsVersion: installDnsVersion } = useSelector((state) => state?.install ?? {}, shallowEqual);
 
     const version = dnsVersion || installDnsVersion;
 
@@ -27,33 +22,29 @@ const Version = () => {
     };
 
     return (
-
         <div className="version">
-
             <div className="version__text">
                 {version && (
-
                     <>
-
                         <Trans>version</Trans>:&nbsp;
-
-                        <span className="version__value" title={version}>{version}</span>
+                        <span className="version__value" title={version}>
+                            {version}
+                        </span>
                     </>
                 )}
 
-                {checkUpdateFlag && <button
-                    type="button"
-                    className="btn btn-icon btn-icon-sm btn-outline-primary btn-sm ml-2"
-                    onClick={onClick}
-                    disabled={processingVersion}
-                    title={t('check_updates_now')}
-                >
-
-                    <svg className="icons icon12">
-
-                        <use xlinkHref="#refresh" />
-                    </svg>
-                </button>}
+                {checkUpdateFlag && (
+                    <button
+                        type="button"
+                        className="btn btn-icon btn-icon-sm btn-outline-primary btn-sm ml-2"
+                        onClick={onClick}
+                        disabled={processingVersion}
+                        title={t('check_updates_now')}>
+                        <svg className="icons icon12">
+                            <use xlinkHref="#refresh" />
+                        </svg>
+                    </button>
+                )}
             </div>
         </div>
     );

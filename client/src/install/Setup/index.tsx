@@ -5,12 +5,7 @@ import debounce from 'lodash/debounce';
 import * as actionCreators from '../../actions/install';
 
 import { getWebAddress } from '../../helpers/helpers';
-import {
-    INSTALL_FIRST_STEP,
-    INSTALL_TOTAL_STEPS,
-    ALL_INTERFACES_IP,
-    DEBOUNCE_TIMEOUT,
-} from '../../helpers/constants';
+import { INSTALL_FIRST_STEP, INSTALL_TOTAL_STEPS, ALL_INTERFACES_IP, DEBOUNCE_TIMEOUT } from '../../helpers/constants';
 
 import Loading from '../../components/ui/Loading';
 
@@ -96,11 +91,9 @@ class Setup extends Component<SetupProps> {
     renderPage(step: any, config: any, interfaces: any) {
         switch (step) {
             case 1:
-
                 return <Greeting />;
             case 2:
                 return (
-
                     <Settings
                         config={config}
                         initialValues={config}
@@ -112,15 +105,10 @@ class Setup extends Component<SetupProps> {
                     />
                 );
             case 3:
-                return (
-
-                    <Auth onSubmit={this.handleFormSubmit} />
-                );
+                return <Auth onSubmit={this.handleFormSubmit} />;
             case 4:
-
                 return <Devices interfaces={interfaces} />;
             case 5:
-
                 return <Submit openDashboard={this.openDashboard} />;
             default:
                 return false;
@@ -128,29 +116,15 @@ class Setup extends Component<SetupProps> {
     }
 
     render() {
-        const {
-            processingDefault,
-            step,
-            web,
-            dns,
-            staticIp,
-            interfaces,
-
-        } = this.props.install;
+        const { processingDefault, step, web, dns, staticIp, interfaces } = this.props.install;
 
         return (
-
             <Fragment>
-
                 {processingDefault && <Loading />}
-                {!processingDefault
-
-                    && <Fragment>
-
+                {!processingDefault && (
+                    <Fragment>
                         <div className="setup">
-
                             <div className="setup__container">
-
                                 <img src={logo} className="setup__logo" alt="logo" />
                                 {this.renderPage(step, { web, dns, staticIp }, interfaces)}
 
@@ -164,7 +138,7 @@ class Setup extends Component<SetupProps> {
 
                         <Icons />
                     </Fragment>
-                }
+                )}
             </Fragment>
         );
     }
@@ -176,7 +150,4 @@ const mapStateToProps = (state: any) => {
     return props;
 };
 
-export default connect(
-    mapStateToProps,
-    actionCreators,
-)(Setup);
+export default connect(mapStateToProps, actionCreators)(Setup);

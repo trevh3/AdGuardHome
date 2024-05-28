@@ -55,48 +55,35 @@ class CustomRules extends Component<CustomRulesProps> {
 
     render() {
         const {
-
             t,
 
-            filtering: {
-                userRules,
-            },
+            filtering: { userRules },
         } = this.props;
 
         return (
-
             <>
-
                 <PageTitle title={t('custom_filtering_rules')} />
 
                 <Card subtitle={t('custom_filter_rules_hint')}>
-
                     <form onSubmit={this.handleSubmit}>
-
                         <div className="text-edit-container mb-4">
-
                             <textarea
                                 className="form-control font-monospace text-input"
                                 value={userRules}
                                 onChange={this.handleChange}
                                 onScroll={this.onScroll}
                             />
-                            {getTextareaCommentsHighlight(
-                                this.ref,
-                                userRules,
-                                undefined,
-                                [COMMENT_LINE_DEFAULT_TOKEN, '!'],
-                            )}
+                            {getTextareaCommentsHighlight(this.ref, userRules, undefined, [
+                                COMMENT_LINE_DEFAULT_TOKEN,
+                                '!',
+                            ])}
                         </div>
 
                         <div className="card-actions">
-
                             <button
                                 className="btn btn-success btn-standard btn-large"
                                 type="submit"
-                                onClick={this.handleSubmit}
-                            >
-
+                                onClick={this.handleSubmit}>
                                 <Trans>apply_btn</Trans>
                             </button>
                         </div>

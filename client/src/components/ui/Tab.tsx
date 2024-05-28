@@ -9,12 +9,7 @@ interface TabProps {
     title?: string;
 }
 
-const Tab = ({
-    activeTabLabel,
-    label,
-    title,
-    onClick
-}: TabProps) => {
+const Tab = ({ activeTabLabel, label, title, onClick }: TabProps) => {
     const [t] = useTranslation();
     const handleClick = () => onClick(label);
 
@@ -24,14 +19,8 @@ const Tab = ({
     });
 
     return (
-
-        <div
-            className={tabClass}
-            onClick={handleClick}
-        >
-
+        <div className={tabClass} onClick={handleClick}>
             <svg className="tab__icon">
-
                 <use xlinkHref={`#${label.toLowerCase()}`} />
             </svg>
             {t(title || label)}

@@ -12,25 +12,19 @@ import DomainCell from './DomainCell';
 import { getPercent } from '../../helpers/helpers';
 import { DASHBOARD_TABLES_DEFAULT_PAGE_SIZE, STATUS_COLORS, TABLES_MIN_ROWS } from '../../helpers/constants';
 
-const CountCell = (totalBlocked: any) => (function cell(row: any) {
-    const { value } = row;
-    const percent = getPercent(totalBlocked, value);
+const CountCell = (totalBlocked: any) =>
+    function cell(row: any) {
+        const { value } = row;
+        const percent = getPercent(totalBlocked, value);
 
-    return (
-
-        <Cell
-            value={value}
-            percent={percent}
-            color={STATUS_COLORS.green}
-        />
-    );
-});
+        return <Cell value={value} percent={percent} color={STATUS_COLORS.green} />;
+    };
 
 const getTotalUpstreamRequests = (stats: any) => {
     let total = 0;
-    stats.forEach(({
-        count,
-    }: any) => { total += count; });
+    stats.forEach(({ count }: any) => {
+        total += count;
+    });
 
     return total;
 };
@@ -42,37 +36,20 @@ interface UpstreamResponsesProps {
     t: (...args: unknown[]) => unknown;
 }
 
-const UpstreamResponses = ({
-    t,
-    refreshButton,
-    topUpstreamsResponses,
-    subtitle
-}: UpstreamResponsesProps) => (
-
-    <Card
-        title={t('top_upstreams')}
-        subtitle={subtitle}
-        bodyType="card-table"
-        refresh={refreshButton}
-    >
-
+const UpstreamResponses = ({ t, refreshButton, topUpstreamsResponses, subtitle }: UpstreamResponsesProps) => (
+    <Card title={t('top_upstreams')} subtitle={subtitle} bodyType="card-table" refresh={refreshButton}>
         <ReactTable
-            data={topUpstreamsResponses.map(({
-                name: domain,
-                count,
-            }: any) => ({
+            data={topUpstreamsResponses.map(({ name: domain, count }: any) => ({
                 domain,
                 count,
             }))}
             columns={[
                 {
-
                     Header: <Trans>upstream</Trans>,
                     accessor: 'domain',
                     Cell: DomainCell,
                 },
                 {
-
                     Header: <Trans>requests_count</Trans>,
                     accessor: 'count',
                     maxWidth: 190,

@@ -18,11 +18,7 @@ interface CheckProps {
 }
 
 const Check = (props: CheckProps) => {
-    const {
-        pristine,
-        invalid,
-        handleSubmit,
-    } = props;
+    const { pristine, invalid, handleSubmit } = props;
 
     const { t } = useTranslation();
 
@@ -30,51 +26,44 @@ const Check = (props: CheckProps) => {
 
     const hostname = useSelector((state) => state.filtering.check.hostname);
 
-    return <Card
-        title={t('check_title')}
-        subtitle={t('check_desc')}
-    >
+    return (
+        <Card title={t('check_title')} subtitle={t('check_desc')}>
+            <form onSubmit={handleSubmit}>
+                <div className="row">
+                    <div className="col-12 col-md-6">
+                        <div className="input-group">
+                            <Field
+                                id="name"
+                                name="name"
+                                component={renderInputField}
+                                type="text"
+                                className="form-control"
+                                placeholder={t('form_enter_host')}
+                            />
 
-        <form onSubmit={handleSubmit}>
+                            <span className="input-group-append">
+                                <button
+                                    className="btn btn-success btn-standard btn-large"
+                                    type="submit"
+                                    onClick={handleSubmit}
+                                    disabled={pristine || invalid || processingCheck}>
+                                    {t('check')}
+                                </button>
+                            </span>
+                        </div>
 
-            <div className="row">
+                        {hostname && (
+                            <>
+                                <hr />
 
-                <div className="col-12 col-md-6">
-
-                    <div className="input-group">
-
-                        <Field
-                            id="name"
-                            name="name"
-                            component={renderInputField}
-                            type="text"
-                            className="form-control"
-                            placeholder={t('form_enter_host')}
-                        />
-
-                        <span className="input-group-append">
-
-                            <button
-                                className="btn btn-success btn-standard btn-large"
-                                type="submit"
-                                onClick={handleSubmit}
-                                disabled={pristine || invalid || processingCheck}
-                            >
-                                {t('check')}
-                            </button>
-                        </span>
+                                <Info />
+                            </>
+                        )}
                     </div>
-
-                    {hostname && <>
-
-                        <hr />
-
-                        <Info />
-                    </>}
                 </div>
-            </div>
-        </form>
-    </Card>;
+            </form>
+        </Card>
+    );
 };
 
 export default reduxForm({ form: FORM_NAME.DOMAIN_CHECK })(Check);

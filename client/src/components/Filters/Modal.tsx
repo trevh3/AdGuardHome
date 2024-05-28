@@ -35,19 +35,21 @@ const getTitle = (modalType: any, whitelist: any) => {
     return `${titleType}_${whitelist ? 'allowlist' : 'blocklist'}`;
 };
 
-const getSelectedValues = (filters: any, catalogSourcesToIdMap: any) => filters.reduce((acc: any, {
-    url,
-}: any) => {
-    if (Object.prototype.hasOwnProperty.call(catalogSourcesToIdMap, url)) {
-        const fieldId = `filter${catalogSourcesToIdMap[url]}`;
-        acc.selectedFilterIds[fieldId] = true;
-        acc.selectedSources[url] = true;
-    }
-    return acc;
-}, {
-    selectedFilterIds: {},
-    selectedSources: {},
-});
+const getSelectedValues = (filters: any, catalogSourcesToIdMap: any) =>
+    filters.reduce(
+        (acc: any, { url }: any) => {
+            if (Object.prototype.hasOwnProperty.call(catalogSourcesToIdMap, url)) {
+                const fieldId = `filter${catalogSourcesToIdMap[url]}`;
+                acc.selectedFilterIds[fieldId] = true;
+                acc.selectedSources[url] = true;
+            }
+            return acc;
+        },
+        {
+            selectedFilterIds: {},
+            selectedSources: {},
+        },
+    );
 
 interface ModalProps {
     toggleFilteringModal: (...args: unknown[]) => unknown;
@@ -72,7 +74,6 @@ class Modal extends Component<ModalProps> {
 
     render() {
         const {
-
             isOpen,
 
             processingAddFilter,
@@ -117,22 +118,16 @@ class Modal extends Component<ModalProps> {
         const title = t(getTitle(modalType, whitelist));
 
         return (
-
             <ReactModal
                 className="Modal__Bootstrap modal-dialog modal-dialog-centered"
                 closeTimeoutMS={0}
                 isOpen={isOpen}
-                onRequestClose={this.closeModal}
-            >
-
+                onRequestClose={this.closeModal}>
                 <div className="modal-content">
-
                     <div className="modal-header">
-
                         {title && <h4 className="modal-title">{title}</h4>}
 
                         <button type="button" className="close" onClick={this.closeModal}>
-
                             <span className="sr-only">Close</span>
                         </button>
                     </div>

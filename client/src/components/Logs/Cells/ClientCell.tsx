@@ -36,13 +36,7 @@ interface ClientCellProps {
     reason: string;
 }
 
-const ClientCell = ({
-    client,
-    client_id,
-    client_info,
-    domain,
-    reason
-}: ClientCellProps) => {
+const ClientCell = ({ client, client_id, client_info, domain, reason }: ClientCellProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const history = useHistory();
@@ -132,11 +126,13 @@ const ClientCell = ({
                 name: blockingClientKey,
                 onClick: async () => {
                     if (window.confirm(confirmMessage)) {
-                        await dispatch(toggleClientBlock(
-                            client,
-                            client_info?.disallowed || false,
-                            client_info?.disallowed_rule || '',
-                        ));
+                        await dispatch(
+                            toggleClientBlock(
+                                client,
+                                client_info?.disallowed || false,
+                                client_info?.disallowed_rule || '',
+                            ),
+                        );
                         await dispatch(updateLogs());
                         setOptionsOpened(false);
                     }
@@ -159,24 +155,19 @@ const ClientCell = ({
                 return null;
             }
 
-            return <>
-                {options.map(({
-                    name,
-                    onClick,
-                    disabled,
-                    className,
-                }: any) => (
-
-                    <button
-                        key={name}
-                        className={classNames('button-action--arrow-option px-4 py-1', className)}
-                        onClick={onClick}
-                        disabled={disabled}
-                    >
-                        {t(name)}
-                    </button>
-                ))}
-            </>;
+            return (
+                <>
+                    {options.map(({ name, onClick, disabled, className }: any) => (
+                        <button
+                            key={name}
+                            className={classNames('button-action--arrow-option px-4 py-1', className)}
+                            onClick={onClick}
+                            disabled={disabled}>
+                            {t(name)}
+                        </button>
+                    ))}
+                </>
+            );
         };
 
         const content = getOptions(BUTTON_OPTIONS);
@@ -186,22 +177,13 @@ const ClientCell = ({
         });
 
         return (
-
             <div className={containerClass}>
-
-                <button
-                    type="button"
-                    className="btn btn-icon btn-sm px-0"
-                    onClick={() => setOptionsOpened(true)}
-                >
-
+                <button type="button" className="btn btn-icon btn-sm px-0" onClick={() => setOptionsOpened(true)}>
                     <svg className="icon24 icon--lightgray button-action__icon">
-
                         <use xlinkHref="#bullets" />
                     </svg>
                 </button>
                 {isOptionsOpened && (
-
                     <IconTooltip
                         className="icon24"
                         tooltipClass="button-action--arrow-option-container"
@@ -220,12 +202,7 @@ const ClientCell = ({
     };
 
     return (
-
-        <div
-            className="o-hidden h-100 logs__cell logs__cell--client"
-            role="gridcell"
-        >
-
+        <div className="o-hidden h-100 logs__cell logs__cell--client" role="gridcell">
             <IconTooltip
                 className={hintClass}
                 columnClass="grid grid--limited"
@@ -238,17 +215,14 @@ const ClientCell = ({
             />
 
             <div className={nameClass}>
-
                 <div data-tip={true} data-for={id}>
                     {renderFormattedClientCell(client, clientInfo, isDetailed, true)}
                 </div>
                 {isDetailed && clientName && !whoisAvailable && (
-
                     <Link
                         className="detailed-info d-none d-sm-block logs__text logs__text--link logs__text--client"
                         to={`logs?search="${encodeURIComponent(clientName)}"`}
-                        title={clientName}
-                    >
+                        title={clientName}>
                         {clientName}
                     </Link>
                 )}

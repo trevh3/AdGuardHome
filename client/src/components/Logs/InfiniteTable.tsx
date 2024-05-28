@@ -1,8 +1,4 @@
-import React, {
-    useCallback,
-    useEffect,
-    useRef,
-} from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import throttle from 'lodash/throttle';
@@ -32,7 +28,7 @@ const InfiniteTable = ({
     isSmallScreen,
     setDetailedDataCurrent,
     setButtonType,
-    setModalOpened
+    setModalOpened,
 }: InfiniteTableProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -68,34 +64,30 @@ const InfiniteTable = ({
         };
     }, []);
 
-    const renderRow = (row: any, idx: any) => <Row
-        key={idx}
-
-        rowProps={row}
-        isSmallScreen={isSmallScreen}
-        setDetailedDataCurrent={setDetailedDataCurrent}
-        setButtonType={setButtonType}
-        setModalOpened={setModalOpened}
-    />;
+    const renderRow = (row: any, idx: any) => (
+        <Row
+            key={idx}
+            rowProps={row}
+            isSmallScreen={isSmallScreen}
+            setDetailedDataCurrent={setDetailedDataCurrent}
+            setButtonType={setButtonType}
+            setModalOpened={setModalOpened}
+        />
+    );
 
     const isNothingFound = items.length === 0 && !processingGetLogs;
 
     return (
-
         <div className="logs__table" role="grid">
-
             {loading && <Loading />}
 
             <Header />
             {isNothingFound ? (
-
                 <label className="logs__no-data">{t('nothing_found')}</label>
             ) : (
-
                 <>
                     {items.map(renderRow)}
                     {!isEntireLog && (
-
                         <div ref={loader} className="logs__loading text-center">
                             {t('loading_table_status')}
                         </div>

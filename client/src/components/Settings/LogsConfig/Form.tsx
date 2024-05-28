@@ -1,11 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-    change,
-    Field,
-    formValueSelector,
-    reduxForm,
-
-} from 'redux-form';
+import { change, Field, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { Trans, withTranslation } from 'react-i18next';
 import flow from 'lodash/flow';
@@ -16,7 +10,6 @@ import {
     renderTextareaField,
     renderInputField,
     renderRadioField,
-
 } from '../../../helpers/form';
 
 import { trimLinesAndRemoveEmpty } from '../../../helpers/helpers';
@@ -45,19 +38,19 @@ const getIntervalTitle = (interval: any, t: any) => {
     }
 };
 
-const getIntervalFields = (processing: any, t: any, toNumber: any) => QUERY_LOG_INTERVALS_DAYS.map((interval) => (
-
-    <Field
-        key={interval}
-        name="interval"
-        type="radio"
-        component={renderRadioField}
-        value={interval}
-        placeholder={getIntervalTitle(interval, t)}
-        normalize={toNumber}
-        disabled={processing}
-    />
-));
+const getIntervalFields = (processing: any, t: any, toNumber: any) =>
+    QUERY_LOG_INTERVALS_DAYS.map((interval) => (
+        <Field
+            key={interval}
+            name="interval"
+            type="radio"
+            component={renderRadioField}
+            value={interval}
+            placeholder={getIntervalTitle(interval, t)}
+            normalize={toNumber}
+            disabled={processing}
+        />
+    ));
 
 interface FormProps {
     handleSubmit: (...args: unknown[]) => unknown;
@@ -93,11 +86,8 @@ let Form = (props: FormProps) => {
     }, [interval]);
 
     return (
-
         <form onSubmit={handleSubmit}>
-
             <div className="form__group form__group--settings">
-
                 <Field
                     name="enabled"
                     type="checkbox"
@@ -108,7 +98,6 @@ let Form = (props: FormProps) => {
             </div>
 
             <div className="form__group form__group--settings">
-
                 <Field
                     name="anonymize_client_ip"
                     type="checkbox"
@@ -120,34 +109,24 @@ let Form = (props: FormProps) => {
             </div>
 
             <label className="form__label">
-
                 <Trans>query_log_retention</Trans>
             </label>
 
             <div className="form__group form__group--settings">
-
                 <div className="custom-controls-stacked">
-
                     <Field
                         key={RETENTION_CUSTOM}
                         name="interval"
                         type="radio"
                         component={renderRadioField}
-                        value={QUERY_LOG_INTERVALS_DAYS.includes(interval)
-                            ? RETENTION_CUSTOM
-                            : interval
-                        }
+                        value={QUERY_LOG_INTERVALS_DAYS.includes(interval) ? RETENTION_CUSTOM : interval}
                         placeholder={getIntervalTitle(RETENTION_CUSTOM, t)}
                         normalize={toFloatNumber}
                         disabled={processing}
                     />
                     {!QUERY_LOG_INTERVALS_DAYS.includes(interval) && (
-
                         <div className="form__group--input">
-
-                            <div className="form__desc form__desc--top">
-                                {t('custom_rotation_input')}
-                            </div>
+                            <div className="form__desc form__desc--top">{t('custom_rotation_input')}</div>
 
                             <Field
                                 key={RETENTION_CUSTOM_INPUT}
@@ -167,17 +146,14 @@ let Form = (props: FormProps) => {
             </div>
 
             <label className="form__label form__label--with-desc">
-
                 <Trans>ignore_domains_title</Trans>
             </label>
 
             <div className="form__desc form__desc--top">
-
                 <Trans>ignore_domains_desc_query</Trans>
             </div>
 
             <div className="form__group form__group--settings">
-
                 <Field
                     name="ignored"
                     type="textarea"
@@ -190,18 +166,15 @@ let Form = (props: FormProps) => {
             </div>
 
             <div className="mt-5">
-
                 <button
                     type="submit"
                     className="btn btn-success btn-standard btn-large"
                     disabled={
-                        submitting
-                        || invalid
-                        || processing
-                        || (!QUERY_LOG_INTERVALS_DAYS.includes(interval) && !customInterval)
-                    }
-                >
-
+                        submitting ||
+                        invalid ||
+                        processing ||
+                        (!QUERY_LOG_INTERVALS_DAYS.includes(interval) && !customInterval)
+                    }>
                     <Trans>save_btn</Trans>
                 </button>
 
@@ -209,9 +182,7 @@ let Form = (props: FormProps) => {
                     type="button"
                     className="btn btn-outline-secondary btn-standard form__button"
                     onClick={() => handleClear()}
-                    disabled={processingClear}
-                >
-
+                    disabled={processingClear}>
                     <Trans>query_log_clear</Trans>
                 </button>
             </div>
@@ -230,7 +201,4 @@ Form = connect((state) => {
     };
 })(Form);
 
-export default flow([
-    withTranslation(),
-    reduxForm({ form: FORM_NAME.LOG_CONFIG }),
-])(Form);
+export default flow([withTranslation(), reduxForm({ form: FORM_NAME.LOG_CONFIG })])(Form);

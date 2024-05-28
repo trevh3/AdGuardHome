@@ -3,9 +3,7 @@ import { createAction } from 'redux-actions';
 import apiClient from '../api/Api';
 
 import { normalizeLogs } from '../helpers/helpers';
-import {
-    DEFAULT_LOGS_FILTER, FORM_NAME, QUERY_LOGS_PAGE_LIMIT,
-} from '../helpers/constants';
+import { DEFAULT_LOGS_FILTER, FORM_NAME, QUERY_LOGS_PAGE_LIMIT } from '../helpers/constants';
 import { addErrorToast, addSuccessToast } from './toasts';
 
 const getLogsWithParams = async (config: any) => {
@@ -36,13 +34,13 @@ const shortPollQueryLogs = async (data: any, filter: any, dispatch: any, getStat
     const queryForm = getState().form[FORM_NAME.LOGS_FILTER];
     const currentQuery = queryForm && queryForm.values.search;
     const previousQuery = filter?.search;
-    const isQueryTheSame = typeof previousQuery === 'string'
-            && typeof currentQuery === 'string'
-            && previousQuery === currentQuery;
+    const isQueryTheSame =
+        typeof previousQuery === 'string' && typeof currentQuery === 'string' && previousQuery === currentQuery;
 
-    const isShortPollingNeeded = (logs.length < QUERY_LOGS_PAGE_LIMIT
-            || totalData.logs.length < QUERY_LOGS_PAGE_LIMIT)
-            && oldest !== '' && isQueryTheSame;
+    const isShortPollingNeeded =
+        (logs.length < QUERY_LOGS_PAGE_LIMIT || totalData.logs.length < QUERY_LOGS_PAGE_LIMIT) &&
+        oldest !== '' &&
+        isQueryTheSame;
 
     if (isShortPollingNeeded) {
         dispatch(getAdditionalLogsRequest());
@@ -80,11 +78,13 @@ export const updateLogs = () => async (dispatch: any, getState: any) => {
     try {
         const { logs, oldest, older_than } = getState().queryLogs;
 
-        dispatch(getLogsSuccess({
-            logs,
-            oldest,
-            older_than,
-        }));
+        dispatch(
+            getLogsSuccess({
+                logs,
+                oldest,
+                older_than,
+            }),
+        );
     } catch (error) {
         dispatch(addErrorToast({ error }));
         dispatch(getLogsFailure(error));
@@ -139,10 +139,12 @@ export const setFilteredLogs = (filter: any) => async (dispatch: any, getState: 
         const additionalData = await shortPollQueryLogs(data, filter, dispatch, getState);
         const updatedData = additionalData.logs ? { ...data, ...additionalData } : data;
 
-        dispatch(setFilteredLogsSuccess({
-            ...updatedData,
-            filter,
-        }));
+        dispatch(
+            setFilteredLogsSuccess({
+                ...updatedData,
+                filter,
+            }),
+        );
     } catch (error) {
         dispatch(addErrorToast({ error }));
         dispatch(setFilteredLogsFailure(error));

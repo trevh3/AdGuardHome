@@ -14,25 +14,31 @@ interface renderLiProps {
     components?: string;
 }
 
-const renderLi = ({
-    label,
-    components
-}: renderLiProps) => <li key={label}>
+const renderLi = ({ label, components }: renderLiProps) => (
+    <li key={label}>
+        <Trans
+            components={components?.map((props: any) => {
+                if (React.isValidElement(props)) {
+                    return props;
+                }
+                const {
+                    // eslint-disable-next-line react/prop-types
+                    href,
+                    target = '_blank',
+                    rel = 'noopener noreferrer',
+                    key = '0',
+                } = props;
 
-    <Trans components={components?.map((props: any) => {
-        if (React.isValidElement(props)) {
-            return props;
-        }
-        const {
-            // eslint-disable-next-line react/prop-types
-            href, target = '_blank', rel = 'noopener noreferrer', key = '0',
-        } = props;
-
-        return <a href={href} target={target} rel={rel} key={key}>link</a>;
-    })}>
-        {label}
-    </Trans>
-</li>;
+                return (
+                    <a href={href} target={target} rel={rel} key={key}>
+                        link
+                    </a>
+                );
+            })}>
+            {label}
+        </Trans>
+    </li>
+);
 
 const getDnsPrivacyList = () => [
     {
@@ -120,7 +126,7 @@ const getDnsPrivacyList = () => [
                         href: 'https://github.com/jedisct1/dnscrypt-proxy',
                     },
 
-                        <code key="1">text</code>,
+                    <code key="1">text</code>,
                 ],
             },
             {
@@ -131,7 +137,7 @@ const getDnsPrivacyList = () => [
                         href: 'https://support.mozilla.org/kb/firefox-dns-over-https',
                     },
 
-                        <code key="1">text</code>,
+                    <code key="1">text</code>,
                 ],
             },
             {
@@ -157,193 +163,155 @@ interface renderDnsPrivacyListProps {
     renderList?: (...args: unknown[]) => unknown;
 }
 
-const renderDnsPrivacyList = ({
-    title,
-    list
-}: renderDnsPrivacyListProps) => (
-
+const renderDnsPrivacyList = ({ title, list }: renderDnsPrivacyListProps) => (
     <div className="tab__paragraph" key={title}>
-
         <strong>
-
             <Trans>{title}</Trans>
         </strong>
 
         <ul>
-            {list.map(({
-                label,
-                components,
-                renderComponent = renderLi,
-            }: any) => (
-                renderComponent({ label, components })
-            ))}
+            {list.map(({ label, components, renderComponent = renderLi }: any) =>
+                renderComponent({ label, components }),
+            )}
         </ul>
     </div>
 );
 
-const getTabs = ({
-    tlsAddress,
-    httpsAddress,
-    showDnsPrivacyNotice,
-    serverName,
-    portHttps,
-    t,
-}: any) => ({
+const getTabs = ({ tlsAddress, httpsAddress, showDnsPrivacyNotice, serverName, portHttps, t }: any) => ({
     Router: {
-
         // eslint-disable-next-line react/display-name
-        getTitle: () => <p>
-
-            <Trans>install_devices_router_desc</Trans>
-        </p>,
+        getTitle: () => (
+            <p>
+                <Trans>install_devices_router_desc</Trans>
+            </p>
+        ),
         title: 'Router',
-        list: ['install_devices_router_list_1',
+        list: [
+            'install_devices_router_list_1',
             'install_devices_router_list_2',
             'install_devices_router_list_3',
 
             // eslint-disable-next-line react/jsx-key
-            <Trans components={[
-
-                <a href="#dhcp" key="0">
-                    link
-                </a>,
-            ]}>install_devices_router_list_4</Trans>,
+            <Trans
+                components={[
+                    <a href="#dhcp" key="0">
+                        link
+                    </a>,
+                ]}>
+                install_devices_router_list_4
+            </Trans>,
         ],
     },
     Windows: {
         title: 'Windows',
-        list: ['install_devices_windows_list_1',
+        list: [
+            'install_devices_windows_list_1',
             'install_devices_windows_list_2',
             'install_devices_windows_list_3',
             'install_devices_windows_list_4',
             'install_devices_windows_list_5',
-            'install_devices_windows_list_6'],
+            'install_devices_windows_list_6',
+        ],
     },
     macOS: {
         title: 'macOS',
-        list: ['install_devices_macos_list_1',
+        list: [
+            'install_devices_macos_list_1',
             'install_devices_macos_list_2',
             'install_devices_macos_list_3',
-            'install_devices_macos_list_4'],
+            'install_devices_macos_list_4',
+        ],
     },
     Android: {
         title: 'Android',
-        list: ['install_devices_android_list_1',
+        list: [
+            'install_devices_android_list_1',
             'install_devices_android_list_2',
             'install_devices_android_list_3',
             'install_devices_android_list_4',
-            'install_devices_android_list_5'],
+            'install_devices_android_list_5',
+        ],
     },
     iOS: {
         title: 'iOS',
-        list: ['install_devices_ios_list_1',
+        list: [
+            'install_devices_ios_list_1',
             'install_devices_ios_list_2',
             'install_devices_ios_list_3',
-            'install_devices_ios_list_4'],
+            'install_devices_ios_list_4',
+        ],
     },
     dns_privacy: {
         title: 'dns_privacy',
         getTitle: function Title() {
-            return <div label="dns_privacy" title={t('dns_privacy')}>
-
-            <div className="tab__text">
-                {tlsAddress?.length > 0 && (
-
-                    <div className="tab__paragraph">
-
-                        <Trans
-                            values={{ address: tlsAddress[0] }}
-                            components={[
-
-                                <strong key="0">text</strong>,
-
-                                <code key="1">text</code>,
-                            ]}
-                        >
-                            setup_dns_privacy_1
-                        </Trans>
-                    </div>
-                )}
-                {httpsAddress?.length > 0 && (
-
-                    <div className="tab__paragraph">
-
-                        <Trans
-                            values={{ address: httpsAddress[0] }}
-                            components={[
-
-                                <strong key="0">text</strong>,
-
-                                <code key="1">text</code>,
-                            ]}
-                        >
-                            setup_dns_privacy_2
-                        </Trans>
-                    </div>
-                )}
-                {showDnsPrivacyNotice ? (
-
-                    <div className="tab__paragraph">
-
-                        <Trans
-                            components={[
-
-                                <a
-                                    href="https://github.com/AdguardTeam/AdguardHome/wiki/Encryption"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    key="0"
-                                >
-                                    link
-                                </a>,
-
-                                <code key="1">text</code>,
-                            ]}
-                        >
-                            setup_dns_notice
-                        </Trans>
-                    </div>
-                ) : (
-
-                    <>
-
-                        <div className="tab__paragraph">
-
-                            <Trans components={[<p key="0">text</p>]}>
-                                setup_dns_privacy_3
-                            </Trans>
-                        </div>
-                        {getDnsPrivacyList().map(renderDnsPrivacyList)}
-
-                        <div>
-
-                            <strong>
-
-                                <Trans>
-                                    setup_dns_privacy_ioc_mac
+            return (
+                <div label="dns_privacy" title={t('dns_privacy')}>
+                    <div className="tab__text">
+                        {tlsAddress?.length > 0 && (
+                            <div className="tab__paragraph">
+                                <Trans
+                                    values={{ address: tlsAddress[0] }}
+                                    components={[<strong key="0">text</strong>, <code key="1">text</code>]}>
+                                    setup_dns_privacy_1
                                 </Trans>
-                            </strong>
-                        </div>
+                            </div>
+                        )}
+                        {httpsAddress?.length > 0 && (
+                            <div className="tab__paragraph">
+                                <Trans
+                                    values={{ address: httpsAddress[0] }}
+                                    components={[<strong key="0">text</strong>, <code key="1">text</code>]}>
+                                    setup_dns_privacy_2
+                                </Trans>
+                            </div>
+                        )}
+                        {showDnsPrivacyNotice ? (
+                            <div className="tab__paragraph">
+                                <Trans
+                                    components={[
+                                        <a
+                                            href="https://github.com/AdguardTeam/AdguardHome/wiki/Encryption"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            key="0">
+                                            link
+                                        </a>,
 
-                        <div className="mb-3">
+                                        <code key="1">text</code>,
+                                    ]}>
+                                    setup_dns_notice
+                                </Trans>
+                            </div>
+                        ) : (
+                            <>
+                                <div className="tab__paragraph">
+                                    <Trans components={[<p key="0">text</p>]}>setup_dns_privacy_3</Trans>
+                                </div>
+                                {getDnsPrivacyList().map(renderDnsPrivacyList)}
 
-                            <Trans components={{ highlight: <code /> }}>
-                                setup_dns_privacy_4
-                            </Trans>
-                        </div>
+                                <div>
+                                    <strong>
+                                        <Trans>setup_dns_privacy_ioc_mac</Trans>
+                                    </strong>
+                                </div>
 
-                        <MobileConfigForm
-                            initialValues={{
-                                host: serverName,
-                                clientId: '',
-                                protocol: MOBILE_CONFIG_LINKS.DOH,
-                                port: portHttps,
-                            }}
-                        />
-                    </>
-                )}
-            </div>
-        </div>;
+                                <div className="mb-3">
+                                    <Trans components={{ highlight: <code /> }}>setup_dns_privacy_4</Trans>
+                                </div>
+
+                                <MobileConfigForm
+                                    initialValues={{
+                                        host: serverName,
+                                        clientId: '',
+                                        protocol: MOBILE_CONFIG_LINKS.DOH,
+                                        port: portHttps,
+                                    }}
+                                />
+                            </>
+                        )}
+                    </div>
+                </div>
+            );
         },
     },
 });
@@ -354,28 +322,19 @@ interface renderContentProps {
     getTitle?: (...args: unknown[]) => unknown;
 }
 
-const renderContent = ({
-    title,
-    list,
-    getTitle
-}: renderContentProps) => (
-
+const renderContent = ({ title, list, getTitle }: renderContentProps) => (
     <div key={title} label={i18next.t(title)}>
-
-        <div className="tab__title">
-            {i18next.t(title)}
-        </div>
+        <div className="tab__title">{i18next.t(title)}</div>
 
         <div className="tab__text">
             {getTitle?.()}
             {list && (
-
                 <ol>
-
-                    {list.map((item: any) => <li key={item}>
-
-                        <Trans>{item}</Trans>
-                    </li>)}
+                    {list.map((item: any) => (
+                        <li key={item}>
+                            <Trans>{item}</Trans>
+                        </li>
+                    ))}
                 </ol>
             )}
         </div>
@@ -386,9 +345,7 @@ interface GuideProps {
     dnsAddresses?: unknown[];
 }
 
-const Guide = ({
-    dnsAddresses
-}: GuideProps) => {
+const Guide = ({ dnsAddresses }: GuideProps) => {
     const { t } = useTranslation();
 
     const serverName = useSelector((state) => state.encryption?.server_name);
@@ -412,14 +369,8 @@ const Guide = ({
     const activeTab = renderContent(tabs[activeTabLabel]);
 
     return (
-
         <div>
-
-            <Tabs
-                tabs={tabs}
-                activeTabLabel={activeTabLabel}
-                setActiveTabLabel={setActiveTabLabel}
-            >
+            <Tabs tabs={tabs} activeTabLabel={activeTabLabel} setActiveTabLabel={setActiveTabLabel}>
                 {activeTab}
             </Tabs>
         </div>

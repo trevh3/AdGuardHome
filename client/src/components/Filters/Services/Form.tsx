@@ -21,73 +21,53 @@ interface FormProps {
 }
 
 const Form = (props: FormProps) => {
-    const {
-        blockedServices,
-        handleSubmit,
-        change,
-        pristine,
-        submitting,
-        processing,
-        processingSet,
-    } = props;
+    const { blockedServices, handleSubmit, change, pristine, submitting, processing, processingSet } = props;
 
     return (
-
         <form onSubmit={handleSubmit}>
-
             <div className="form__group">
-
                 <div className="row mb-4">
-
                     <div className="col-6">
-
                         <button
                             type="button"
                             className="btn btn-secondary btn-block"
                             disabled={processing || processingSet}
-                            onClick={() => toggleAllServices(blockedServices, change, true)}
-                        >
-
+                            onClick={() => toggleAllServices(blockedServices, change, true)}>
                             <Trans>block_all</Trans>
                         </button>
                     </div>
 
                     <div className="col-6">
-
                         <button
                             type="button"
                             className="btn btn-secondary btn-block"
                             disabled={processing || processingSet}
-                            onClick={() => toggleAllServices(blockedServices, change, false)}
-                        >
-
+                            onClick={() => toggleAllServices(blockedServices, change, false)}>
                             <Trans>unblock_all</Trans>
                         </button>
                     </div>
                 </div>
 
                 <div className="services">
-
-                    {blockedServices.map((service: any) => <Field
-                        key={service.id}
-                        icon={service.icon_svg}
-                        name={`blocked_services.${service.id}`}
-                        type="checkbox"
-                        component={renderServiceField}
-                        placeholder={service.name}
-                        disabled={processing || processingSet}
-                    />)}
+                    {blockedServices.map((service: any) => (
+                        <Field
+                            key={service.id}
+                            icon={service.icon_svg}
+                            name={`blocked_services.${service.id}`}
+                            type="checkbox"
+                            component={renderServiceField}
+                            placeholder={service.name}
+                            disabled={processing || processingSet}
+                        />
+                    ))}
                 </div>
             </div>
 
             <div className="btn-list">
-
                 <button
                     type="submit"
                     className="btn btn-success btn-standard btn-large"
-                    disabled={submitting || pristine || processing || processingSet}
-                >
-
+                    disabled={submitting || pristine || processing || processingSet}>
                     <Trans>save_btn</Trans>
                 </button>
             </div>

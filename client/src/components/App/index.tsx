@@ -27,12 +27,7 @@ import Icons from '../ui/Icons';
 import i18n from '../../i18n';
 
 import Loading from '../ui/Loading';
-import {
-    FILTERS_URLS,
-    MENU_URLS,
-    SETTINGS_URLS,
-    THEMES,
-} from '../../helpers/constants';
+import { FILTERS_URLS, MENU_URLS, SETTINGS_URLS, THEMES } from '../../helpers/constants';
 
 import { getLogsUrlParams, setHtmlLangAttr, setUITheme } from '../../helpers/helpers';
 
@@ -120,32 +115,18 @@ interface renderRouteProps {
     exact?: boolean;
 }
 
-const renderRoute = ({
-    path,
-    component,
-    exact
-}: renderRouteProps, idx: any) => <Route
-        key={idx}
-        exact={exact}
-        path={path}
-        component={component}
-/>;
+const renderRoute = ({ path, component, exact }: renderRouteProps, idx: any) => (
+    <Route key={idx} exact={exact} path={path} component={component} />
+);
 
 const App = () => {
     const dispatch = useDispatch();
-    const {
-        language,
-        isCoreRunning,
-        isUpdateAvailable,
-        processing,
-        theme,
+    const { language, isCoreRunning, isUpdateAvailable, processing, theme } = useSelector(
+        (state) => state.dashboard,
+        shallowEqual,
+    );
 
-    } = useSelector((state) => state.dashboard, shallowEqual);
-
-    const { processing: processingEncryption } = useSelector((
-        state,
-
-    ) => state.encryption, shallowEqual);
+    const { processing: processingEncryption } = useSelector((state) => state.encryption, shallowEqual);
 
     const updateAvailable = isCoreRunning && isUpdateAvailable;
 
@@ -220,45 +201,46 @@ const App = () => {
         window.location.reload();
     };
 
-    return <HashRouter hashType="noslash">
+    return (
+        <HashRouter hashType="noslash">
+            {updateAvailable && (
+                <>
+                    <UpdateTopline />
 
-        {updateAvailable && <>
+                    <UpdateOverlay />
+                </>
+            )}
 
-            <UpdateTopline />
+            {!processingEncryption && <EncryptionTopline />}
 
-            <UpdateOverlay />
-        </>}
+            <LoadingBar className="loading-bar" updateTime={1000} />
 
-        {!processingEncryption && <EncryptionTopline />}
+            <Header />
 
-        <LoadingBar className="loading-bar" updateTime={1000} />
+            <ProtectionTimer />
 
-        <Header />
+            <div className="container container--wrap pb-5 pt-5">
+                {processing && <Loading />}
 
-        <ProtectionTimer />
+                {!isCoreRunning && (
+                    <div className="row row-cards">
+                        <div className="col-lg-12">
+                            <Status reloadPage={reloadPage} message="dns_start" />
 
-        <div className="container container--wrap pb-5 pt-5">
+                            <Loading />
+                        </div>
+                    </div>
+                )}
+                {!processing && isCoreRunning && ROUTES.map(renderRoute)}
+            </div>
 
-            {processing && <Loading />}
+            <Footer />
 
-            {!isCoreRunning && <div className="row row-cards">
+            <Toasts />
 
-                <div className="col-lg-12">
-
-                    <Status reloadPage={reloadPage} message="dns_start" />
-
-                    <Loading />
-                </div>
-            </div>}
-            {!processing && isCoreRunning && ROUTES.map(renderRoute)}
-        </div>
-
-        <Footer />
-
-        <Toasts />
-
-        <Icons />
-    </HashRouter>;
+            <Icons />
+        </HashRouter>
+    );
 };
 
 export default hot(App);

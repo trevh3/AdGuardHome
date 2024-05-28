@@ -12,9 +12,7 @@ import Login from './Login';
 
 const store = configureStore(reducers, {}); // set initial state
 ReactDOM.render(
-
     <Provider store={store}>
-
         <Login />
     </Provider>,
     document.getElementById('root'),

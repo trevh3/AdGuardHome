@@ -17,27 +17,21 @@ interface SubmitProps {
     openDashboard: (...args: unknown[]) => unknown;
 }
 
-let Submit = (props: SubmitProps) => <div className="setup__step">
+let Submit = (props: SubmitProps) => (
+    <div className="setup__step">
+        <div className="setup__group">
+            <h1 className="setup__title">
+                <Trans>install_submit_title</Trans>
+            </h1>
 
-    <div className="setup__group">
+            <p className="setup__desc">
+                <Trans>install_submit_desc</Trans>
+            </p>
+        </div>
 
-        <h1 className="setup__title">
-
-            <Trans>install_submit_title</Trans>
-        </h1>
-
-        <p className="setup__desc">
-
-            <Trans>install_submit_desc</Trans>
-        </p>
+        <Controls openDashboard={props.openDashboard} ip={props.webIp} port={props.webPort} />
     </div>
-
-    <Controls
-        openDashboard={props.openDashboard}
-        ip={props.webIp}
-        port={props.webPort}
-    />
-</div>;
+);
 
 const selector = formValueSelector('install');
 

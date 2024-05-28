@@ -12,12 +12,7 @@ interface ToastProps {
     options?: object;
 }
 
-const Toast = ({
-    id,
-    message,
-    type,
-    options
-}: ToastProps) => {
+const Toast = ({ id, message, type, options }: ToastProps) => {
     const dispatch = useDispatch();
     const [timerId, setTimerId] = useState(null);
 
@@ -34,29 +29,31 @@ const Toast = ({
         setRemoveToastTimeout();
     }, []);
 
-    return <div className={`toast toast--${type}`}
-                onMouseOver={clearRemoveToastTimeout}
-                onMouseOut={setRemoveToastTimeout}>
+    return (
+        <div
+            className={`toast toast--${type}`}
+            onMouseOver={clearRemoveToastTimeout}
+            onMouseOut={setRemoveToastTimeout}>
+            <p className="toast__content">
+                <Trans i18nKey={message} {...options} />
+            </p>
 
-        <p className="toast__content">
+            <button className="toast__dismiss" onClick={removeCurrentToast}>
+                <svg
+                    stroke="#fff"
+                    fill="none"
+                    width="20"
+                    height="20"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="m18 6-12 12" />
 
-            <Trans
-                    i18nKey={message}
-                    {...options}
-            />
-        </p>
-
-        <button className="toast__dismiss" onClick={removeCurrentToast}>
-
-            <svg stroke="#fff" fill="none" width="20" height="20" strokeWidth="2"
-                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-
-                <path d="m18 6-12 12" />
-
-                <path d="m6 6 12 12" />
-            </svg>
-        </button>
-    </div>;
+                    <path d="m6 6 12 12" />
+                </svg>
+            </button>
+        </div>
+    );
 };
 
 export default Toast;

@@ -2,9 +2,7 @@ import { connect } from 'react-redux';
 
 import { getClients } from '../actions';
 import { getStats } from '../actions/stats';
-import {
-    addClient, updateClient, deleteClient, toggleClientModal,
-} from '../actions/clients';
+import { addClient, updateClient, deleteClient, toggleClientModal } from '../actions/clients';
 
 import Clients from '../components/Settings/Clients';
 
@@ -27,7 +25,4 @@ const mapDispatchToProps = {
     toggleClientModal,
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Clients);
+export default connect(mapStateToProps, mapDispatchToProps)(Clients);

@@ -12,8 +12,8 @@ export const processLogin = (values: any) => async (dispatch: any) => {
     dispatch(processLoginRequest());
     try {
         await apiClient.login(values);
-        const dashboardUrl = window.location.origin
-                + window.location.pathname.replace(HTML_PAGES.LOGIN, HTML_PAGES.MAIN);
+        const dashboardUrl =
+            window.location.origin + window.location.pathname.replace(HTML_PAGES.LOGIN, HTML_PAGES.MAIN);
         window.location.replace(dashboardUrl);
         dispatch(processLoginSuccess());
     } catch (error) {

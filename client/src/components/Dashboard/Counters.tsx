@@ -20,41 +20,26 @@ interface RowProps {
     translationComponents?: React.ReactElement[];
 }
 
-const Row = ({
-    label,
-    count,
-    response_status,
-    tooltipTitle,
-    translationComponents
-}: RowProps) => {
-    const content = response_status
-
-        ? <LogsSearchLink response_status={response_status}>{formatNumber(count)}</LogsSearchLink>
-        : count;
+const Row = ({ label, count, response_status, tooltipTitle, translationComponents }: RowProps) => {
+    const content = response_status ? (
+        <LogsSearchLink response_status={response_status}>{formatNumber(count)}</LogsSearchLink>
+    ) : (
+        count
+    );
 
     return (
-
         <div className="counters__row" key={label}>
-
             <div className="counters__column">
-
                 <span className="counters__title">
-
-                    <Trans components={translationComponents}>
-                        {label}
-                    </Trans>
+                    <Trans components={translationComponents}>{label}</Trans>
                 </span>
 
                 <span className="counters__tooltip">
-
                     <Tooltip
                         content={tooltipTitle}
                         placement="top"
-                        className="tooltip-container tooltip-custom--narrow text-center"
-                    >
-
+                        className="tooltip-container tooltip-custom--narrow text-center">
                         <svg className="icons icon--20 icon--lightgray ml-2">
-
                             <use xlinkHref="#question" />
                         </svg>
                     </Tooltip>
@@ -62,7 +47,6 @@ const Row = ({
             </div>
 
             <div className="counters__column counters__column--value">
-
                 <strong>{content}</strong>
             </div>
         </div>
@@ -74,10 +58,7 @@ interface CountersProps {
     subtitle: string;
 }
 
-const Counters = ({
-    refreshButton,
-    subtitle
-}: CountersProps) => {
+const Counters = ({ refreshButton, subtitle }: CountersProps) => {
     const {
         interval,
         numDnsQueries,
@@ -87,13 +68,13 @@ const Counters = ({
         numReplacedSafesearch,
         avgProcessingTime,
         timeUnits,
-
     } = useSelector((state) => state.stats, shallowEqual);
     const { t } = useTranslation();
 
-    const dnsQueryTooltip = timeUnits === TIME_UNITS.HOURS
-        ? t('number_of_dns_query_hours', { count: msToHours(interval) })
-        : t('number_of_dns_query_days', { count: msToDays(interval) });
+    const dnsQueryTooltip =
+        timeUnits === TIME_UNITS.HOURS
+            ? t('number_of_dns_query_hours', { count: msToHours(interval) })
+            : t('number_of_dns_query_days', { count: msToDays(interval) });
 
     const rows = [
         {
@@ -108,7 +89,11 @@ const Counters = ({
             tooltipTitle: 'number_of_dns_query_blocked_24_hours',
             response_status: RESPONSE_FILTER.BLOCKED.QUERY,
 
-            translationComponents: [<a href="#filters" key="0">link</a>],
+            translationComponents: [
+                <a href="#filters" key="0">
+                    link
+                </a>,
+            ],
         },
         {
             label: 'stats_malware_phishing',
@@ -136,17 +121,8 @@ const Counters = ({
     ];
 
     return (
-
-        <Card
-            title={t('general_statistics')}
-            subtitle={subtitle}
-            bodyType="card-table"
-            refresh={refreshButton}
-        >
-
-            <div className="counters">
-                {rows.map(Row)}
-            </div>
+        <Card title={t('general_statistics')} subtitle={subtitle} bodyType="card-table" refresh={refreshButton}>
+            <div className="counters">{rows.map(Row)}</div>
         </Card>
     );
 };

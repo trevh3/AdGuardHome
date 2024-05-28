@@ -130,9 +130,7 @@ export const validateIpForGatewaySubnetMask = (value: any, allValues: any) => {
         return undefined;
     }
 
-    const {
-        gateway_ip, subnet_mask,
-    } = allValues.v4;
+    const { gateway_ip, subnet_mask } = allValues.v4;
 
     if ((gateway_ip && validateIpv4(gateway_ip)) || (subnet_mask && validateIpv4(subnet_mask))) {
         return undefined;
@@ -156,14 +154,17 @@ export const validateClientId = (value: any) => {
         return undefined;
     }
     const formattedValue = value.trim();
-    if (formattedValue && !(
-        R_IPV4.test(formattedValue)
-            || R_IPV6.test(formattedValue)
-            || R_MAC.test(formattedValue)
-            || R_CIDR.test(formattedValue)
-            || R_CIDR_IPV6.test(formattedValue)
-            || R_CLIENT_ID.test(formattedValue)
-    )) {
+    if (
+        formattedValue &&
+        !(
+            R_IPV4.test(formattedValue) ||
+            R_IPV6.test(formattedValue) ||
+            R_MAC.test(formattedValue) ||
+            R_CIDR.test(formattedValue) ||
+            R_CIDR_IPV6.test(formattedValue) ||
+            R_CLIENT_ID.test(formattedValue)
+        )
+    ) {
         return 'form_error_client_id_format';
     }
     return undefined;
@@ -301,7 +302,7 @@ export const validateDomain = (value: any) => {
  * @returns {undefined|string}
  */
 export const validateAnswer = (value: any) => {
-    if (value && (!R_IPV4.test(value) && !R_IPV6.test(value) && !R_HOST.test(value))) {
+    if (value && !R_IPV4.test(value) && !R_IPV6.test(value) && !R_HOST.test(value)) {
         return 'form_error_answer_format';
     }
     return undefined;

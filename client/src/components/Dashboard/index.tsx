@@ -13,19 +13,8 @@ import Clients from './Clients';
 import QueriedDomains from './QueriedDomains';
 
 import BlockedDomains from './BlockedDomains';
-import {
-    DISABLE_PROTECTION_TIMINGS,
-    ONE_SECOND_IN_MS,
-    SETTINGS_URLS,
-    TIME_UNITS,
-} from '../../helpers/constants';
-import {
-    msToSeconds,
-    msToMinutes,
-    msToHours,
-    msToDays,
-
-} from '../../helpers/helpers';
+import { DISABLE_PROTECTION_TIMINGS, ONE_SECOND_IN_MS, SETTINGS_URLS, TIME_UNITS } from '../../helpers/constants';
+import { msToSeconds, msToMinutes, msToHours, msToDays } from '../../helpers/helpers';
 
 import PageTitle from '../ui/PageTitle';
 
@@ -57,7 +46,7 @@ const Dashboard = ({
     dashboard: { protectionEnabled, processingProtection, protectionDisabledDuration },
     toggleProtection,
     stats,
-    access
+    access,
 }: DashboardProps) => {
     const { t } = useTranslation();
 
@@ -91,22 +80,19 @@ const Dashboard = ({
         'btn-success': !protectionEnabled,
     });
 
-    const refreshButton = <button
+    const refreshButton = (
+        <button
             type="button"
             className="btn btn-icon btn-outline-primary btn-sm"
             title={t('refresh_btn')}
-            onClick={() => getAllStats()}
-    >
+            onClick={() => getAllStats()}>
+            <svg className="icons icon12">
+                <use xlinkHref="#refresh" />
+            </svg>
+        </button>
+    );
 
-        <svg className="icons icon12">
-
-            <use xlinkHref="#refresh" />
-        </svg>
-    </button>;
-
-    const statsProcessing = stats.processingStats
-            || stats.processingGetConfig
-            || access.processing;
+    const statsProcessing = stats.processingStats || stats.processingGetConfig || access.processing;
 
     const subtitle = getSubtitle();
 
@@ -133,22 +119,17 @@ const Dashboard = ({
         },
     ];
 
-    const getDisableProtectionItems = () => (
-
-        Object.values(DISABLE_PROTECTION_ITEMS)
-            .map((item: any, index: any) => (
-
-                <div
-                    key={`disable_timings_${index}`}
-                    className="dropdown-item"
-                    onClick={() => {
-                        toggleProtection(protectionEnabled, item.disableTime - ONE_SECOND_IN_MS);
-                    }}
-                >
-                    {item.text}
-                </div>
-            ))
-    );
+    const getDisableProtectionItems = () =>
+        Object.values(DISABLE_PROTECTION_ITEMS).map((item: any, index: any) => (
+            <div
+                key={`disable_timings_${index}`}
+                className="dropdown-item"
+                onClick={() => {
+                    toggleProtection(protectionEnabled, item.disableTime - ONE_SECOND_IN_MS);
+                }}>
+                {item.text}
+            </div>
+        ));
 
     const getRemaningTimeText = (milliseconds: any) => {
         if (!milliseconds) {
@@ -166,149 +147,128 @@ const Dashboard = ({
 
     const getProtectionBtnText = (status: any) => (status ? t('disable_protection') : t('enable_protection'));
 
-    return <>
+    return (
+        <>
+            <PageTitle title={t('dashboard')} containerClass="page-title--dashboard">
+                <div className="page-title__protection">
+                    <button
+                        type="button"
+                        className={buttonClass}
+                        onClick={() => {
+                            toggleProtection(protectionEnabled);
+                        }}
+                        disabled={processingProtection}>
+                        {protectionDisabledDuration
+                            ? `${t('enable_protection_timer')} ${getRemaningTimeText(protectionDisabledDuration)}`
+                            : getProtectionBtnText(protectionEnabled)}
+                    </button>
 
-        <PageTitle title={t('dashboard')} containerClass="page-title--dashboard">
+                    {protectionEnabled && (
+                        <Dropdown
+                            label=""
+                            baseClassName="dropdown-protection"
+                            icon="arrow-down"
+                            controlClassName="dropdown-protection__toggle"
+                            menuClassName="dropdown-menu dropdown-menu-arrow dropdown-menu--protection">
+                            {getDisableProtectionItems()}
+                        </Dropdown>
+                    )}
+                </div>
 
-            <div className="page-title__protection">
-
-                <button
-                    type="button"
-                    className={buttonClass}
-                    onClick={() => {
-                        toggleProtection(protectionEnabled);
-                    }}
-                    disabled={processingProtection}
-                >
-                    {protectionDisabledDuration
-                        ? `${t('enable_protection_timer')} ${getRemaningTimeText(protectionDisabledDuration)}`
-                        : getProtectionBtnText(protectionEnabled)
-                    }
+                <button type="button" className="btn btn-outline-primary btn-sm" onClick={getAllStats}>
+                    <Trans>refresh_statics</Trans>
                 </button>
+            </PageTitle>
 
-                {protectionEnabled && <Dropdown
-                    label=""
-                    baseClassName="dropdown-protection"
-                    icon="arrow-down"
-                    controlClassName="dropdown-protection__toggle"
-                    menuClassName="dropdown-menu dropdown-menu-arrow dropdown-menu--protection"
-                >
-                    {getDisableProtectionItems()}
-                </Dropdown>}
-            </div>
+            {statsProcessing && <Loading />}
 
-            <button
-                type="button"
-                className="btn btn-outline-primary btn-sm"
-                onClick={getAllStats}
-            >
+            {!statsProcessing && (
+                <div className="row row-cards dashboard">
+                    <div className="col-lg-12">
+                        {stats.interval === 0 && (
+                            <div className="alert alert-warning" role="alert">
+                                <Trans
+                                    components={[
+                                        <Link to={`${SETTINGS_URLS.settings}#stats-config`} key="0">
+                                            link
+                                        </Link>,
+                                    ]}>
+                                    stats_disabled
+                                </Trans>
+                            </div>
+                        )}
 
-                <Trans>refresh_statics</Trans>
-            </button>
-        </PageTitle>
-
-        {statsProcessing && <Loading />}
-
-        {!statsProcessing && <div className="row row-cards dashboard">
-
-            <div className="col-lg-12">
-                {stats.interval === 0 && (
-
-                    <div className="alert alert-warning" role="alert">
-
-                        <Trans components={[
-
-                            <Link
-                                to={`${SETTINGS_URLS.settings}#stats-config`}
-                                key="0"
-                            >
-                                link
-                            </Link>,
-                        ]}>
-                            stats_disabled
-                        </Trans>
+                        <Statistics
+                            interval={msToDays(stats.interval)}
+                            dnsQueries={stats.dnsQueries}
+                            blockedFiltering={stats.blockedFiltering}
+                            replacedSafebrowsing={stats.replacedSafebrowsing}
+                            replacedParental={stats.replacedParental}
+                            numDnsQueries={stats.numDnsQueries}
+                            numBlockedFiltering={stats.numBlockedFiltering}
+                            numReplacedSafebrowsing={stats.numReplacedSafebrowsing}
+                            numReplacedParental={stats.numReplacedParental}
+                            refreshButton={refreshButton}
+                        />
                     </div>
-                )}
 
-                <Statistics
-                    interval={msToDays(stats.interval)}
-                    dnsQueries={stats.dnsQueries}
-                    blockedFiltering={stats.blockedFiltering}
-                    replacedSafebrowsing={stats.replacedSafebrowsing}
-                    replacedParental={stats.replacedParental}
-                    numDnsQueries={stats.numDnsQueries}
-                    numBlockedFiltering={stats.numBlockedFiltering}
-                    numReplacedSafebrowsing={stats.numReplacedSafebrowsing}
-                    numReplacedParental={stats.numReplacedParental}
-                    refreshButton={refreshButton}
-                />
-            </div>
+                    <div className="col-lg-6">
+                        <Counters subtitle={subtitle} refreshButton={refreshButton} />
+                    </div>
 
-            <div className="col-lg-6">
+                    <div className="col-lg-6">
+                        <Clients
+                            subtitle={subtitle}
+                            dnsQueries={stats.numDnsQueries}
+                            topClients={stats.topClients}
+                            clients={dashboard.clients}
+                            autoClients={dashboard.autoClients}
+                            refreshButton={refreshButton}
+                            processingAccessSet={access.processingSet}
+                            disallowedClients={access.disallowed_clients}
+                        />
+                    </div>
 
-                <Counters
-                    subtitle={subtitle}
-                    refreshButton={refreshButton}
-                />
-            </div>
+                    <div className="col-lg-6">
+                        <QueriedDomains
+                            subtitle={subtitle}
+                            dnsQueries={stats.numDnsQueries}
+                            topQueriedDomains={stats.topQueriedDomains}
+                            refreshButton={refreshButton}
+                        />
+                    </div>
 
-            <div className="col-lg-6">
+                    <div className="col-lg-6">
+                        <BlockedDomains
+                            subtitle={subtitle}
+                            topBlockedDomains={stats.topBlockedDomains}
+                            blockedFiltering={stats.numBlockedFiltering}
+                            replacedSafebrowsing={stats.numReplacedSafebrowsing}
+                            replacedSafesearch={stats.numReplacedSafesearch}
+                            replacedParental={stats.numReplacedParental}
+                            refreshButton={refreshButton}
+                        />
+                    </div>
 
-                <Clients
-                    subtitle={subtitle}
+                    <div className="col-lg-6">
+                        <UpstreamResponses
+                            subtitle={subtitle}
+                            topUpstreamsResponses={stats.topUpstreamsResponses}
+                            refreshButton={refreshButton}
+                        />
+                    </div>
 
-                    dnsQueries={stats.numDnsQueries}
-                    topClients={stats.topClients}
-                    clients={dashboard.clients}
-                    autoClients={dashboard.autoClients}
-                    refreshButton={refreshButton}
-                    processingAccessSet={access.processingSet}
-                    disallowedClients={access.disallowed_clients}
-                />
-            </div>
-
-            <div className="col-lg-6">
-
-                <QueriedDomains
-                    subtitle={subtitle}
-                    dnsQueries={stats.numDnsQueries}
-                    topQueriedDomains={stats.topQueriedDomains}
-                    refreshButton={refreshButton}
-                />
-            </div>
-
-            <div className="col-lg-6">
-
-                <BlockedDomains
-                    subtitle={subtitle}
-                    topBlockedDomains={stats.topBlockedDomains}
-                    blockedFiltering={stats.numBlockedFiltering}
-                    replacedSafebrowsing={stats.numReplacedSafebrowsing}
-                    replacedSafesearch={stats.numReplacedSafesearch}
-                    replacedParental={stats.numReplacedParental}
-                    refreshButton={refreshButton}
-                />
-            </div>
-
-            <div className="col-lg-6">
-
-                <UpstreamResponses
-                    subtitle={subtitle}
-                    topUpstreamsResponses={stats.topUpstreamsResponses}
-                    refreshButton={refreshButton}
-                />
-            </div>
-
-            <div className="col-lg-6">
-
-                <UpstreamAvgTime
-                    subtitle={subtitle}
-                    topUpstreamsAvgTime={stats.topUpstreamsAvgTime}
-                    refreshButton={refreshButton}
-                />
-            </div>
-        </div>}
-    </>;
+                    <div className="col-lg-6">
+                        <UpstreamAvgTime
+                            subtitle={subtitle}
+                            topUpstreamsAvgTime={stats.topUpstreamsAvgTime}
+                            refreshButton={refreshButton}
+                        />
+                    </div>
+                </div>
+            )}
+        </>
+    );
 };
 
 export default Dashboard;

@@ -61,12 +61,10 @@ export const toggleClientBlock = (ip: any, disallowed: any, disallowed_rule: any
             if (!disallowed_rule) {
                 allowed_clients = allowed_clients.concat(ip);
             } else {
-                disallowed_clients = disallowed_clients
-                    .filter((client: any) => client !== disallowed_rule);
+                disallowed_clients = disallowed_clients.filter((client: any) => client !== disallowed_rule);
             }
         } else if (allowed_clients.length > 1) {
-            allowed_clients = allowed_clients
-                .filter((client: any) => client !== disallowed_rule);
+            allowed_clients = allowed_clients.filter((client: any) => client !== disallowed_rule);
         } else {
             disallowed_clients = disallowed_clients.concat(ip);
         }

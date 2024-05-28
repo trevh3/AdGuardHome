@@ -43,42 +43,50 @@ const IconTooltip = ({
     defaultTooltipShown,
     delayHide,
 
-    renderContent = content ? React.Children.map(
-        processContent(content),
+    renderContent = content
+        ? React.Children.map(
+              processContent(content),
 
-        (item, idx) => <div key={idx} className={contentItemClass}>
-
-            <Trans>{item || '—'}</Trans>
-        </div>,
-    ) : null
+              (item, idx) => (
+                  <div key={idx} className={contentItemClass}>
+                      <Trans>{item || '—'}</Trans>
+                  </div>
+              ),
+          )
+        : null,
 }: IconTooltipProps) => {
-    const tooltipContent = <>
-        {title
+    const tooltipContent = (
+        <>
+            {title && (
+                <div className="pb-4 h-25 grid-content font-weight-bold">
+                    <Trans>{title}</Trans>
+                </div>
+            )}
 
-        && <div className="pb-4 h-25 grid-content font-weight-bold"><Trans>{title}</Trans></div>}
-
-        <div className={classNames(columnClass)}>{renderContent}</div>
-    </>;
+            <div className={classNames(columnClass)}>{renderContent}</div>
+        </>
+    );
 
     const tooltipClassName = classNames('tooltip-custom__container', tooltipClass, { 'd-none': !canShowTooltip });
 
-    return <Tooltip
-        className={tooltipClassName}
-        content={tooltipContent}
-        placement={placement}
-        triggerClass={triggerClass}
-        trigger={trigger}
-        onVisibilityChange={onVisibilityChange}
-        delayShow={trigger === 'click' ? 0 : SHOW_TOOLTIP_DELAY}
-        delayHide={delayHide}
-        defaultTooltipShown={defaultTooltipShown}
-    >
-
-        {xlinkHref && <svg className={className}>
-
-            <use xlinkHref={`#${xlinkHref}`} />
-        </svg>}
-    </Tooltip>;
+    return (
+        <Tooltip
+            className={tooltipClassName}
+            content={tooltipContent}
+            placement={placement}
+            triggerClass={triggerClass}
+            trigger={trigger}
+            onVisibilityChange={onVisibilityChange}
+            delayShow={trigger === 'click' ? 0 : SHOW_TOOLTIP_DELAY}
+            delayHide={delayHide}
+            defaultTooltipShown={defaultTooltipShown}>
+            {xlinkHref && (
+                <svg className={className}>
+                    <use xlinkHref={`#${xlinkHref}`} />
+                </svg>
+            )}
+        </Tooltip>
+    );
 };
 
 export default IconTooltip;

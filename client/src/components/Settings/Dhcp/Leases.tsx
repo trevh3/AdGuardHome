@@ -17,12 +17,8 @@ interface LeasesProps {
 }
 
 class Leases extends Component<LeasesProps> {
-    cellWrap = ({
-        value,
-    }: any) => (
-
+    cellWrap = ({ value }: any) => (
         <div className="logs__row o-hidden">
-
             <span className="logs__text" title={value}>
                 {value}
             </span>
@@ -31,30 +27,25 @@ class Leases extends Component<LeasesProps> {
 
     convertToStatic = (data: any) => () => {
         const { dispatch } = this.props;
-        dispatch(toggleLeaseModal({
-            type: MODAL_TYPE.ADD_LEASE,
-            config: data,
-        }));
+        dispatch(
+            toggleLeaseModal({
+                type: MODAL_TYPE.ADD_LEASE,
+                config: data,
+            }),
+        );
     };
 
-    makeStatic = ({
-        row,
-    }: any) => {
+    makeStatic = ({ row }: any) => {
         const { t, disabledLeasesButton } = this.props;
         return (
-
             <div className="logs__row logs__row--center">
-
                 <button
                     type="button"
                     className="btn btn-icon btn-icon--green btn-outline-success btn-sm"
                     title={t('make_static')}
                     onClick={this.convertToStatic(row)}
-                    disabled={disabledLeasesButton}
-                >
-
+                    disabled={disabledLeasesButton}>
                     <svg className="icons icon12">
-
                         <use xlinkHref="#plus" />
                     </svg>
                 </button>
@@ -65,7 +56,6 @@ class Leases extends Component<LeasesProps> {
     render() {
         const { leases, t } = this.props;
         return (
-
             <ReactTable
                 data={leases || []}
                 columns={[
@@ -74,26 +64,27 @@ class Leases extends Component<LeasesProps> {
                         accessor: 'mac',
                         minWidth: 180,
                         Cell: this.cellWrap,
-                    }, {
+                    },
+                    {
                         Header: 'IP',
                         accessor: 'ip',
                         minWidth: 230,
                         Cell: this.cellWrap,
                         sortMethod: sortIp,
-                    }, {
-
+                    },
+                    {
                         Header: <Trans>dhcp_table_hostname</Trans>,
                         accessor: 'hostname',
                         minWidth: 230,
                         Cell: this.cellWrap,
-                    }, {
-
+                    },
+                    {
                         Header: <Trans>dhcp_table_expires</Trans>,
                         accessor: 'expires',
                         minWidth: 220,
                         Cell: this.cellWrap,
-                    }, {
-
+                    },
+                    {
                         Header: <Trans>actions_table_header</Trans>,
                         Cell: this.makeStatic,
                     },
@@ -109,4 +100,9 @@ class Leases extends Component<LeasesProps> {
     }
 }
 
-export default withTranslation()(connect(() => ({}), (dispatch) => ({ dispatch }))(Leases));
+export default withTranslation()(
+    connect(
+        () => ({}),
+        (dispatch) => ({ dispatch }),
+    )(Leases),
+);

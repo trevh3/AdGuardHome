@@ -1,11 +1,5 @@
 import { connect } from 'react-redux';
-import {
-    getRewritesList,
-    addRewrite,
-    deleteRewrite,
-    updateRewrite,
-    toggleRewritesModal,
-} from '../actions/rewrites';
+import { getRewritesList, addRewrite, deleteRewrite, updateRewrite, toggleRewritesModal } from '../actions/rewrites';
 
 import Rewrites from '../components/Filters/Rewrites';
 
@@ -23,7 +17,4 @@ const mapDispatchToProps = {
     toggleRewritesModal,
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Rewrites);
+export default connect(mapStateToProps, mapDispatchToProps)(Rewrites);

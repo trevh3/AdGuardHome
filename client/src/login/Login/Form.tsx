@@ -17,20 +17,13 @@ interface FormProps {
 }
 
 const Form = (props: FormProps) => {
-    const {
-        handleSubmit, processing, invalid, t,
-    } = props;
+    const { handleSubmit, processing, invalid, t } = props;
 
     return (
-
         <form onSubmit={handleSubmit} className="card">
-
             <div className="card-body p-6">
-
                 <div className="form__group form__group--settings">
-
                     <label className="form__label" htmlFor="username">
-
                         <Trans>username_label</Trans>
                     </label>
 
@@ -49,9 +42,7 @@ const Form = (props: FormProps) => {
                 </div>
 
                 <div className="form__group form__group--settings">
-
                     <label className="form__label" htmlFor="password">
-
                         <Trans>password_label</Trans>
                     </label>
 
@@ -69,13 +60,7 @@ const Form = (props: FormProps) => {
                 </div>
 
                 <div className="form-footer">
-
-                    <button
-                        type="submit"
-                        className="btn btn-success btn-block"
-                        disabled={processing || invalid}
-                    >
-
+                    <button type="submit" className="btn btn-success btn-block" disabled={processing || invalid}>
                         <Trans>sign_in</Trans>
                     </button>
                 </div>
@@ -84,7 +69,4 @@ const Form = (props: FormProps) => {
     );
 };
 
-export default flow([
-    withTranslation(),
-    reduxForm({ form: FORM_NAME.LOGIN }),
-])(Form);
+export default flow([withTranslation(), reduxForm({ form: FORM_NAME.LOGIN })])(Form);

@@ -28,7 +28,7 @@ const Modal = ({
     cidr,
     rangeStart,
     rangeEnd,
-    gatewayIp
+    gatewayIp,
 }: ModalProps) => {
     const dispatch = useDispatch();
 
@@ -37,30 +37,22 @@ const Modal = ({
     const leaseInitialData = useSelector((state) => state.dhcp.leaseModalConfig, shallowEqual) || {};
 
     return (
-
         <ReactModal
             className="Modal__Bootstrap modal-dialog modal-dialog-centered modal-dialog--clients"
             closeTimeoutMS={0}
             isOpen={isModalOpen}
-            onRequestClose={toggleModal}
-        >
-
+            onRequestClose={toggleModal}>
             <div className="modal-content">
-
                 <div className="modal-header">
-
                     <h4 className="modal-title">
                         {modalType === MODAL_TYPE.EDIT_LEASE ? (
-
                             <Trans>dhcp_edit_static_lease</Trans>
                         ) : (
-
                             <Trans>dhcp_new_static_lease</Trans>
                         )}
                     </h4>
 
                     <button type="button" className="close" onClick={toggleModal}>
-
                         <span className="sr-only">Close</span>
                     </button>
                 </div>

@@ -6,9 +6,7 @@ interface CellWrapProps {
     formatTitle?: (...args: unknown[]) => unknown;
 }
 
-const CellWrap = ({
-    value
-}: CellWrapProps, formatValue: any, formatTitle = formatValue) => {
+const CellWrap = ({ value }: CellWrapProps, formatValue: any, formatTitle = formatValue) => {
     if (!value) {
         return '–';
     }
@@ -16,9 +14,7 @@ const CellWrap = ({
     const cellTitle = typeof formatTitle === 'function' ? formatTitle(value) : value;
 
     return (
-
         <div className="logs__row o-hidden">
-
             <span className="logs__text logs__text--full" title={cellTitle}>
                 {cellValue}
             </span>

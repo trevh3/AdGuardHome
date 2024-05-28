@@ -13,9 +13,7 @@ interface TimeCellProps {
     value?: string | number;
 }
 
-const TimeCell = ({
-    value
-}: TimeCellProps) => {
+const TimeCell = ({ value }: TimeCellProps) => {
     if (!value) {
         return '–';
     }
@@ -23,9 +21,7 @@ const TimeCell = ({
     const valueInMilliseconds = round(value * 1000);
 
     return (
-
         <div className="logs__row o-hidden">
-
             <span className="logs__text logs__text--full" title={valueInMilliseconds}>
                 {valueInMilliseconds}&nbsp;ms
             </span>
@@ -40,37 +36,20 @@ interface UpstreamAvgTimeProps {
     t: (...args: unknown[]) => unknown;
 }
 
-const UpstreamAvgTime = ({
-    t,
-    refreshButton,
-    topUpstreamsAvgTime,
-    subtitle
-}: UpstreamAvgTimeProps) => (
-
-    <Card
-        title={t('average_upstream_response_time')}
-        subtitle={subtitle}
-        bodyType="card-table"
-        refresh={refreshButton}
-    >
-
+const UpstreamAvgTime = ({ t, refreshButton, topUpstreamsAvgTime, subtitle }: UpstreamAvgTimeProps) => (
+    <Card title={t('average_upstream_response_time')} subtitle={subtitle} bodyType="card-table" refresh={refreshButton}>
         <ReactTable
-            data={topUpstreamsAvgTime.map(({
-                name: domain,
-                count,
-            }: any) => ({
+            data={topUpstreamsAvgTime.map(({ name: domain, count }: any) => ({
                 domain,
                 count,
             }))}
             columns={[
                 {
-
                     Header: <Trans>upstream</Trans>,
                     accessor: 'domain',
                     Cell: DomainCell,
                 },
                 {
-
                     Header: <Trans>response_time</Trans>,
                     accessor: 'count',
                     maxWidth: 190,

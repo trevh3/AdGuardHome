@@ -21,7 +21,4 @@ const mapDispatchToProps = {
     getAccessList,
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

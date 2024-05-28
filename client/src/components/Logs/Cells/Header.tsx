@@ -30,35 +30,43 @@ const Header = () => {
         {
             className: 'logs__cell--client',
 
-            content: <>
-                {t('client_table_header')}
+            content: (
+                <>
+                    {t('client_table_header')}
 
-                {<span>
+                    {
+                        <span>
+                            <svg
+                                className={classNames('icons icon--24 icon--green cursor--pointer mr-2', {
+                                    'icon--selected': !isDetailed,
+                                })}
+                                onClick={disableDetailedMode}>
+                                <title>{t('compact')}</title>
 
-                    <svg className={classNames('icons icon--24 icon--green cursor--pointer mr-2', { 'icon--selected': !isDetailed })}
-                         onClick={disableDetailedMode}
-                    >
+                                <use xlinkHref="#list" />
+                            </svg>
 
-                    <title>{t('compact')}</title>
+                            <svg
+                                className={classNames('icons icon--24 icon--green cursor--pointer', {
+                                    'icon--selected': isDetailed,
+                                })}
+                                onClick={enableDetailedMode}>
+                                <title>{t('default')}</title>
 
-                    <use xlinkHref='#list' /></svg>
-
-                <svg className={classNames('icons icon--24 icon--green cursor--pointer', { 'icon--selected': isDetailed })}
-                     onClick={enableDetailedMode}
-                >
-
-                    <title>{t('default')}</title>
-
-                    <use xlinkHref='#detailed_list' />
-                    </svg>
-            </span>}
-            </>,
+                                <use xlinkHref="#detailed_list" />
+                            </svg>
+                        </span>
+                    }
+                </>
+            ),
         },
     ];
 
-    return <div className="logs__cell--header__container px-5" role="row">
-        {HEADERS.map(HeaderCell)}
-    </div>;
+    return (
+        <div className="logs__cell--header__container px-5" role="row">
+            {HEADERS.map(HeaderCell)}
+        </div>
+    );
 };
 
 export default Header;

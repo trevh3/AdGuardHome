@@ -17,20 +17,17 @@ const LogsSearchLink = ({
     search = '',
     response_status = '',
     children,
-    link = MENU_URLS.logs
+    link = MENU_URLS.logs,
 }: LogsSearchLinkProps) => {
     const { t } = useTranslation();
 
-    const to = link === MENU_URLS.logs ? `${MENU_URLS.logs}${getLogsUrlParams(search && `"${search}"`, response_status)}` : link;
+    const to =
+        link === MENU_URLS.logs
+            ? `${MENU_URLS.logs}${getLogsUrlParams(search && `"${search}"`, response_status)}`
+            : link;
 
     return (
-
-        <Link
-            to={to}
-            tabIndex={0}
-            title={t('click_to_view_queries')}
-            aria-label={t('click_to_view_queries')}
-        >
+        <Link to={to} tabIndex={0} title={t('click_to_view_queries')} aria-label={t('click_to_view_queries')}>
             {children}
         </Link>
     );

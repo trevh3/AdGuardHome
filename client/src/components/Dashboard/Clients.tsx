@@ -35,7 +35,10 @@ const getClientsPercentColor = (percent: any) => {
 };
 
 const CountCell = (row: any) => {
-    const { value, original: { ip } } = row;
+    const {
+        value,
+        original: { ip },
+    } = row;
 
     const numDnsQueries = useSelector((state) => state.stats.numDnsQueries, shallowEqual);
 
@@ -83,39 +86,30 @@ const renderBlockingButton = (ip: any, disallowed: any, disallowed_rule: any) =>
     const lastRuleInAllowlist = !disallowed && allowedСlients === disallowed_rule;
     const disabled = processingSet || lastRuleInAllowlist;
     return (
-
         <div className="table__action">
-
-            <button
-                type="button"
-                className="btn btn-icon btn-sm px-0"
-                onClick={() => setOptionsOpened(true)}
-            >
-
+            <button type="button" className="btn btn-icon btn-sm px-0" onClick={() => setOptionsOpened(true)}>
                 <svg className="icon24 icon--lightgray button-action__icon">
-
                     <use xlinkHref="#bullets" />
                 </svg>
             </button>
             {isOptionsOpened && (
-
                 <IconTooltip
                     className="icon24"
                     tooltipClass="button-action--arrow-option-container"
                     xlinkHref="bullets"
                     triggerClass="btn btn-icon btn-sm px-0 button-action__hidden-trigger"
-                    content={(
-
+                    content={
                         <button
-                            className={classNames('button-action--arrow-option px-4 py-1', disallowed ? 'bg--green' : 'bg--danger')}
+                            className={classNames(
+                                'button-action--arrow-option px-4 py-1',
+                                disallowed ? 'bg--green' : 'bg--danger',
+                            )}
                             onClick={onClick}
                             disabled={disabled}
-                            title={lastRuleInAllowlist ? t('last_rule_in_allowlist', { disallowed_rule }) : ''}
-                        >
-
+                            title={lastRuleInAllowlist ? t('last_rule_in_allowlist', { disallowed_rule }) : ''}>
                             <Trans>{text}</Trans>
                         </button>
-                    )}
+                    }
                     placement="bottom-end"
                     trigger="click"
                     onVisibilityChange={setOptionsOpened}
@@ -128,15 +122,22 @@ const renderBlockingButton = (ip: any, disallowed: any, disallowed_rule: any) =>
 };
 
 const ClientCell = (row: any) => {
-    const { value, original: { info, info: { disallowed, disallowed_rule } } } = row;
+    const {
+        value,
+        original: {
+            info,
+            info: { disallowed, disallowed_rule },
+        },
+    } = row;
 
-    return <>
-
-        <div className="logs__row logs__row--overflow logs__row--column d-flex align-items-center">
-            {renderFormattedClientCell(value, info, true)}
-            {renderBlockingButton(value, disallowed, disallowed_rule)}
-        </div>
-    </>;
+    return (
+        <>
+            <div className="logs__row logs__row--overflow logs__row--column d-flex align-items-center">
+                {renderFormattedClientCell(value, info, true)}
+                {renderBlockingButton(value, disallowed, disallowed_rule)}
+            </div>
+        </>
+    );
 };
 
 interface ClientsProps {
@@ -144,30 +145,15 @@ interface ClientsProps {
     subtitle: string;
 }
 
-const Clients = ({
-    refreshButton,
-    subtitle
-}: ClientsProps) => {
+const Clients = ({ refreshButton, subtitle }: ClientsProps) => {
     const { t } = useTranslation();
 
     const topClients = useSelector((state) => state.stats.topClients, shallowEqual);
 
     return (
-
-        <Card
-            title={t('top_clients')}
-            subtitle={subtitle}
-            bodyType="card-table"
-            refresh={refreshButton}
-        >
-
+        <Card title={t('top_clients')} subtitle={subtitle} bodyType="card-table" refresh={refreshButton}>
             <ReactTable
-                data={topClients.map(({
-                    name: ip,
-                    count,
-                    info,
-                    blocked,
-                }: any) => ({
+                data={topClients.map(({ name: ip, count, info, blocked }: any) => ({
                     ip,
                     count,
                     info,
@@ -175,14 +161,12 @@ const Clients = ({
                 }))}
                 columns={[
                     {
-
                         Header: <Trans>client_table_header</Trans>,
                         accessor: 'ip',
                         sortMethod: sortIp,
                         Cell: ClientCell,
                     },
                     {
-
                         Header: <Trans>requests_count</Trans>,
                         accessor: 'count',
                         minWidth: 180,
@@ -200,7 +184,9 @@ const Clients = ({
                         return {};
                     }
 
-                    const { info: { disallowed } } = rowInfo.original;
+                    const {
+                        info: { disallowed },
+                    } = rowInfo.original;
 
                     return disallowed ? { className: 'logs__row--red' } : {};
                 }}

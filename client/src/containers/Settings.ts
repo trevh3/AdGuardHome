@@ -9,9 +9,7 @@ import { getFilteringStatus, setFiltersConfig } from '../actions/filtering';
 import Settings from '../components/Settings';
 
 const mapStateToProps = (state: any) => {
-    const {
-        settings, services, stats, queryLogs, filtering,
-    } = state;
+    const { settings, services, stats, queryLogs, filtering } = state;
     const props = {
         settings,
         services,
@@ -37,7 +35,4 @@ const mapDispatchToProps = {
     setFiltersConfig,
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Settings);
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

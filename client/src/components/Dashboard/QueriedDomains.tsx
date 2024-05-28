@@ -23,14 +23,14 @@ const getQueriedPercentColor = (percent: any) => {
     return STATUS_COLORS.green;
 };
 
-const countCell = (dnsQueries: any) => (function cell(row: any) {
-    const { value } = row;
-    const percent = getPercent(dnsQueries, value);
-    const percentColor = getQueriedPercentColor(percent);
+const countCell = (dnsQueries: any) =>
+    function cell(row: any) {
+        const { value } = row;
+        const percent = getPercent(dnsQueries, value);
+        const percentColor = getQueriedPercentColor(percent);
 
-    return <Cell value={value} percent={percent} color={percentColor}
-                 search={row.original.domain} />;
-});
+        return <Cell value={value} percent={percent} color={percentColor} search={row.original.domain} />;
+    };
 
 interface QueriedDomainsProps {
     topQueriedDomains: unknown[];
@@ -40,38 +40,20 @@ interface QueriedDomainsProps {
     t: (...args: unknown[]) => unknown;
 }
 
-const QueriedDomains = ({
-    t,
-    refreshButton,
-    topQueriedDomains,
-    subtitle,
-    dnsQueries
-}: QueriedDomainsProps) => (
-
-    <Card
-        title={t('stats_query_domain')}
-        subtitle={subtitle}
-        bodyType="card-table"
-        refresh={refreshButton}
-    >
-
+const QueriedDomains = ({ t, refreshButton, topQueriedDomains, subtitle, dnsQueries }: QueriedDomainsProps) => (
+    <Card title={t('stats_query_domain')} subtitle={subtitle} bodyType="card-table" refresh={refreshButton}>
         <ReactTable
-            data={topQueriedDomains.map(({
-                name: domain,
-                count,
-            }: any) => ({
+            data={topQueriedDomains.map(({ name: domain, count }: any) => ({
                 domain,
                 count,
             }))}
             columns={[
                 {
-
                     Header: <Trans>domain</Trans>,
                     accessor: 'domain',
                     Cell: DomainCell,
                 },
                 {
-
                     Header: <Trans>requests_count</Trans>,
                     accessor: 'count',
                     maxWidth: 190,

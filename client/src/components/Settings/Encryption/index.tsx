@@ -44,12 +44,8 @@ class Encryption extends Component<EncryptionProps> {
 
     getInitialValues = (data: any) => {
         const { certificate_chain, private_key, private_key_saved } = data;
-        const certificate_source = certificate_chain
-            ? ENCRYPTION_SOURCE.CONTENT
-            : ENCRYPTION_SOURCE.PATH;
-        const key_source = private_key || private_key_saved
-            ? ENCRYPTION_SOURCE.CONTENT
-            : ENCRYPTION_SOURCE.PATH;
+        const certificate_source = certificate_chain ? ENCRYPTION_SOURCE.CONTENT : ENCRYPTION_SOURCE.PATH;
+        const key_source = private_key || private_key_saved ? ENCRYPTION_SOURCE.CONTENT : ENCRYPTION_SOURCE.PATH;
 
         return {
             ...data,
@@ -59,9 +55,7 @@ class Encryption extends Component<EncryptionProps> {
     };
 
     getSubmitValues = (values: any) => {
-        const {
-            certificate_source, key_source, private_key_saved, ...config
-        } = values;
+        const { certificate_source, key_source, private_key_saved, ...config } = values;
 
         if (certificate_source === ENCRYPTION_SOURCE.PATH) {
             config.certificate_chain = '';
@@ -116,29 +110,21 @@ class Encryption extends Component<EncryptionProps> {
         });
 
         return (
-
             <div className="encryption">
-
                 <PageTitle title={t('encryption_settings')} />
 
                 {encryption.processing && <Loading />}
                 {!encryption.processing && (
-
                     <Card
                         title={t('encryption_title')}
                         subtitle={t('encryption_desc')}
-                        bodyType="card-body box-body--settings"
-                    >
-
+                        bodyType="card-body box-body--settings">
                         <Form
                             initialValues={initialValues}
                             onSubmit={this.handleFormSubmit}
                             onChange={this.handleFormChange}
-
                             setTlsConfig={this.props.setTlsConfig}
-
                             validateTlsConfig={this.props.validateTlsConfig}
-
                             {...this.props.encryption}
                         />
                     </Card>

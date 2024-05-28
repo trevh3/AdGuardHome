@@ -10,12 +10,20 @@ const renderHighlightedLine = (line: any, idx: any, commentLineTokens = [COMMENT
         'text-transparent': !isComment,
     });
 
-    return <div className={lineClassName} key={idx}>{line || '\n'}</div>;
+    return (
+        <div className={lineClassName} key={idx}>
+            {line || '\n'}
+        </div>
+    );
 };
 export const getTextareaCommentsHighlight = (ref: any, lines: any, className = '', commentLineTokens: any) => {
     const renderLine = (line: any, idx: any) => renderHighlightedLine(line, idx, commentLineTokens);
 
-    return <code className={classnames('text-output font-monospace', className)} ref={ref}>{lines?.split('\n').map(renderLine)}</code>;
+    return (
+        <code className={classnames('text-output font-monospace', className)} ref={ref}>
+            {lines?.split('\n').map(renderLine)}
+        </code>
+    );
 };
 
 export const syncScroll = (e: any, ref: any) => {

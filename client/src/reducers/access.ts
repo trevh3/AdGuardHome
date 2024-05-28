@@ -12,14 +12,8 @@ const access = handleActions(
             ...state,
             processing: false,
         }),
-        [actions.getAccessListSuccess]: (state: any, {
-            payload,
-        }: any) => {
-            const {
-                allowed_clients,
-                disallowed_clients,
-                blocked_hosts,
-            } = payload;
+        [actions.getAccessListSuccess]: (state: any, { payload }: any) => {
+            const { allowed_clients, disallowed_clients, blocked_hosts } = payload;
             const newState = {
                 ...state,
                 allowed_clients: allowed_clients?.join('\n') || '',
@@ -51,14 +45,8 @@ const access = handleActions(
             ...state,
             processingSet: false,
         }),
-        [actions.toggleClientBlockSuccess]: (state: any, {
-            payload,
-        }: any) => {
-            const {
-                allowed_clients,
-                disallowed_clients,
-                blocked_hosts,
-            } = payload;
+        [actions.toggleClientBlockSuccess]: (state: any, { payload }: any) => {
+            const { allowed_clients, disallowed_clients, blocked_hosts } = payload;
             const newState = {
                 ...state,
                 allowed_clients: allowed_clients?.join('\n') || '',

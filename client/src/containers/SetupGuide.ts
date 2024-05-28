@@ -10,7 +10,4 @@ const mapStateToProps = (state: any) => {
     return props;
 };
 
-export default connect(
-    mapStateToProps,
-    actionCreators,
-)(SetupGuide);
+export default connect(mapStateToProps, actionCreators)(SetupGuide);

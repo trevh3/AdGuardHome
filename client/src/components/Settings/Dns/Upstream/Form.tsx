@@ -8,11 +8,7 @@ import classnames from 'classnames';
 import Examples from './Examples';
 
 import { renderRadioField, renderTextareaField, CheckboxField } from '../../../../helpers/form';
-import {
-    DNS_REQUEST_OPTIONS,
-    FORM_NAME,
-    UPSTREAM_CONFIGURATION_WIKI_LINK,
-} from '../../../../helpers/constants';
+import { DNS_REQUEST_OPTIONS, FORM_NAME, UPSTREAM_CONFIGURATION_WIKI_LINK } from '../../../../helpers/constants';
 
 import { testUpstreamWithFormValues } from '../../../../actions';
 
@@ -47,7 +43,7 @@ const renderField = ({
     value,
     normalizeOnBlur,
     containerClass,
-    onScroll
+    onScroll,
 }: renderFieldProps) => {
     const { t } = useTranslation();
 
@@ -56,12 +52,7 @@ const renderField = ({
     const processingSetConfig = useSelector((state) => state.dnsConfig.processingSetConfig);
 
     return (
-
-        <div
-            key={placeholder}
-            className={classnames('col-12 mb-4', containerClass)}
-        >
-
+        <div key={placeholder} className={classnames('col-12 mb-4', containerClass)}>
             <Field
                 id={name}
                 value={value}
@@ -99,16 +90,18 @@ const renderTextareaWithHighlightField = (props: renderTextareaWithHighlightFiel
 
     const onScroll = (e: any) => syncScroll(e, ref);
 
-    return <>
-        {renderTextareaField({
-            ...props,
-            disabled: !!upstream_dns_file,
-            onScroll,
-            normalizeOnBlur: trimLinesAndRemoveEmpty,
-        })}
+    return (
+        <>
+            {renderTextareaField({
+                ...props,
+                disabled: !!upstream_dns_file,
+                onScroll,
+                normalizeOnBlur: trimLinesAndRemoveEmpty,
+            })}
 
-        {getTextareaCommentsHighlight(ref, upstream_dns)}
-    </>;
+            {getTextareaCommentsHighlight(ref, upstream_dns)}
+        </>
+    );
 };
 
 const INPUT_FIELDS = [
@@ -148,11 +141,7 @@ interface FormProps {
     bootstrap_dns?: string;
 }
 
-const Form = ({
-    submitting,
-    invalid,
-    handleSubmit
-}: FormProps) => {
+const Form = ({ submitting, invalid, handleSubmit }: FormProps) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -161,10 +150,7 @@ const Form = ({
     const processingTestUpstream = useSelector((state) => state.settings.processingTestUpstream);
 
     const processingSetConfig = useSelector((state) => state.dnsConfig.processingSetConfig);
-    const defaultLocalPtrUpstreams = useSelector(
-
-        (state) => state.dnsConfig.default_local_ptr_upstreams,
-    );
+    const defaultLocalPtrUpstreams = useSelector((state) => state.dnsConfig.default_local_ptr_upstreams);
 
     const handleUpstreamTest = () => dispatch(testUpstreamWithFormValues());
 
@@ -173,41 +159,30 @@ const Form = ({
     });
 
     const components = {
-
-        a: <a href={UPSTREAM_CONFIGURATION_WIKI_LINK} target="_blank"
-              rel="noopener noreferrer" />,
+        a: <a href={UPSTREAM_CONFIGURATION_WIKI_LINK} target="_blank" rel="noopener noreferrer" />,
     };
 
     return (
-
         <form onSubmit={handleSubmit} className="form--upstream">
-
             <div className="row">
-
                 <label className="col form__label" htmlFor={UPSTREAM_DNS_NAME}>
-
-                    <Trans components={components}>upstream_dns_help</Trans>
-                    {' '}
-
-                    <Trans components={[
-
-                        <a
-                            href="https://link.adtidy.org/forward.html?action=dns_kb_providers&from=ui&app=home"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            key="0"
-                        >
-                            DNS providers
-                        </a>,
-                    ]}>
+                    <Trans components={components}>upstream_dns_help</Trans>{' '}
+                    <Trans
+                        components={[
+                            <a
+                                href="https://link.adtidy.org/forward.html?action=dns_kb_providers&from=ui&app=home"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                key="0">
+                                DNS providers
+                            </a>,
+                        ]}>
                         dns_providers
                     </Trans>
                 </label>
 
                 <div className="col-12 mb-4">
-
                     <div className="text-edit-container">
-
                         <Field
                             id={UPSTREAM_DNS_NAME}
                             name={UPSTREAM_DNS_NAME}
@@ -223,24 +198,17 @@ const Form = ({
                 {INPUT_FIELDS.map(renderField)}
 
                 <div className="col-12">
-
                     <Examples />
 
                     <hr />
                 </div>
 
                 <div className="col-12">
-
-                    <label
-                        className="form__label form__label--with-desc"
-                        htmlFor="fallback_dns"
-                    >
-
+                    <label className="form__label form__label--with-desc" htmlFor="fallback_dns">
                         <Trans>fallback_dns_title</Trans>
                     </label>
 
                     <div className="form__desc form__desc--top">
-
                         <Trans>fallback_dns_desc</Trans>
                     </div>
 
@@ -257,22 +225,15 @@ const Form = ({
                 </div>
 
                 <div className="col-12">
-
                     <hr />
                 </div>
 
                 <div className="col-12 mb-2">
-
-                    <label
-                        className="form__label form__label--with-desc"
-                        htmlFor="bootstrap_dns"
-                    >
-
+                    <label className="form__label form__label--with-desc" htmlFor="bootstrap_dns">
                         <Trans>bootstrap_dns</Trans>
                     </label>
 
                     <div className="form__desc form__desc--top">
-
                         <Trans>bootstrap_dns_desc</Trans>
                     </div>
 
@@ -289,32 +250,25 @@ const Form = ({
                 </div>
 
                 <div className="col-12">
-
                     <hr />
                 </div>
 
                 <div className="col-12">
-
-                    <label
-                        className="form__label form__label--with-desc"
-                        htmlFor="local_ptr"
-                    >
-
+                    <label className="form__label form__label--with-desc" htmlFor="local_ptr">
                         <Trans>local_ptr_title</Trans>
                     </label>
 
                     <div className="form__desc form__desc--top">
-
                         <Trans>local_ptr_desc</Trans>
                     </div>
 
                     <div className="form__desc form__desc--top">
                         {/** TODO: Add internazionalization for "" */}
                         {defaultLocalPtrUpstreams?.length > 0 ? (
-
-                            <Trans values={{ ip: defaultLocalPtrUpstreams.map((s: any) => `"${s}"`).join(', ') }}>local_ptr_default_resolver</Trans>
+                            <Trans values={{ ip: defaultLocalPtrUpstreams.map((s: any) => `"${s}"`).join(', ') }}>
+                                local_ptr_default_resolver
+                            </Trans>
                         ) : (
-
                             <Trans>local_ptr_no_default_resolver</Trans>
                         )}
                     </div>
@@ -331,7 +285,6 @@ const Form = ({
                     />
 
                     <div className="mt-4">
-
                         <Field
                             name="use_private_ptr_resolvers"
                             type="checkbox"
@@ -344,12 +297,10 @@ const Form = ({
                 </div>
 
                 <div className="col-12">
-
                     <hr />
                 </div>
 
                 <div className="col-12 mb-4">
-
                     <Field
                         name="resolve_clients"
                         type="checkbox"
@@ -362,27 +313,19 @@ const Form = ({
             </div>
 
             <div className="card-actions">
-
                 <div className="btn-list">
-
                     <button
                         type="button"
                         className={testButtonClass}
                         onClick={handleUpstreamTest}
-                        disabled={!upstream_dns || processingTestUpstream}
-                    >
-
+                        disabled={!upstream_dns || processingTestUpstream}>
                         <Trans>test_upstream_btn</Trans>
                     </button>
 
                     <button
                         type="submit"
                         className="btn btn-success btn-standard"
-                        disabled={
-                            submitting || invalid || processingSetConfig || processingTestUpstream
-                        }
-                    >
-
+                        disabled={submitting || invalid || processingSetConfig || processingTestUpstream}>
                         <Trans>apply_btn</Trans>
                     </button>
                 </div>

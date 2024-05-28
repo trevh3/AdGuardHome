@@ -15,7 +15,6 @@ interface CheckboxProps {
 class Checkbox extends Component<CheckboxProps> {
     render() {
         const {
-
             title,
 
             subtitle,
@@ -29,24 +28,28 @@ class Checkbox extends Component<CheckboxProps> {
             t,
         } = this.props;
         return (
-
             <div className="form__group form__group--checkbox">
-
                 <label className="checkbox checkbox--settings">
+                    <span className="checkbox__marker" />
 
-                <span className="checkbox__marker"/>
+                    <input
+                        type="checkbox"
+                        className="checkbox__input"
+                        onChange={handleChange}
+                        checked={enabled}
+                        disabled={disabled}
+                    />
 
-                <input type="checkbox" className="checkbox__input" onChange={handleChange} checked={enabled} disabled={disabled}/>
+                    <span className="checkbox__label">
+                        <span className="checkbox__label-text">
+                            <span className="checkbox__label-title">{t(title)}</span>
 
-                <span className="checkbox__label">
-
-                    <span className="checkbox__label-text">
-
-                    <span className="checkbox__label-title">{ t(title) }</span>
-
-                    <span className="checkbox__label-subtitle" dangerouslySetInnerHTML={{ __html: t(subtitle) }}/>
+                            <span
+                                className="checkbox__label-subtitle"
+                                dangerouslySetInnerHTML={{ __html: t(subtitle) }}
+                            />
+                        </span>
                     </span>
-                </span>
                 </label>
             </div>
         );

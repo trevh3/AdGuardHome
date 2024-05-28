@@ -17,7 +17,4 @@ const mapDispatchToProps = {
     validateTlsConfig,
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Encryption);
+export default connect(mapStateToProps, mapDispatchToProps)(Encryption);

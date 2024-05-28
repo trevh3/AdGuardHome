@@ -27,7 +27,6 @@ const FiltersConfig = (props: FiltersConfigProps) => {
     }, DEBOUNCE_TIMEOUT);
 
     return (
-
         <Form
             initialValues={initialValues}
             onSubmit={handleFormChange}

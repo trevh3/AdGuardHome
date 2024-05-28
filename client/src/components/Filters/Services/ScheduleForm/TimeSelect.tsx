@@ -7,10 +7,7 @@ interface TimeSelectProps {
     onChange: (...args: unknown[]) => unknown;
 }
 
-export const TimeSelect = ({
-    value,
-    onChange
-}: TimeSelectProps) => {
+export const TimeSelect = ({ value, onChange }: TimeSelectProps) => {
     const { hours: initialHours, minutes: initialMinutes } = getTimeFromMs(value);
 
     const [hours, setHours] = useState(initialHours);
@@ -31,30 +28,17 @@ export const TimeSelect = ({
     };
 
     return (
-
         <div className="schedule__time-select">
-
-            <select
-                value={hours}
-                onChange={onHourChange}
-                className="form-control custom-select"
-            >
+            <select value={hours} onChange={onHourChange} className="form-control custom-select">
                 {hourOptions.map((hour) => (
-
                     <option key={hour} value={hour}>
                         {hour}
                     </option>
                 ))}
             </select>
             &nbsp;:&nbsp;
-
-            <select
-                value={minutes}
-                onChange={onMinuteChange}
-                className="form-control custom-select"
-            >
+            <select value={minutes} onChange={onMinuteChange} className="form-control custom-select">
                 {minuteOptions.map((minute) => (
-
                     <option key={minute} value={minute}>
                         {minute}
                     </option>

@@ -9,7 +9,6 @@ import {
     addStaticLease,
     removeStaticLease,
     resetDhcp,
-
 } from '../actions';
 
 import Dhcp from '../components/Settings/Dhcp';
@@ -34,7 +33,4 @@ const mapDispatchToProps = {
     resetDhcp,
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Dhcp);
+export default connect(mapStateToProps, mapDispatchToProps)(Dhcp);

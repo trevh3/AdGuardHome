@@ -25,7 +25,6 @@ const Config = () => {
         dnssec_enabled,
         disable_ipv6,
         processingSetConfig,
-
     } = useSelector((state) => state.dnsConfig, shallowEqual);
 
     const handleFormSubmit = (values: any) => {
@@ -33,15 +32,8 @@ const Config = () => {
     };
 
     return (
-
-        <Card
-            title={t('dns_config')}
-            bodyType="card-body box-body--settings"
-            id="dns-config"
-        >
-
+        <Card title={t('dns_config')} bodyType="card-body box-body--settings" id="dns-config">
             <div className="form">
-
                 <Form
                     initialValues={{
                         ratelimit,

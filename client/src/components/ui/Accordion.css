@@ -11,13 +11,13 @@
 }
 
 .accordion__label:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 7px;
     left: 0;
     width: 17px;
     height: 10px;
-    background-image: url("./svg/chevron-down.svg");
+    background-image: url('./svg/chevron-down.svg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100%;

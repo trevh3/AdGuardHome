@@ -12,10 +12,16 @@ import PageTitle from '../../ui/PageTitle';
 
 import { ScheduleForm } from './ScheduleForm';
 
-const getInitialDataForServices = (initial: any) => (initial ? initial.reduce((acc: any, service: any) => {
-    acc.blocked_services[service] = true;
-    return acc;
-}, { blocked_services: {} }) : initial);
+const getInitialDataForServices = (initial: any) =>
+    initial
+        ? initial.reduce(
+              (acc: any, service: any) => {
+                  acc.blocked_services[service] = true;
+                  return acc;
+              },
+              { blocked_services: {} },
+          )
+        : initial;
 
 const Services = () => {
     const [t] = useTranslation();
@@ -33,21 +39,25 @@ const Services = () => {
             return;
         }
 
-        const blocked_services = Object
-            .keys(values.blocked_services)
-            .filter((service) => values.blocked_services[service]);
+        const blocked_services = Object.keys(values.blocked_services).filter(
+            (service) => values.blocked_services[service],
+        );
 
-        dispatch(updateBlockedServices({
-            ids: blocked_services,
-            schedule: services.list.schedule,
-        }));
+        dispatch(
+            updateBlockedServices({
+                ids: blocked_services,
+                schedule: services.list.schedule,
+            }),
+        );
     };
 
     const handleScheduleSubmit = (values: any) => {
-        dispatch(updateBlockedServices({
-            ids: services.list.ids,
-            schedule: values,
-        }));
+        dispatch(
+            updateBlockedServices({
+                ids: services.list.ids,
+                schedule: values,
+            }),
+        );
     };
 
     const initialValues = getInitialDataForServices(services.list.ids);
@@ -57,20 +67,11 @@ const Services = () => {
     }
 
     return (
-
         <>
+            <PageTitle title={t('blocked_services')} subtitle={t('blocked_services_desc')} />
 
-            <PageTitle
-                title={t('blocked_services')}
-                subtitle={t('blocked_services_desc')}
-            />
-
-            <Card
-                bodyType="card-body box-body--settings"
-            >
-
+            <Card bodyType="card-body box-body--settings">
                 <div className="form">
-
                     <Form
                         initialValues={initialValues}
                         blockedServices={services.allServices}
@@ -84,13 +85,8 @@ const Services = () => {
             <Card
                 title={t('schedule_services')}
                 subtitle={t('schedule_services_desc')}
-                bodyType="card-body box-body--settings"
-            >
-
-                <ScheduleForm
-                    schedule={services.list.schedule}
-                    onScheduleSubmit={handleScheduleSubmit}
-                />
+                bodyType="card-body box-body--settings">
+                <ScheduleForm schedule={services.list.schedule} onScheduleSubmit={handleScheduleSubmit} />
             </Card>
         </>
     );

@@ -13,9 +13,7 @@ interface TabsProps {
 }
 
 const Tabs = (props: TabsProps) => {
-    const {
-        tabs, controlClass, activeTabLabel, setActiveTabLabel, children: activeTab,
-    } = props;
+    const { tabs, controlClass, activeTabLabel, setActiveTabLabel, children: activeTab } = props;
 
     const onClickTabControl = (tabLabel: any) => setActiveTabLabel(tabLabel);
 
@@ -25,31 +23,24 @@ const Tabs = (props: TabsProps) => {
     });
 
     return (
-
         <div className="tabs">
-
             <div className={getControlClass}>
-
-                {Object.values(tabs)
-                    .map((props: any) => {
-                        // eslint-disable-next-line react/prop-types
-                        const { title, label = title } = props;
-                        return (
-
-                            <Tab
-                                key={label}
-                                label={label}
-                                title={title}
-                                activeTabLabel={activeTabLabel}
-                                onClick={onClickTabControl}
-                            />
-                        );
-                    })}
+                {Object.values(tabs).map((props: any) => {
+                    // eslint-disable-next-line react/prop-types
+                    const { title, label = title } = props;
+                    return (
+                        <Tab
+                            key={label}
+                            label={label}
+                            title={title}
+                            activeTabLabel={activeTabLabel}
+                            onClick={onClickTabControl}
+                        />
+                    );
+                })}
             </div>
 
-            <div className="tabs__content">
-                {activeTab}
-            </div>
+            <div className="tabs__content">{activeTab}</div>
         </div>
     );
 };

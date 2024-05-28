@@ -6,31 +6,18 @@ interface KeyStatusProps {
     keyType: string;
 }
 
-const KeyStatus = ({
-    validKey,
-    keyType
-}: KeyStatusProps) => (
-
+const KeyStatus = ({ validKey, keyType }: KeyStatusProps) => (
     <Fragment>
-
         <div className="form__label form__label--bold">
-
             <Trans>encryption_status</Trans>:
         </div>
 
         <ul className="encryption__list">
-
             <li className={validKey ? 'text-success' : 'text-danger'}>
                 {validKey ? (
-
-                    <Trans values={{ type: keyType }}>
-                        encryption_key_valid
-                    </Trans>
+                    <Trans values={{ type: keyType }}>encryption_key_valid</Trans>
                 ) : (
-
-                    <Trans values={{ type: keyType }}>
-                        encryption_key_invalid
-                    </Trans>
+                    <Trans values={{ type: keyType }}>encryption_key_invalid</Trans>
                 )}
             </li>
         </ul>

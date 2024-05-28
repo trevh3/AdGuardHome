@@ -13,7 +13,6 @@ import {
     msToSeconds,
     msToMinutes,
     msToHours,
-
 } from '../helpers/helpers';
 import {
     BLOCK_ACTIONS,
@@ -81,37 +80,39 @@ export const initSettingsRequest = createAction('SETTINGS_INIT_REQUEST');
 export const initSettingsFailure = createAction('SETTINGS_INIT_FAILURE');
 export const initSettingsSuccess = createAction('SETTINGS_INIT_SUCCESS');
 
-export const initSettings = (settingsList = {
-    safebrowsing: {}, parental: {},
-}) => async (dispatch: any) => {
-    dispatch(initSettingsRequest());
-    try {
-        const safebrowsingStatus = await apiClient.getSafebrowsingStatus();
-        const parentalStatus = await apiClient.getParentalStatus();
-        const safesearchStatus = await apiClient.getSafesearchStatus();
-        const {
-            safebrowsing,
-            parental,
-        } = settingsList;
-        const newSettingsList = {
-            safebrowsing: {
-                ...safebrowsing,
-                enabled: safebrowsingStatus.enabled,
-            },
-            parental: {
-                ...parental,
-                enabled: parentalStatus.enabled,
-            },
-            safesearch: {
-                ...safesearchStatus,
-            },
-        };
-        dispatch(initSettingsSuccess({ settingsList: newSettingsList }));
-    } catch (error) {
-        dispatch(addErrorToast({ error }));
-        dispatch(initSettingsFailure());
-    }
-};
+export const initSettings =
+    (
+        settingsList = {
+            safebrowsing: {},
+            parental: {},
+        },
+    ) =>
+    async (dispatch: any) => {
+        dispatch(initSettingsRequest());
+        try {
+            const safebrowsingStatus = await apiClient.getSafebrowsingStatus();
+            const parentalStatus = await apiClient.getParentalStatus();
+            const safesearchStatus = await apiClient.getSafesearchStatus();
+            const { safebrowsing, parental } = settingsList;
+            const newSettingsList = {
+                safebrowsing: {
+                    ...safebrowsing,
+                    enabled: safebrowsingStatus.enabled,
+                },
+                parental: {
+                    ...parental,
+                    enabled: parentalStatus.enabled,
+                },
+                safesearch: {
+                    ...safesearchStatus,
+                },
+            };
+            dispatch(initSettingsSuccess({ settingsList: newSettingsList }));
+        } catch (error) {
+            dispatch(addErrorToast({ error }));
+            dispatch(initSettingsFailure());
+        }
+    };
 
 export const toggleProtectionRequest = createAction('TOGGLE_PROTECTION_REQUEST');
 export const toggleProtectionFailure = createAction('TOGGLE_PROTECTION_FAILURE');
@@ -120,25 +121,17 @@ export const toggleProtectionSuccess = createAction('TOGGLE_PROTECTION_SUCCESS')
 const getDisabledMessage = (time: any) => {
     switch (time) {
         case DISABLE_PROTECTION_TIMINGS.HALF_MINUTE:
-            return i18next.t(
-                'disable_notify_for_seconds',
-                { count: msToSeconds(DISABLE_PROTECTION_TIMINGS.HALF_MINUTE) },
-            );
+            return i18next.t('disable_notify_for_seconds', {
+                count: msToSeconds(DISABLE_PROTECTION_TIMINGS.HALF_MINUTE),
+            });
         case DISABLE_PROTECTION_TIMINGS.MINUTE:
-            return i18next.t(
-                'disable_notify_for_minutes',
-                { count: msToMinutes(DISABLE_PROTECTION_TIMINGS.MINUTE) },
-            );
+            return i18next.t('disable_notify_for_minutes', { count: msToMinutes(DISABLE_PROTECTION_TIMINGS.MINUTE) });
         case DISABLE_PROTECTION_TIMINGS.TEN_MINUTES:
-            return i18next.t(
-                'disable_notify_for_minutes',
-                { count: msToMinutes(DISABLE_PROTECTION_TIMINGS.TEN_MINUTES) },
-            );
+            return i18next.t('disable_notify_for_minutes', {
+                count: msToMinutes(DISABLE_PROTECTION_TIMINGS.TEN_MINUTES),
+            });
         case DISABLE_PROTECTION_TIMINGS.HOUR:
-            return i18next.t(
-                'disable_notify_for_hours',
-                { count: msToHours(DISABLE_PROTECTION_TIMINGS.HOUR) },
-            );
+            return i18next.t('disable_notify_for_hours', { count: msToHours(DISABLE_PROTECTION_TIMINGS.HOUR) });
         case DISABLE_PROTECTION_TIMINGS.TOMORROW:
             return i18next.t('disable_notify_until_tomorrow');
         default:
@@ -146,18 +139,20 @@ const getDisabledMessage = (time: any) => {
     }
 };
 
-export const toggleProtection = (status: any, time = null) => async (dispatch: any) => {
-    dispatch(toggleProtectionRequest());
-    try {
-        const successMessage = status ? getDisabledMessage(time) : 'enabled_protection';
-        await apiClient.setProtection({ enabled: !status, duration: time });
-        dispatch(addSuccessToast(successMessage));
-        dispatch(toggleProtectionSuccess({ disabledDuration: time }));
-    } catch (error) {
-        dispatch(addErrorToast({ error }));
-        dispatch(toggleProtectionFailure());
-    }
-};
+export const toggleProtection =
+    (status: any, time = null) =>
+    async (dispatch: any) => {
+        dispatch(toggleProtectionRequest());
+        try {
+            const successMessage = status ? getDisabledMessage(time) : 'enabled_protection';
+            await apiClient.setProtection({ enabled: !status, duration: time });
+            dispatch(addSuccessToast(successMessage));
+            dispatch(toggleProtectionSuccess({ disabledDuration: time }));
+        } catch (error) {
+            dispatch(addErrorToast({ error }));
+            dispatch(toggleProtectionFailure());
+        }
+    };
 
 export const setDisableDurationTime = createAction('SET_DISABLED_DURATION_TIME');
 
@@ -169,27 +164,29 @@ export const getVersionRequest = createAction('GET_VERSION_REQUEST');
 export const getVersionFailure = createAction('GET_VERSION_FAILURE');
 export const getVersionSuccess = createAction('GET_VERSION_SUCCESS');
 
-export const getVersion = (recheck = false) => async (dispatch: any, getState: any) => {
-    dispatch(getVersionRequest());
-    try {
-        const data = await apiClient.getGlobalVersion({ recheck_now: recheck });
-        dispatch(getVersionSuccess(data));
+export const getVersion =
+    (recheck = false) =>
+    async (dispatch: any, getState: any) => {
+        dispatch(getVersionRequest());
+        try {
+            const data = await apiClient.getGlobalVersion({ recheck_now: recheck });
+            dispatch(getVersionSuccess(data));
 
-        if (recheck) {
-            const { dnsVersion } = getState().dashboard;
-            const currentVersion = dnsVersion === 'undefined' ? 0 : dnsVersion;
+            if (recheck) {
+                const { dnsVersion } = getState().dashboard;
+                const currentVersion = dnsVersion === 'undefined' ? 0 : dnsVersion;
 
-            if (data && !areEqualVersions(currentVersion, data.new_version)) {
-                dispatch(addSuccessToast('updates_checked'));
-            } else {
-                dispatch(addSuccessToast('updates_version_equal'));
+                if (data && !areEqualVersions(currentVersion, data.new_version)) {
+                    dispatch(addSuccessToast('updates_checked'));
+                } else {
+                    dispatch(addSuccessToast('updates_version_equal'));
+                }
             }
+        } catch (error) {
+            dispatch(addErrorToast({ error: 'version_request_error' }));
+            dispatch(getVersionFailure());
         }
-    } catch (error) {
-        dispatch(addErrorToast({ error: 'version_request_error' }));
-        dispatch(getVersionFailure());
-    }
-};
+    };
 
 export const getUpdateRequest = createAction('GET_UPDATE_REQUEST');
 export const getUpdateFailure = createAction('GET_UPDATE_FAILURE');
@@ -221,13 +218,7 @@ const checkStatus = async (handleRequestSuccess: any, handleRequestError: any, a
         }
     } catch (error) {
         rmTimeout(timeout);
-        timeout = setTimeout(
-            checkStatus,
-            CHECK_TIMEOUT,
-            handleRequestSuccess,
-            handleRequestError,
-            attempts - 1,
-        );
+        timeout = setTimeout(checkStatus, CHECK_TIMEOUT, handleRequestSuccess, handleRequestError, attempts - 1);
     }
 };
 
@@ -238,9 +229,7 @@ export const getUpdate = () => async (dispatch: any, getState: any) => {
     const handleRequestError = () => {
         const options = {
             components: {
-
-                a: <a href={MANUAL_UPDATE_LINK} target="_blank"
-                      rel="noopener noreferrer" />,
+                a: <a href={MANUAL_UPDATE_LINK} target="_blank" rel="noopener noreferrer" />,
             },
         };
 
@@ -277,11 +266,13 @@ export const getClients = () => async (dispatch: any) => {
         const sortedClients = data.clients && sortClients(data.clients);
         const sortedAutoClients = data.auto_clients && sortClients(data.auto_clients);
 
-        dispatch(getClientsSuccess({
-            clients: sortedClients || [],
-            autoClients: sortedAutoClients || [],
-            supportedTags: data.supported_tags || [],
-        }));
+        dispatch(
+            getClientsSuccess({
+                clients: sortedClients || [],
+                autoClients: sortedAutoClients || [],
+                supportedTags: data.supported_tags || [],
+            }),
+        );
     } catch (error) {
         dispatch(addErrorToast({ error }));
         dispatch(getClientsFailure());
@@ -381,28 +372,26 @@ export const testUpstreamRequest = createAction('TEST_UPSTREAM_REQUEST');
 export const testUpstreamFailure = createAction('TEST_UPSTREAM_FAILURE');
 export const testUpstreamSuccess = createAction('TEST_UPSTREAM_SUCCESS');
 
-export const testUpstream = ({
-    bootstrap_dns,
-    upstream_dns,
-    local_ptr_upstreams,
-    fallback_dns,
-}: any, upstream_dns_file: any) => async (dispatch: any) => {
-    dispatch(testUpstreamRequest());
-    try {
-        const removeComments = compose(filterOutComments, splitByNewLine);
+export const testUpstream =
+    ({ bootstrap_dns, upstream_dns, local_ptr_upstreams, fallback_dns }: any, upstream_dns_file: any) =>
+    async (dispatch: any) => {
+        dispatch(testUpstreamRequest());
+        try {
+            const removeComments = compose(filterOutComments, splitByNewLine);
 
-        const config = {
-            bootstrap_dns: splitByNewLine(bootstrap_dns),
-            private_upstream: splitByNewLine(local_ptr_upstreams),
-            fallback_dns: splitByNewLine(fallback_dns),
-            ...(upstream_dns_file ? null : {
-                upstream_dns: removeComments(upstream_dns),
-            }),
-        };
+            const config = {
+                bootstrap_dns: splitByNewLine(bootstrap_dns),
+                private_upstream: splitByNewLine(local_ptr_upstreams),
+                fallback_dns: splitByNewLine(fallback_dns),
+                ...(upstream_dns_file
+                    ? null
+                    : {
+                          upstream_dns: removeComments(upstream_dns),
+                      }),
+            };
 
-        const upstreamResponse = await apiClient.testUpstream(config);
-        const testMessages = Object.keys(upstreamResponse)
-            .map((key) => {
+            const upstreamResponse = await apiClient.testUpstream(config);
+            const testMessages = Object.keys(upstreamResponse).map((key) => {
                 const message = upstreamResponse[key];
                 if (message.startsWith('WARNING:')) {
                     dispatch(addErrorToast({ error: i18next.t('dns_test_warning_toast', { key }) }));
@@ -417,32 +406,33 @@ export const testUpstream = ({
                 return message;
             });
 
-        if (testMessages.every((message) => message === 'OK' || message.startsWith('WARNING:'))) {
-            dispatch(addSuccessToast('dns_test_ok_toast'));
-        }
+            if (testMessages.every((message) => message === 'OK' || message.startsWith('WARNING:'))) {
+                dispatch(addSuccessToast('dns_test_ok_toast'));
+            }
 
-        dispatch(testUpstreamSuccess());
-    } catch (error) {
-        dispatch(addErrorToast({ error }));
-        dispatch(testUpstreamFailure());
-    }
-};
+            dispatch(testUpstreamSuccess());
+        } catch (error) {
+            dispatch(addErrorToast({ error }));
+            dispatch(testUpstreamFailure());
+        }
+    };
 
 export const testUpstreamWithFormValues = () => async (dispatch: any, getState: any) => {
     const { upstream_dns_file } = getState().dnsConfig;
-    const {
-        bootstrap_dns,
-        upstream_dns,
-        local_ptr_upstreams,
-        fallback_dns,
-    } = getState().form[FORM_NAME.UPSTREAM].values;
+    const { bootstrap_dns, upstream_dns, local_ptr_upstreams, fallback_dns } =
+        getState().form[FORM_NAME.UPSTREAM].values;
 
-    return dispatch(testUpstream({
-        bootstrap_dns,
-        upstream_dns,
-        local_ptr_upstreams,
-        fallback_dns,
-    }, upstream_dns_file));
+    return dispatch(
+        testUpstream(
+            {
+                bootstrap_dns,
+                upstream_dns,
+                local_ptr_upstreams,
+                fallback_dns,
+            },
+            upstream_dns_file,
+        ),
+    );
 };
 
 export const changeLanguageRequest = createAction('CHANGE_LANGUAGE_REQUEST');
@@ -562,12 +552,12 @@ export const findActiveDhcp = (name: any) => async (dispatch: any, getState: any
             return;
         }
 
-        if ((hasV4Interface && v4.other_server.found === STATUS_RESPONSE.YES)
-                || (hasV6Interface && v6.other_server.found === STATUS_RESPONSE.YES)) {
+        if (
+            (hasV4Interface && v4.other_server.found === STATUS_RESPONSE.YES) ||
+            (hasV6Interface && v6.other_server.found === STATUS_RESPONSE.YES)
+        ) {
             dispatch(addErrorToast({ error: 'dhcp_found' }));
-        } else if (hasV4Interface && v4.static_ip.static === STATUS_RESPONSE.NO
-                && v4.static_ip.ip
-                && interface_name) {
+        } else if (hasV4Interface && v4.static_ip.static === STATUS_RESPONSE.NO && v4.static_ip.ip && interface_name) {
             const warning = i18next.t('dhcp_dynamic_ip_found', {
                 interfaceName: interface_name,
                 ipAddress: v4.static_ip.ip,
@@ -722,40 +712,42 @@ export const updateStaticLease = (config: any) => async (dispatch: any) => {
 
 export const removeToast = createAction('REMOVE_TOAST');
 
-export const toggleBlocking = (type: any, domain: any, baseRule: any, baseUnblocking: any) => async (dispatch: any, getState: any) => {
-    const baseBlockingRule = baseRule || `||${domain}^$important`;
-    const baseUnblockingRule = baseUnblocking || `@@${baseBlockingRule}`;
-    const { userRules } = getState().filtering;
+export const toggleBlocking =
+    (type: any, domain: any, baseRule: any, baseUnblocking: any) => async (dispatch: any, getState: any) => {
+        const baseBlockingRule = baseRule || `||${domain}^$important`;
+        const baseUnblockingRule = baseUnblocking || `@@${baseBlockingRule}`;
+        const { userRules } = getState().filtering;
 
-    const lineEnding = !endsWith(userRules, '\n') ? '\n' : '';
+        const lineEnding = !endsWith(userRules, '\n') ? '\n' : '';
 
-    const blockingRule = type === BLOCK_ACTIONS.BLOCK ? baseUnblockingRule : baseBlockingRule;
-    const unblockingRule = type === BLOCK_ACTIONS.BLOCK ? baseBlockingRule : baseUnblockingRule;
-    const preparedBlockingRule = new RegExp(`(^|\n)${escapeRegExp(blockingRule)}($|\n)`);
-    const preparedUnblockingRule = new RegExp(`(^|\n)${escapeRegExp(unblockingRule)}($|\n)`);
+        const blockingRule = type === BLOCK_ACTIONS.BLOCK ? baseUnblockingRule : baseBlockingRule;
+        const unblockingRule = type === BLOCK_ACTIONS.BLOCK ? baseBlockingRule : baseUnblockingRule;
+        const preparedBlockingRule = new RegExp(`(^|\n)${escapeRegExp(blockingRule)}($|\n)`);
+        const preparedUnblockingRule = new RegExp(`(^|\n)${escapeRegExp(unblockingRule)}($|\n)`);
 
-    const matchPreparedBlockingRule = userRules.match(preparedBlockingRule);
-    const matchPreparedUnblockingRule = userRules.match(preparedUnblockingRule);
+        const matchPreparedBlockingRule = userRules.match(preparedBlockingRule);
+        const matchPreparedUnblockingRule = userRules.match(preparedUnblockingRule);
 
-    if (matchPreparedBlockingRule) {
-        await dispatch(setRules(userRules.replace(`${blockingRule}`, '')));
-        dispatch(addSuccessToast(i18next.t('rule_removed_from_custom_filtering_toast', { rule: blockingRule })));
-    } else if (!matchPreparedUnblockingRule) {
-        await dispatch(setRules(`${userRules}${lineEnding}${unblockingRule}\n`));
-        dispatch(addSuccessToast(i18next.t('rule_added_to_custom_filtering_toast', { rule: unblockingRule })));
-    } else if (matchPreparedUnblockingRule) {
-        dispatch(addSuccessToast(i18next.t('rule_added_to_custom_filtering_toast', { rule: unblockingRule })));
-        return;
-    } else if (!matchPreparedBlockingRule) {
-        dispatch(addSuccessToast(i18next.t('rule_removed_from_custom_filtering_toast', { rule: blockingRule })));
-        return;
-    }
+        if (matchPreparedBlockingRule) {
+            await dispatch(setRules(userRules.replace(`${blockingRule}`, '')));
+            dispatch(addSuccessToast(i18next.t('rule_removed_from_custom_filtering_toast', { rule: blockingRule })));
+        } else if (!matchPreparedUnblockingRule) {
+            await dispatch(setRules(`${userRules}${lineEnding}${unblockingRule}\n`));
+            dispatch(addSuccessToast(i18next.t('rule_added_to_custom_filtering_toast', { rule: unblockingRule })));
+        } else if (matchPreparedUnblockingRule) {
+            dispatch(addSuccessToast(i18next.t('rule_added_to_custom_filtering_toast', { rule: unblockingRule })));
+            return;
+        } else if (!matchPreparedBlockingRule) {
+            dispatch(addSuccessToast(i18next.t('rule_removed_from_custom_filtering_toast', { rule: blockingRule })));
+            return;
+        }
 
-    dispatch(getFilteringStatus());
-};
+        dispatch(getFilteringStatus());
+    };
 
 export const toggleBlockingForClient = (type: any, domain: any, client: any) => {
-    const escapedClientName = client.replace(/'/g, '\\\'')
+    const escapedClientName = client
+        .replace(/'/g, "\\'")
         .replace(/"/g, '\\"')
         .replace(/,/g, '\\,')
         .replace(/\|/g, '\\|');

@@ -19,12 +19,7 @@ interface StatsConfigProps {
 }
 
 class StatsConfig extends Component<StatsConfigProps> {
-    handleFormSubmit = ({
-        enabled,
-        interval,
-        ignored,
-        customInterval,
-    }: any) => {
+    handleFormSubmit = ({ enabled, interval, ignored, customInterval }: any) => {
         const { t, interval: prevInterval } = this.props;
         const newInterval = customInterval ? customInterval * HOUR : interval;
 
@@ -53,7 +48,6 @@ class StatsConfig extends Component<StatsConfigProps> {
 
     render() {
         const {
-
             t,
 
             interval,
@@ -70,15 +64,8 @@ class StatsConfig extends Component<StatsConfigProps> {
         } = this.props;
 
         return (
-
-            <Card
-                title={t('statistics_configuration')}
-                bodyType="card-body box-body--settings"
-                id="stats-config"
-            >
-
+            <Card title={t('statistics_configuration')} bodyType="card-body box-body--settings" id="stats-config">
                 <div className="form">
-
                     <Form
                         initialValues={{
                             interval,

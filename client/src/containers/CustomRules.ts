@@ -1,10 +1,5 @@
 import { connect } from 'react-redux';
-import {
-    setRules,
-    getFilteringStatus,
-    handleRulesChange,
-    checkHost,
-} from '../actions/filtering';
+import { setRules, getFilteringStatus, handleRulesChange, checkHost } from '../actions/filtering';
 
 import CustomRules from '../components/Filters/CustomRules';
 
@@ -21,7 +16,4 @@ const mapDispatchToProps = {
     checkHost,
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(CustomRules);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomRules);

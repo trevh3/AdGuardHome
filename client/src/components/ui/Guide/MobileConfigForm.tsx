@@ -7,18 +7,8 @@ import i18next from 'i18next';
 import cn from 'classnames';
 
 import { getPathWithQueryString } from '../../../helpers/helpers';
-import {
-    CLIENT_ID_LINK,
-    FORM_NAME,
-    MOBILE_CONFIG_LINKS,
-    STANDARD_HTTPS_PORT,
-} from '../../../helpers/constants';
-import {
-    renderInputField,
-    renderSelectField,
-    toNumber,
-
-} from '../../../helpers/form';
+import { CLIENT_ID_LINK, FORM_NAME, MOBILE_CONFIG_LINKS, STANDARD_HTTPS_PORT } from '../../../helpers/constants';
+import { renderInputField, renderSelectField, toNumber } from '../../../helpers/form';
 import {
     validateConfigClientId,
     validateServerName,
@@ -29,12 +19,7 @@ import {
 const getDownloadLink = (host: any, clientId: any, protocol: any, invalid: any) => {
     if (!host || invalid) {
         return (
-
-            <button
-                type="button"
-                className="btn btn-success btn-standard btn-large disabled"
-            >
-
+            <button type="button" className="btn btn-success btn-standard btn-large disabled">
                 <Trans>download_mobileconfig</Trans>
             </button>
         );
@@ -47,13 +32,10 @@ const getDownloadLink = (host: any, clientId: any, protocol: any, invalid: any) 
     }
 
     return (
-
         <a
             href={getPathWithQueryString(protocol, linkParams)}
             className={cn('btn btn-success btn-standard btn-large')}
-            download
-        >
-
+            download>
             <Trans>download_mobileconfig</Trans>
         </a>
     );
@@ -63,35 +45,23 @@ interface MobileConfigFormProps {
     invalid: boolean;
 }
 
-const MobileConfigForm = ({
-    invalid
-}: MobileConfigFormProps) => {
+const MobileConfigForm = ({ invalid }: MobileConfigFormProps) => {
     const formValues = useSelector((state) => state.form[FORM_NAME.MOBILE_CONFIG]?.values);
 
     if (!formValues) {
         return null;
     }
 
-    const {
-        host, clientId, protocol, port,
-    } = formValues;
+    const { host, clientId, protocol, port } = formValues;
 
     const githubLink = (
-
-        <a
-            href={CLIENT_ID_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-        >
+        <a href={CLIENT_ID_LINK} target="_blank" rel="noopener noreferrer">
             text
         </a>
     );
 
     const getHostName = () => {
-        if (port
-            && port !== STANDARD_HTTPS_PORT
-            && protocol === MOBILE_CONFIG_LINKS.DOH
-        ) {
+        if (port && port !== STANDARD_HTTPS_PORT && protocol === MOBILE_CONFIG_LINKS.DOH) {
             return `${host}:${port}`;
         }
 
@@ -99,17 +69,11 @@ const MobileConfigForm = ({
     };
 
     return (
-
         <form onSubmit={(e) => e.preventDefault()}>
-
             <div>
-
                 <div className="form__group form__group--settings">
-
                     <div className="row">
-
                         <div className="col">
-
                             <label htmlFor="host" className="form__label">
                                 {i18next.t('dhcp_table_hostname')}
                             </label>
@@ -124,9 +88,7 @@ const MobileConfigForm = ({
                             />
                         </div>
                         {protocol === MOBILE_CONFIG_LINKS.DOH && (
-
                             <div className="col">
-
                                 <label htmlFor="port" className="form__label">
                                     {i18next.t('encryption_https')}
                                 </label>
@@ -146,16 +108,12 @@ const MobileConfigForm = ({
                 </div>
 
                 <div className="form__group form__group--settings">
-
                     <label htmlFor="clientId" className="form__label form__label--with-desc">
                         {i18next.t('client_id')}
                     </label>
 
                     <div className="form__desc form__desc--top">
-
-                        <Trans components={{ a: githubLink }}>
-                            client_id_desc
-                        </Trans>
+                        <Trans components={{ a: githubLink }}>client_id_desc</Trans>
                     </div>
 
                     <Field
@@ -169,25 +127,14 @@ const MobileConfigForm = ({
                 </div>
 
                 <div className="form__group form__group--settings">
-
                     <label htmlFor="protocol" className="form__label">
                         {i18next.t('protocol')}
                     </label>
 
-                    <Field
-                        name="protocol"
-                        type="text"
-                        component={renderSelectField}
-                        className="form-control"
-                    >
+                    <Field name="protocol" type="text" component={renderSelectField} className="form-control">
+                        <option value={MOBILE_CONFIG_LINKS.DOT}>{i18next.t('dns_over_tls')}</option>
 
-                        <option value={MOBILE_CONFIG_LINKS.DOT}>
-                            {i18next.t('dns_over_tls')}
-                        </option>
-
-                        <option value={MOBILE_CONFIG_LINKS.DOH}>
-                            {i18next.t('dns_over_https')}
-                        </option>
+                        <option value={MOBILE_CONFIG_LINKS.DOH}>{i18next.t('dns_over_https')}</option>
                     </Field>
                 </div>
             </div>

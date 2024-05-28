@@ -6,11 +6,7 @@ import { Trans, withTranslation } from 'react-i18next';
 import flow from 'lodash/flow';
 
 import { renderTextareaField } from '../../../../helpers/form';
-import {
-    trimMultilineString,
-    removeEmptyLines,
-
-} from '../../../../helpers/helpers';
+import { trimMultilineString, removeEmptyLines } from '../../../../helpers/helpers';
 import { CLIENT_ID_LINK, FORM_NAME } from '../../../../helpers/constants';
 
 const fields = [
@@ -54,9 +50,7 @@ interface renderFieldProps {
 }
 
 let Form = (props: FormProps) => {
-    const {
-        allowedClients, handleSubmit, submitting, invalid, processingSet,
-    } = props;
+    const { allowedClients, handleSubmit, submitting, invalid, processingSet } = props;
 
     const renderField = ({
         id,
@@ -64,60 +58,60 @@ let Form = (props: FormProps) => {
         subtitle,
         disabled = false,
         processingSet,
-        normalizeOnBlur
-    }: renderFieldProps) => <div key={id} className="form__group mb-5">
+        normalizeOnBlur,
+    }: renderFieldProps) => (
+        <div key={id} className="form__group mb-5">
+            <label className="form__label form__label--with-desc" htmlFor={id}>
+                <Trans>{title}</Trans>
 
-        <label className="form__label form__label--with-desc" htmlFor={id}>
+                {disabled && (
+                    <>
+                        <span> </span>(<Trans>disabled</Trans>)
+                    </>
+                )}
+            </label>
 
-            <Trans>{title}</Trans>
+            <div className="form__desc form__desc--top">
+                <Trans
+                    components={{
+                        a: (
+                            <a href={CLIENT_ID_LINK} target="_blank" rel="noopener noreferrer">
+                                text
+                            </a>
+                        ),
+                    }}>
+                    {subtitle}
+                </Trans>
+            </div>
 
-            {disabled && <>
-
-                <span> </span>
-
-                (<Trans>disabled</Trans>)
-            </>}
-        </label>
-
-        <div className="form__desc form__desc--top">
-
-            <Trans components={{ a: <a href={CLIENT_ID_LINK} target="_blank" rel="noopener noreferrer">text</a> }}>{subtitle}</Trans>
+            <Field
+                id={id}
+                name={id}
+                component={renderTextareaField}
+                type="text"
+                className="form-control form-control--textarea font-monospace"
+                disabled={disabled || processingSet}
+                normalizeOnBlur={normalizeOnBlur}
+            />
         </div>
-
-        <Field
-            id={id}
-            name={id}
-            component={renderTextareaField}
-            type="text"
-            className="form-control form-control--textarea font-monospace"
-            disabled={disabled || processingSet}
-            normalizeOnBlur={normalizeOnBlur}
-        />
-    </div>;
+    );
 
     return (
-
         <form onSubmit={handleSubmit}>
-            {
-                fields.map((f) => {
-                    const props = { ...f };
-                    if (allowedClients && f.id === 'disallowed_clients') {
-                        props.disabled = true;
-                    }
-                    return renderField(props);
-                })
-            }
+            {fields.map((f) => {
+                const props = { ...f };
+                if (allowedClients && f.id === 'disallowed_clients') {
+                    props.disabled = true;
+                }
+                return renderField(props);
+            })}
 
             <div className="card-actions">
-
                 <div className="btn-list">
-
                     <button
                         type="submit"
                         className="btn btn-success btn-standard"
-                        disabled={submitting || invalid || processingSet}
-                    >
-
+                        disabled={submitting || invalid || processingSet}>
                         <Trans>save_config</Trans>
                     </button>
                 </div>

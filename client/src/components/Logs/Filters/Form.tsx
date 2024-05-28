@@ -50,57 +50,50 @@ const renderFilterField = ({
     meta: { touched, error },
     onClearInputClick,
     onKeyDown,
-    normalizeOnBlur
+    normalizeOnBlur,
 }: renderFilterFieldProps) => {
     const onBlur = (event: any) => createOnBlurHandler(event, input, normalizeOnBlur);
 
-    return <>
-
-        <div className="input-group-search input-group-search__icon--magnifier">
-
-            <svg className="icons icon--24 icon--gray">
-
-                <use xlinkHref="#magnifier" />
-            </svg>
-        </div>
-
-        <input
-            {...input}
-            id={id}
-            placeholder={placeholder}
-            type={type}
-            className={className}
-            disabled={disabled}
-            autoComplete={autoComplete}
-            aria-label={placeholder}
-            onKeyDown={onKeyDown}
-            onBlur={onBlur}
-        />
-
-        <div
-            className={classNames('input-group-search input-group-search__icon--cross', { invisible: input.value.length < 1 })}>
-
-            <svg className="icons icon--20 icon--gray" onClick={onClearInputClick}>
-
-                <use xlinkHref="#cross" />
-            </svg>
-        </div>
-
-        <span className="input-group-search input-group-search__icon--tooltip">
-
-            <Tooltip content={tooltip} className="tooltip-container">
-
-                <svg className="icons icon--20 icon--gray">
-
-                    <use xlinkHref="#question" />
+    return (
+        <>
+            <div className="input-group-search input-group-search__icon--magnifier">
+                <svg className="icons icon--24 icon--gray">
+                    <use xlinkHref="#magnifier" />
                 </svg>
-            </Tooltip>
-    </span>
-        {!disabled
-        && touched
+            </div>
 
-        && (error && <span className="form__message form__message--error">{error}</span>)}
-    </>;
+            <input
+                {...input}
+                id={id}
+                placeholder={placeholder}
+                type={type}
+                className={className}
+                disabled={disabled}
+                autoComplete={autoComplete}
+                aria-label={placeholder}
+                onKeyDown={onKeyDown}
+                onBlur={onBlur}
+            />
+
+            <div
+                className={classNames('input-group-search input-group-search__icon--cross', {
+                    invisible: input.value.length < 1,
+                })}>
+                <svg className="icons icon--20 icon--gray" onClick={onClearInputClick}>
+                    <use xlinkHref="#cross" />
+                </svg>
+            </div>
+
+            <span className="input-group-search input-group-search__icon--tooltip">
+                <Tooltip content={tooltip} className="tooltip-container">
+                    <svg className="icons icon--20 icon--gray">
+                        <use xlinkHref="#question" />
+                    </svg>
+                </Tooltip>
+            </span>
+            {!disabled && touched && error && <span className="form__message form__message--error">{error}</span>}
+        </>
+    );
 };
 
 const FORM_NAMES = {
@@ -116,32 +109,23 @@ interface FormProps {
 }
 
 const Form = (props: FormProps) => {
-    const {
-        className = '',
-        responseStatusClass,
-        setIsLoading,
-        change,
-    } = props;
+    const { className = '', responseStatusClass, setIsLoading, change } = props;
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const {
-        response_status, search,
+    const { response_status, search } = useSelector((state) => state?.form[FORM_NAME.LOGS_FILTER].values, shallowEqual);
 
-    } = useSelector((state) => state?.form[FORM_NAME.LOGS_FILTER].values, shallowEqual);
-
-    const [
-        debouncedSearch,
-        setDebouncedSearch,
-    ] = useDebounce(search.trim(), DEBOUNCE_FILTER_TIMEOUT);
+    const [debouncedSearch, setDebouncedSearch] = useDebounce(search.trim(), DEBOUNCE_FILTER_TIMEOUT);
 
     useEffect(() => {
-        dispatch(setLogsFilter({
-            response_status,
-            search: debouncedSearch,
-        }));
+        dispatch(
+            setLogsFilter({
+                response_status,
+                search: debouncedSearch,
+            }),
+        );
 
         history.replace(`${getLogsUrlParams(debouncedSearch, response_status)}`);
     }, [response_status, debouncedSearch]);
@@ -166,16 +150,12 @@ const Form = (props: FormProps) => {
     const normalizeOnBlur = (data: any) => data.trim();
 
     return (
-
         <form
             className="d-flex flex-wrap form-control--container"
             onSubmit={(e) => {
                 e.preventDefault();
-            }}
-        >
-
+            }}>
             <div className="field__search">
-
                 <Field
                     id={FORM_NAMES.search}
                     name={FORM_NAMES.search}
@@ -191,29 +171,18 @@ const Form = (props: FormProps) => {
             </div>
 
             <div className="field__select">
-
                 <Field
                     name={FORM_NAMES.response_status}
                     component="select"
-                    className={classNames('form-control custom-select custom-select--logs custom-select__arrow--left form-control--transparent', responseStatusClass)}
-                >
-
-                    {Object.values(RESPONSE_FILTER)
-                        .map(({
-                            QUERY,
-                            LABEL,
-                            disabled,
-                        }: any) => (
-
-                            <option
-                                key={LABEL}
-                                value={QUERY}
-                                disabled={disabled}
-                            >
-                                {t(LABEL)}
-                            </option>
-                        ))
-                    }
+                    className={classNames(
+                        'form-control custom-select custom-select--logs custom-select__arrow--left form-control--transparent',
+                        responseStatusClass,
+                    )}>
+                    {Object.values(RESPONSE_FILTER).map(({ QUERY, LABEL, disabled }: any) => (
+                        <option key={LABEL} value={QUERY} disabled={disabled}>
+                            {t(LABEL)}
+                        </option>
+                    ))}
                 </Field>
             </div>
         </form>

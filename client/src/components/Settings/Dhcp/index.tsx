@@ -5,12 +5,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 import { destroy } from 'redux-form';
-import {
-    DHCP_DESCRIPTION_PLACEHOLDERS,
-    DHCP_FORM_NAMES,
-    STATUS_RESPONSE,
-    FORM_NAME,
-} from '../../../helpers/constants';
+import { DHCP_DESCRIPTION_PLACEHOLDERS, DHCP_FORM_NAMES, STATUS_RESPONSE, FORM_NAME } from '../../../helpers/constants';
 
 import Leases from './Leases';
 
@@ -30,7 +25,6 @@ import {
     resetDhcpLeases,
     toggleDhcp,
     toggleLeaseModal,
-
 } from '../../../actions';
 
 import FormDHCPv4 from './FormDHCPv4';
@@ -42,7 +36,6 @@ import {
     calculateDhcpPlaceholdersIpv4,
     calculateDhcpPlaceholdersIpv6,
     subnetMaskToBitMask,
-
 } from '../../../helpers/helpers';
 import './index.css';
 
@@ -69,17 +62,10 @@ const Dhcp = () => {
         dhcp_available,
         interfaces,
         modalType,
-
     } = useSelector((state) => state.dhcp, shallowEqual);
 
-    const interface_name = useSelector(
-
-        (state) => state.form[FORM_NAME.DHCP_INTERFACES]?.values?.interface_name,
-    );
-    const isInterfaceIncludesIpv4 = useSelector(
-
-        (state) => !!state.dhcp?.interfaces?.[interface_name]?.ipv4_addresses,
-    );
+    const interface_name = useSelector((state) => state.form[FORM_NAME.DHCP_INTERFACES]?.values?.interface_name);
+    const isInterfaceIncludesIpv4 = useSelector((state) => !!state.dhcp?.interfaces?.[interface_name]?.ipv4_addresses);
 
     const dhcp = useSelector((state) => state.form[FORM_NAME.DHCPv4], shallowEqual);
 
@@ -105,9 +91,7 @@ const Dhcp = () => {
             ? calculateDhcpPlaceholdersIpv4(ipv4, gateway_ip)
             : DHCP_DESCRIPTION_PLACEHOLDERS.ipv4;
 
-        const v6placeholders = ipv6
-            ? calculateDhcpPlaceholdersIpv6()
-            : DHCP_DESCRIPTION_PLACEHOLDERS.ipv6;
+        const v6placeholders = ipv6 ? calculateDhcpPlaceholdersIpv6() : DHCP_DESCRIPTION_PLACEHOLDERS.ipv6;
 
         setIpv4Placeholders(v4placeholders);
         setIpv6Placeholders(v6placeholders);
@@ -116,18 +100,19 @@ const Dhcp = () => {
     const clear = () => {
         // eslint-disable-next-line no-alert
         if (window.confirm(t('dhcp_reset'))) {
-            Object.values(DHCP_FORM_NAMES)
-                .forEach((formName: any) => dispatch(destroy(formName)));
+            Object.values(DHCP_FORM_NAMES).forEach((formName: any) => dispatch(destroy(formName)));
             dispatch(resetDhcp());
             dispatch(getDhcpStatus());
         }
     };
 
     const handleSubmit = (values: any) => {
-        dispatch(setDhcpConfig({
-            interface_name,
-            ...values,
-        }));
+        dispatch(
+            setDhcpConfig({
+                interface_name,
+                ...values,
+            }),
+        );
     };
 
     const handleReset = () => {
@@ -136,18 +121,18 @@ const Dhcp = () => {
         }
     };
 
-    const enteredSomeV4Value = Object.values(v4)
-        .some(Boolean);
+    const enteredSomeV4Value = Object.values(v4).some(Boolean);
 
-    const enteredSomeV6Value = Object.values(v6)
-        .some(Boolean);
+    const enteredSomeV6Value = Object.values(v6).some(Boolean);
     const enteredSomeValue = enteredSomeV4Value || enteredSomeV6Value || interfaceName;
 
     const getToggleDhcpButton = () => {
-        const filledConfig = interface_name && (Object.values(v4)
+        const filledConfig =
+            interface_name &&
+            (Object.values(v4)
 
-            .every(Boolean) || Object.values(v6)
-            .every(Boolean));
+                .every(Boolean) ||
+                Object.values(v6).every(Boolean));
 
         const className = classNames('btn btn-sm', {
             'btn-gray': enabled,
@@ -165,16 +150,15 @@ const Dhcp = () => {
             dispatch(toggleDhcp(values));
         };
 
-        return <button
-            type="button"
-            className={className}
-            onClick={enabled ? onClickDisable : onClickEnable}
-            disabled={processingDhcp || processingConfig
-            || (!enabled && (!filledConfig || !check))}
-        >
-
-            <Trans>{enabled ? 'dhcp_disable' : 'dhcp_enable'}</Trans>
-        </button>;
+        return (
+            <button
+                type="button"
+                className={className}
+                onClick={enabled ? onClickDisable : onClickEnable}
+                disabled={processingDhcp || processingConfig || (!enabled && (!filledConfig || !check))}>
+                <Trans>{enabled ? 'dhcp_disable' : 'dhcp_enable'}</Trans>
+            </button>
+        );
     };
 
     const statusButtonClass = classNames('btn btn-sm dhcp-form__button', {
@@ -194,18 +178,17 @@ const Dhcp = () => {
     }
 
     if (!processing && !dhcp_available) {
-        return <div className="text-center pt-5">
+        return (
+            <div className="text-center pt-5">
+                <h2>
+                    <Trans>unavailable_dhcp</Trans>
+                </h2>
 
-            <h2>
-
-                <Trans>unavailable_dhcp</Trans>
-            </h2>
-
-            <h4>
-
-                <Trans>unavailable_dhcp_desc</Trans>
-            </h4>
-        </div>;
+                <h4>
+                    <Trans>unavailable_dhcp_desc</Trans>
+                </h4>
+            </div>
+        );
     }
 
     const toggleDhcpButton = getToggleDhcpButton();
@@ -213,154 +196,127 @@ const Dhcp = () => {
     const inputtedIPv4values = dhcp?.values?.v4?.gateway_ip && dhcp?.values?.v4?.subnet_mask;
 
     const isEmptyConfig = !Object.values(dhcp?.values?.v4 ?? {}).some(Boolean);
-    const disabledLeasesButton = Boolean(dhcp?.syncErrors || interfaces?.syncErrors
-        || !isInterfaceIncludesIpv4 || isEmptyConfig || processingConfig || !inputtedIPv4values);
-    const cidr = inputtedIPv4values ? `${dhcp?.values?.v4?.gateway_ip}/${subnetMaskToBitMask(dhcp?.values?.v4?.subnet_mask)}` : '';
+    const disabledLeasesButton = Boolean(
+        dhcp?.syncErrors ||
+            interfaces?.syncErrors ||
+            !isInterfaceIncludesIpv4 ||
+            isEmptyConfig ||
+            processingConfig ||
+            !inputtedIPv4values,
+    );
+    const cidr = inputtedIPv4values
+        ? `${dhcp?.values?.v4?.gateway_ip}/${subnetMaskToBitMask(dhcp?.values?.v4?.subnet_mask)}`
+        : '';
 
-    return <>
+    return (
+        <>
+            <PageTitle title={t('dhcp_settings')} subtitle={t('dhcp_description')} containerClass="page-title--dhcp">
+                {toggleDhcpButton}
 
-        <PageTitle title={t('dhcp_settings')} subtitle={t('dhcp_description')} containerClass="page-title--dhcp">
-            {toggleDhcpButton}
+                <button
+                    type="button"
+                    className={statusButtonClass}
+                    onClick={onClick}
+                    disabled={enabled || !interface_name || processingConfig}>
+                    <Trans>check_dhcp_servers</Trans>
+                </button>
 
-            <button
-                type="button"
-                className={statusButtonClass}
-                onClick={onClick}
-                disabled={enabled || !interface_name || processingConfig}
-            >
+                <button
+                    type="button"
+                    className="btn btn-sm btn-outline-secondary"
+                    disabled={!enteredSomeValue || processingConfig}
+                    onClick={clear}>
+                    <Trans>reset_settings</Trans>
+                </button>
+            </PageTitle>
+            {!processing && !processingInterfaces && (
+                <>
+                    {!enabled &&
+                        check &&
+                        (check.v4.other_server.found !== STATUS_RESPONSE.NO ||
+                            check.v6.other_server.found !== STATUS_RESPONSE.NO) && (
+                            <div className="mb-5">
+                                <hr />
 
-                <Trans>check_dhcp_servers</Trans>
-            </button>
+                                <div className="text-danger">
+                                    <Trans>dhcp_warning</Trans>
+                                </div>
+                            </div>
+                        )}
 
-            <button
-                type="button"
-                className='btn btn-sm btn-outline-secondary'
-                disabled={!enteredSomeValue || processingConfig}
-                onClick={clear}
-            >
+                    <Interfaces initialValues={{ interface_name: interfaceName }} />
 
-                <Trans>reset_settings</Trans>
-            </button>
-        </PageTitle>
-        {!processing && !processingInterfaces
-
-        && <>
-            {!enabled
-            && check
-            && (check.v4.other_server.found !== STATUS_RESPONSE.NO
-                    || check.v6.other_server.found !== STATUS_RESPONSE.NO)
-
-            && <div className="mb-5">
-
-                <hr />
-
-                <div className="text-danger">
-
-                    <Trans>dhcp_warning</Trans>
-                </div>
-            </div>}
-
-            <Interfaces
-                initialValues={{ interface_name: interfaceName }}
-            />
-
-            <Card
-                title={t('dhcp_ipv4_settings')}
-                bodyType="card-body box-body--settings"
-            >
-
-                <div>
-
-                    <FormDHCPv4
-                        onSubmit={handleSubmit}
-                        initialValues={{ v4: initialV4 }}
-                        processingConfig={processingConfig}
-                        ipv4placeholders={ipv4placeholders}
-                    />
-                </div>
-            </Card>
-
-            <Card
-                title={t('dhcp_ipv6_settings')}
-                bodyType="card-body box-body--settings"
-            >
-
-                <div>
-
-                    <FormDHCPv6
-                        onSubmit={handleSubmit}
-                        initialValues={{ v6: initialV6 }}
-                        processingConfig={processingConfig}
-                        ipv6placeholders={ipv6placeholders}
-                    />
-                </div>
-            </Card>
-            {enabled
-
-            && <Card
-                title={t('dhcp_leases')}
-                bodyType="card-body box-body--settings"
-            >
-
-                <div className="row">
-
-                    <div className="col">
-
-                        <Leases leases={leases} disabledLeasesButton={disabledLeasesButton}/>
-                    </div>
-                </div>
-            </Card>}
-
-            <Card
-                title={t('dhcp_static_leases')}
-                bodyType="card-body box-body--settings"
-            >
-
-                <div className="row">
-
-                    <div className="col-12">
-
-                        <StaticLeases
-                            staticLeases={staticLeases}
-                            isModalOpen={isModalOpen}
-
-                            toggleModal={toggleModal}
-                            modalType={modalType}
-                            processingAdding={processingAdding}
-                            processingDeleting={processingDeleting}
-                            processingUpdating={processingUpdating}
-                            cidr={cidr}
-                            rangeStart={dhcp?.values?.v4?.range_start}
-                            rangeEnd={dhcp?.values?.v4?.range_end}
-                            gatewayIp={dhcp?.values?.v4?.gateway_ip}
-                        />
-
-                        <div className="btn-list mt-2">
-
-                            <button
-                                type="button"
-                                className="btn btn-success btn-standard mt-3"
-                                onClick={toggleModal}
-                                disabled={disabledLeasesButton}
-                            >
-
-                                <Trans>dhcp_add_static_lease</Trans>
-                            </button>
-
-                            <button
-                                type="button"
-                                className="btn btn-secondary btn-standard mt-3"
-                                onClick={handleReset}
-                            >
-
-                                <Trans>dhcp_reset_leases</Trans>
-                            </button>
+                    <Card title={t('dhcp_ipv4_settings')} bodyType="card-body box-body--settings">
+                        <div>
+                            <FormDHCPv4
+                                onSubmit={handleSubmit}
+                                initialValues={{ v4: initialV4 }}
+                                processingConfig={processingConfig}
+                                ipv4placeholders={ipv4placeholders}
+                            />
                         </div>
-                    </div>
-                </div>
-            </Card>
-        </>}
-    </>;
+                    </Card>
+
+                    <Card title={t('dhcp_ipv6_settings')} bodyType="card-body box-body--settings">
+                        <div>
+                            <FormDHCPv6
+                                onSubmit={handleSubmit}
+                                initialValues={{ v6: initialV6 }}
+                                processingConfig={processingConfig}
+                                ipv6placeholders={ipv6placeholders}
+                            />
+                        </div>
+                    </Card>
+                    {enabled && (
+                        <Card title={t('dhcp_leases')} bodyType="card-body box-body--settings">
+                            <div className="row">
+                                <div className="col">
+                                    <Leases leases={leases} disabledLeasesButton={disabledLeasesButton} />
+                                </div>
+                            </div>
+                        </Card>
+                    )}
+
+                    <Card title={t('dhcp_static_leases')} bodyType="card-body box-body--settings">
+                        <div className="row">
+                            <div className="col-12">
+                                <StaticLeases
+                                    staticLeases={staticLeases}
+                                    isModalOpen={isModalOpen}
+                                    toggleModal={toggleModal}
+                                    modalType={modalType}
+                                    processingAdding={processingAdding}
+                                    processingDeleting={processingDeleting}
+                                    processingUpdating={processingUpdating}
+                                    cidr={cidr}
+                                    rangeStart={dhcp?.values?.v4?.range_start}
+                                    rangeEnd={dhcp?.values?.v4?.range_end}
+                                    gatewayIp={dhcp?.values?.v4?.gateway_ip}
+                                />
+
+                                <div className="btn-list mt-2">
+                                    <button
+                                        type="button"
+                                        className="btn btn-success btn-standard mt-3"
+                                        onClick={toggleModal}
+                                        disabled={disabledLeasesButton}>
+                                        <Trans>dhcp_add_static_lease</Trans>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        className="btn btn-secondary btn-standard mt-3"
+                                        onClick={handleReset}>
+                                        <Trans>dhcp_reset_leases</Trans>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </Card>
+                </>
+            )}
+        </>
+    );
 };
 
 export default Dhcp;

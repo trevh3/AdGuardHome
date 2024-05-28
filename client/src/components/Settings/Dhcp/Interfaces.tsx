@@ -8,8 +8,8 @@ import { renderSelectField } from '../../../helpers/form';
 import { validateRequiredValue } from '../../../helpers/validators';
 import { FORM_NAME } from '../../../helpers/constants';
 
-const renderInterfaces = (interfaces: any) => Object.keys(interfaces)
-    .map((item) => {
+const renderInterfaces = (interfaces: any) =>
+    Object.keys(interfaces).map((item) => {
         const option = interfaces[item];
         const { name } = option;
 
@@ -18,14 +18,14 @@ const renderInterfaces = (interfaces: any) => Object.keys(interfaces)
 
         const optionContent = [name, interfaceIPv4, interfaceIPv6].filter(Boolean).join(' - ');
 
-        return <option value={name} key={name}>{optionContent}</option>;
+        return (
+            <option value={name} key={name}>
+                {optionContent}
+            </option>
+        );
     });
 
-const getInterfaceValues = ({
-    gateway_ip,
-    hardware_address,
-    ip_addresses,
-}: any) => [
+const getInterfaceValues = ({ gateway_ip, hardware_address, ip_addresses }: any) => [
     {
         name: 'dhcp_form_gateway_input',
         value: gateway_ip,
@@ -37,9 +37,12 @@ const getInterfaceValues = ({
     {
         name: 'dhcp_ip_addresses',
         value: ip_addresses,
-        render: (ip_addresses: any) => ip_addresses
-
-            .map((ip: any) => <span key={ip} className="interface__ip">{ip}</span>),
+        render: (ip_addresses: any) =>
+            ip_addresses.map((ip: any) => (
+                <span key={ip} className="interface__ip">
+                    {ip}
+                </span>
+            )),
     },
 ];
 
@@ -49,40 +52,34 @@ interface renderInterfaceValuesProps {
     ip_addresses: string[];
 }
 
-const renderInterfaceValues = ({
-    gateway_ip,
-    hardware_address,
-    ip_addresses
-}: renderInterfaceValuesProps) => <div className='d-flex align-items-end dhcp__interfaces-info'>
-
-    <ul className="list-unstyled m-0">
-        {getInterfaceValues({
-            gateway_ip,
-            hardware_address,
-            ip_addresses,
-
-        }).map(({ name, value, render }) => value && <li key={name}>
-
-            <span className="interface__title"><Trans>{name}</Trans>: </span>
-            {render?.(value) || value}
-        </li>)}
-    </ul>
-</div>;
+const renderInterfaceValues = ({ gateway_ip, hardware_address, ip_addresses }: renderInterfaceValuesProps) => (
+    <div className="d-flex align-items-end dhcp__interfaces-info">
+        <ul className="list-unstyled m-0">
+            {getInterfaceValues({
+                gateway_ip,
+                hardware_address,
+                ip_addresses,
+            }).map(
+                ({ name, value, render }) =>
+                    value && (
+                        <li key={name}>
+                            <span className="interface__title">
+                                <Trans>{name}</Trans>:{' '}
+                            </span>
+                            {render?.(value) || value}
+                        </li>
+                    ),
+            )}
+        </ul>
+    </div>
+);
 
 const Interfaces = () => {
     const { t } = useTranslation();
 
-    const {
-        processingInterfaces,
-        interfaces,
-        enabled,
+    const { processingInterfaces, interfaces, enabled } = useSelector((store) => store.dhcp, shallowEqual);
 
-    } = useSelector((store) => store.dhcp, shallowEqual);
-
-    const interface_name = useSelector(
-
-        (store) => store.form[FORM_NAME.DHCP_INTERFACES]?.values?.interface_name,
-    );
+    const interface_name = useSelector((store) => store.form[FORM_NAME.DHCP_INTERFACES]?.values?.interface_name);
 
     if (processingInterfaces || !interfaces) {
         return null;
@@ -90,27 +87,24 @@ const Interfaces = () => {
 
     const interfaceValue = interface_name && interfaces[interface_name];
 
-    return <div className="row dhcp__interfaces">
-
-        <div className="col col__dhcp">
-
-            <Field
+    return (
+        <div className="row dhcp__interfaces">
+            <div className="col col__dhcp">
+                <Field
                     name="interface_name"
                     component={renderSelectField}
                     className="form-control custom-select pl-4 col-md"
                     validate={[validateRequiredValue]}
-                    label='dhcp_interface_select'
-            >
-
-                <option value='' disabled={enabled}>
-                    {t('dhcp_interface_select')}
-                </option>
-                {renderInterfaces(interfaces)}
-            </Field>
+                    label="dhcp_interface_select">
+                    <option value="" disabled={enabled}>
+                        {t('dhcp_interface_select')}
+                    </option>
+                    {renderInterfaces(interfaces)}
+                </Field>
+            </div>
+            {interfaceValue && renderInterfaceValues(interfaceValue)}
         </div>
-        {interfaceValue
-        && renderInterfaceValues(interfaceValue)}
-    </div>;
+    );
 };
 
 export default reduxForm({

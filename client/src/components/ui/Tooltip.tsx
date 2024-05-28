@@ -2,11 +2,7 @@ import React from 'react';
 import TooltipTrigger from 'react-popper-tooltip';
 import { useTranslation } from 'react-i18next';
 
-import {
-    HIDE_TOOLTIP_DELAY,
-    MEDIUM_SCREEN_SIZE,
-    SHOW_TOOLTIP_DELAY,
-} from '../../helpers/constants';
+import { HIDE_TOOLTIP_DELAY, MEDIUM_SCREEN_SIZE, SHOW_TOOLTIP_DELAY } from '../../helpers/constants';
 import 'react-popper-tooltip/dist/styles.css';
 import './Tooltip.css';
 
@@ -43,7 +39,7 @@ const Tooltip = ({
     delayShow = SHOW_TOOLTIP_DELAY,
     delayHide = HIDE_TOOLTIP_DELAY,
     onVisibilityChange,
-    defaultTooltipShown
+    defaultTooltipShown,
 }: TooltipProps) => {
     const { t } = useTranslation();
     const touchEventsAvailable = 'ontouchstart' in window;
@@ -58,38 +54,27 @@ const Tooltip = ({
         delayShowValue = 0;
     }
 
-    const renderTooltip = ({
-        tooltipRef,
-        getTooltipProps
-    }: renderTooltipProps) => (
-
-            <div
-                    {...getTooltipProps({
-                        ref: tooltipRef,
-                        className,
-                    })}
-            >
-                {typeof content === 'string' ? t(content) : content}
-            </div>
+    const renderTooltip = ({ tooltipRef, getTooltipProps }: renderTooltipProps) => (
+        <div
+            {...getTooltipProps({
+                ref: tooltipRef,
+                className,
+            })}>
+            {typeof content === 'string' ? t(content) : content}
+        </div>
     );
 
-    const renderTrigger = ({
-        getTriggerProps,
-        triggerRef
-    }: renderTriggerProps) => (
-
-            <span
-                    {...getTriggerProps({
-                        ref: triggerRef,
-                        className: triggerClass,
-                    })}
-            >
-                    {children}
-                </span>
+    const renderTrigger = ({ getTriggerProps, triggerRef }: renderTriggerProps) => (
+        <span
+            {...getTriggerProps({
+                ref: triggerRef,
+                className: triggerClass,
+            })}>
+            {children}
+        </span>
     );
 
     return (
-
         <TooltipTrigger
             placement={placement}
             trigger={triggerValue}
@@ -97,8 +82,7 @@ const Tooltip = ({
             delayShow={delayShowValue}
             tooltip={renderTooltip}
             onVisibilityChange={onVisibilityChange}
-            defaultTooltipShown={defaultTooltipShown}
-        >
+            defaultTooltipShown={defaultTooltipShown}>
             {renderTrigger}
         </TooltipTrigger>
     );

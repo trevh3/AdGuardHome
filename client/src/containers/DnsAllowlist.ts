@@ -31,7 +31,4 @@ const mapDispatchToProps = {
     editFilter,
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(DnsAllowlist);
+export default connect(mapStateToProps, mapDispatchToProps)(DnsAllowlist);

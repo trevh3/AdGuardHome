@@ -8,10 +8,7 @@ interface LoadingProps {
     text?: string;
 }
 
-const Loading = ({
-    className,
-    text,
-}: LoadingProps) => {
+const Loading = ({ className, text }: LoadingProps) => {
     const { t } = useTranslation();
 
     return <div className={classNames('loading', className)}>{t(text)}</div>;

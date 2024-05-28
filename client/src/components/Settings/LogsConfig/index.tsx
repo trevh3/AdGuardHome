@@ -52,7 +52,6 @@ class LogsConfig extends Component<LogsConfigProps> {
 
     render() {
         const {
-
             t,
 
             enabled,
@@ -71,15 +70,8 @@ class LogsConfig extends Component<LogsConfigProps> {
         } = this.props;
 
         return (
-
-            <Card
-                title={t('query_log_configuration')}
-                bodyType="card-body box-body--settings"
-                id="logs-config"
-            >
-
+            <Card title={t('query_log_configuration')} bodyType="card-body box-body--settings" id="logs-config">
                 <div className="form">
-
                     <Form
                         initialValues={{
                             enabled,

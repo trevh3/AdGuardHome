@@ -31,7 +31,6 @@ class Clients extends Component<ClientsProps> {
 
     render() {
         const {
-
             t,
 
             dashboard,
@@ -52,16 +51,12 @@ class Clients extends Component<ClientsProps> {
         } = this.props;
 
         return (
-
             <Fragment>
-
                 <PageTitle title={t('client_settings')} />
 
                 {(stats.processingStats || dashboard.processingClients) && <Loading />}
                 {!stats.processingStats && !dashboard.processingClients && (
-
                     <Fragment>
-
                         <ClientsTable
                             clients={dashboard.clients}
                             normalizedTopClients={stats.normalizedTopClients}
@@ -80,7 +75,6 @@ class Clients extends Component<ClientsProps> {
                         />
 
                         <AutoClients
-
                             autoClients={dashboard.autoClients}
                             normalizedTopClients={stats.normalizedTopClients}
                         />

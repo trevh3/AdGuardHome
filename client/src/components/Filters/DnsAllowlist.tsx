@@ -70,7 +70,6 @@ class DnsAllowlist extends Component<DnsAllowlistProps> {
 
     render() {
         const {
-
             t,
 
             toggleFilteringModal,
@@ -93,32 +92,23 @@ class DnsAllowlist extends Component<DnsAllowlistProps> {
             },
         } = this.props;
         const currentFilterData = getCurrentFilter(modalFilterUrl, whitelistFilters);
-        const loading = processingConfigFilter
-            || processingFilters
-            || processingAddFilter
-            || processingRemoveFilter
-            || processingRefreshFilters;
+        const loading =
+            processingConfigFilter ||
+            processingFilters ||
+            processingAddFilter ||
+            processingRemoveFilter ||
+            processingRefreshFilters;
         const whitelist = true;
 
         return (
-
             <>
-
-                <PageTitle
-                    title={t('dns_allowlists')}
-                    subtitle={t('dns_allowlists_desc')}
-                />
+                <PageTitle title={t('dns_allowlists')} subtitle={t('dns_allowlists_desc')} />
 
                 <div className="content">
-
                     <div className="row">
-
                         <div className="col-md-12">
-
                             <Card subtitle={t('filters_and_hosts_hint')}>
-
                                 <Table
-
                                     filters={whitelistFilters}
                                     loading={loading}
                                     processingConfigFilter={processingConfigFilter}
@@ -141,7 +131,6 @@ class DnsAllowlist extends Component<DnsAllowlistProps> {
                 </div>
 
                 <Modal
-
                     filters={whitelistFilters}
                     isOpen={isModalOpen}
                     toggleFilteringModal={toggleFilteringModal}

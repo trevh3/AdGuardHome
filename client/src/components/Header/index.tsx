@@ -14,14 +14,10 @@ const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { t } = useTranslation();
 
-    const {
-        protectionEnabled,
-        processing,
-        isCoreRunning,
-        processingProfile,
-        name,
-
-    } = useSelector((state) => state.dashboard, shallowEqual);
+    const { protectionEnabled, processing, isCoreRunning, processingProfile, name } = useSelector(
+        (state) => state.dashboard,
+        shallowEqual,
+    );
 
     const { pathname } = useLocation();
 
@@ -38,55 +34,40 @@ const Header = () => {
         'badge-danger': !protectionEnabled,
     });
 
-    return <div className="header">
-
-        <div className="header__container">
-
-            <div className="header__row">
-
-                <div
-                    className="header-toggler d-lg-none ml-lg-0 collapsed"
-                    onClick={toggleMenuOpen}
-                >
-
-                    <span className="header-toggler-icon" />
-                </div>
-
-                <div className="header__column">
-
-                    <div className="d-flex align-items-center">
-
-                        <Link to="/" className="nav-link pl-0 pr-1">
-
-                            <img src={logo} alt="AdGuard Home logo" className="header-brand-img" />
-                        </Link>
-                        {!processing && isCoreRunning
-
-                        && <span className={badgeClass}
-                        >{t(protectionEnabled ? 'on' : 'off')}
-                        </span>}
+    return (
+        <div className="header">
+            <div className="header__container">
+                <div className="header__row">
+                    <div className="header-toggler d-lg-none ml-lg-0 collapsed" onClick={toggleMenuOpen}>
+                        <span className="header-toggler-icon" />
                     </div>
-                </div>
 
-                <Menu
-                    pathname={pathname}
-                    isMenuOpen={isMenuOpen}
-                    closeMenu={closeMenu}
-                />
+                    <div className="header__column">
+                        <div className="d-flex align-items-center">
+                            <Link to="/" className="nav-link pl-0 pr-1">
+                                <img src={logo} alt="AdGuard Home logo" className="header-brand-img" />
+                            </Link>
+                            {!processing && isCoreRunning && (
+                                <span className={badgeClass}>{t(protectionEnabled ? 'on' : 'off')}</span>
+                            )}
+                        </div>
+                    </div>
 
-                <div className="header__column">
+                    <Menu pathname={pathname} isMenuOpen={isMenuOpen} closeMenu={closeMenu} />
 
-                    <div className="header__right">
-                        {!processingProfile && name
-
-                        && <a href="control/logout" className="btn btn-sm btn-outline-secondary">
-                            {t('sign_out')}
-                        </a>}
+                    <div className="header__column">
+                        <div className="header__right">
+                            {!processingProfile && name && (
+                                <a href="control/logout" className="btn btn-sm btn-outline-secondary">
+                                    {t('sign_out')}
+                                </a>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>;
+    );
 };
 
 export default Header;

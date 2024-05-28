@@ -5,15 +5,14 @@ import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { Trans, withTranslation } from 'react-i18next';
 import flow from 'lodash/flow';
 
+import { renderInputField, CheckboxField, renderRadioField, toNumber } from '../../../helpers/form';
 import {
-    renderInputField,
-    CheckboxField,
-    renderRadioField,
-    toNumber,
-
-} from '../../../helpers/form';
-import {
-    validateServerName, validateIsSafePort, validatePort, validatePortQuic, validatePortTLS, validatePlainDns,
+    validateServerName,
+    validateIsSafePort,
+    validatePort,
+    validatePortQuic,
+    validatePortTLS,
+    validatePlainDns,
 } from '../../../helpers/validators';
 import i18n from '../../../i18n';
 
@@ -21,7 +20,11 @@ import KeyStatus from './KeyStatus';
 
 import CertificateStatus from './CertificateStatus';
 import {
-    DNS_OVER_QUIC_PORT, DNS_OVER_TLS_PORT, FORM_NAME, STANDARD_HTTPS_PORT, ENCRYPTION_SOURCE,
+    DNS_OVER_QUIC_PORT,
+    DNS_OVER_TLS_PORT,
+    FORM_NAME,
+    STANDARD_HTTPS_PORT,
+    ENCRYPTION_SOURCE,
 } from '../../../helpers/constants';
 
 const validate = (values: any) => {
@@ -70,18 +73,16 @@ const validationMessage = (warningValidation: any, isWarning: any) => {
 
     if (isWarning) {
         return (
-
             <div className="col-12">
-
-                <p><Trans>encryption_warning</Trans>: {warningValidation}</p>
+                <p>
+                    <Trans>encryption_warning</Trans>: {warningValidation}
+                </p>
             </div>
         );
     }
 
     return (
-
         <div className="col-12">
-
             <p className="text-danger">{warningValidation}</p>
         </div>
     );
@@ -168,15 +169,10 @@ let Form = (props: FormProps) => {
     const isWarning = valid_key && valid_cert && valid_pair;
 
     return (
-
         <form onSubmit={handleSubmit}>
-
             <div className="row">
-
                 <div className="col-12">
-
                     <div className="form__group form__group--settings mb-3">
-
                         <Field
                             name="enabled"
                             type="checkbox"
@@ -187,12 +183,10 @@ let Form = (props: FormProps) => {
                     </div>
 
                     <div className="form__desc">
-
                         <Trans>encryption_enable_desc</Trans>
                     </div>
 
                     <div className="form__group mb-3 mt-5">
-
                         <Field
                             name="serve_plain_dns"
                             type="checkbox"
@@ -204,7 +198,6 @@ let Form = (props: FormProps) => {
                     </div>
 
                     <div className="form__desc">
-
                         <Trans>encryption_plain_dns_desc</Trans>
                     </div>
 
@@ -212,17 +205,13 @@ let Form = (props: FormProps) => {
                 </div>
 
                 <div className="col-12">
-
                     <label className="form__label" htmlFor="server_name">
-
                         <Trans>encryption_server</Trans>
                     </label>
                 </div>
 
                 <div className="col-lg-6">
-
                     <div className="form__group form__group--settings">
-
                         <Field
                             id="server_name"
                             name="server_name"
@@ -236,16 +225,13 @@ let Form = (props: FormProps) => {
                         />
 
                         <div className="form__desc">
-
                             <Trans>encryption_server_desc</Trans>
                         </div>
                     </div>
                 </div>
 
                 <div className="col-lg-6">
-
                     <div className="form__group form__group--settings">
-
                         <Field
                             name="force_https"
                             type="checkbox"
@@ -256,7 +242,6 @@ let Form = (props: FormProps) => {
                         />
 
                         <div className="form__desc">
-
                             <Trans>encryption_redirect_desc</Trans>
                         </div>
                     </div>
@@ -264,13 +249,9 @@ let Form = (props: FormProps) => {
             </div>
 
             <div className="row">
-
                 <div className="col-lg-6">
-
                     <div className="form__group form__group--settings">
-
                         <label className="form__label" htmlFor="port_https">
-
                             <Trans>encryption_https</Trans>
                         </label>
 
@@ -288,18 +269,14 @@ let Form = (props: FormProps) => {
                         />
 
                         <div className="form__desc">
-
                             <Trans>encryption_https_desc</Trans>
                         </div>
                     </div>
                 </div>
 
                 <div className="col-lg-6">
-
                     <div className="form__group form__group--settings">
-
                         <label className="form__label" htmlFor="port_dns_over_tls">
-
                             <Trans>encryption_dot</Trans>
                         </label>
 
@@ -317,18 +294,14 @@ let Form = (props: FormProps) => {
                         />
 
                         <div className="form__desc">
-
                             <Trans>encryption_dot_desc</Trans>
                         </div>
                     </div>
                 </div>
 
                 <div className="col-lg-6">
-
                     <div className="form__group form__group--settings">
-
                         <label className="form__label" htmlFor="port_dns_over_quic">
-
                             <Trans>encryption_doq</Trans>
                         </label>
 
@@ -346,7 +319,6 @@ let Form = (props: FormProps) => {
                         />
 
                         <div className="form__desc">
-
                             <Trans>encryption_doq_desc</Trans>
                         </div>
                     </div>
@@ -354,38 +326,32 @@ let Form = (props: FormProps) => {
             </div>
 
             <div className="row">
-
                 <div className="col-12">
-
                     <div className="form__group form__group--settings">
-
                         <label
                             className="form__label form__label--with-desc form__label--bold"
-                            htmlFor="certificate_chain"
-                        >
-
+                            htmlFor="certificate_chain">
                             <Trans>encryption_certificates</Trans>
                         </label>
 
                         <div className="form__desc form__desc--top">
-
                             <Trans
                                 values={{ link: 'letsencrypt.org' }}
                                 components={[
-
-                                    <a target="_blank" rel="noopener noreferrer" href="https://letsencrypt.org/" key="0">
+                                    <a
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        href="https://letsencrypt.org/"
+                                        key="0">
                                         link
                                     </a>,
-                                ]}
-                            >
+                                ]}>
                                 encryption_certificates_desc
                             </Trans>
                         </div>
 
                         <div className="form__inline mb-2">
-
                             <div className="custom-controls-stacked">
-
                                 <Field
                                     name="certificate_source"
                                     component={renderRadioField}
@@ -409,7 +375,6 @@ let Form = (props: FormProps) => {
                         </div>
 
                         {certificateSource === ENCRYPTION_SOURCE.CONTENT && (
-
                             <Field
                                 id="certificate_chain"
                                 name="certificate_chain"
@@ -422,7 +387,6 @@ let Form = (props: FormProps) => {
                             />
                         )}
                         {certificateSource === ENCRYPTION_SOURCE.PATH && (
-
                             <Field
                                 id="certificate_path"
                                 name="certificate_path"
@@ -438,7 +402,6 @@ let Form = (props: FormProps) => {
 
                     <div className="form__status">
                         {(certificateChain || certificatePath) && (
-
                             <CertificateStatus
                                 validChain={valid_chain}
                                 validCert={valid_cert}
@@ -453,20 +416,14 @@ let Form = (props: FormProps) => {
             </div>
 
             <div className="row">
-
                 <div className="col-12">
-
                     <div className="form__group form__group--settings mt-3">
-
                         <label className="form__label form__label--bold" htmlFor="private_key">
-
                             <Trans>encryption_key</Trans>
                         </label>
 
                         <div className="form__inline mb-2">
-
                             <div className="custom-controls-stacked">
-
                                 <Field
                                     name="key_source"
                                     component={renderRadioField}
@@ -490,7 +447,6 @@ let Form = (props: FormProps) => {
                         </div>
 
                         {privateKeySource === ENCRYPTION_SOURCE.PATH && (
-
                             <Field
                                 name="private_key_path"
                                 component={renderInputField}
@@ -502,7 +458,6 @@ let Form = (props: FormProps) => {
                             />
                         )}
                         {privateKeySource === ENCRYPTION_SOURCE.CONTENT && [
-
                             <Field
                                 key="private_key_saved"
                                 name="private_key_saved"
@@ -536,23 +491,14 @@ let Form = (props: FormProps) => {
                     </div>
 
                     <div className="form__status">
-                        {(privateKey || privateKeyPath) && (
-
-                            <KeyStatus validKey={valid_key} keyType={key_type} />
-                        )}
+                        {(privateKey || privateKeyPath) && <KeyStatus validKey={valid_key} keyType={key_type} />}
                     </div>
                 </div>
                 {validationMessage(warning_validation, isWarning)}
             </div>
 
             <div className="btn-list mt-2">
-
-                <button
-                    type="submit"
-                    disabled={isDisabled}
-                    className="btn btn-success btn-standart"
-                >
-
+                <button type="submit" disabled={isDisabled} className="btn btn-success btn-standart">
                     <Trans>save_config</Trans>
                 </button>
 
@@ -560,9 +506,7 @@ let Form = (props: FormProps) => {
                     type="button"
                     className="btn btn-secondary btn-standart"
                     disabled={submitting || processingConfig}
-                    onClick={() => clearFields(change, setTlsConfig, validateTlsConfig, t)}
-                >
-
+                    onClick={() => clearFields(change, setTlsConfig, validateTlsConfig, t)}>
                     <Trans>reset_settings</Trans>
                 </button>
             </div>

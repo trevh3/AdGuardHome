@@ -12,9 +12,7 @@ const rewrites = handleActions(
             ...state,
             processing: false,
         }),
-        [actions.getRewritesListSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.getRewritesListSuccess]: (state: any, { payload }: any) => {
             const newState = {
                 ...state,
                 list: payload,
@@ -31,9 +29,7 @@ const rewrites = handleActions(
             ...state,
             processingAdd: false,
         }),
-        [actions.addRewriteSuccess]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.addRewriteSuccess]: (state: any, { payload }: any) => {
             const newState = {
                 ...state,
                 list: [...state.list, payload],
@@ -71,9 +67,7 @@ const rewrites = handleActions(
             return newState;
         },
 
-        [actions.toggleRewritesModal]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.toggleRewritesModal]: (state: any, { payload }: any) => {
             if (payload) {
                 const newState = {
                     ...state,

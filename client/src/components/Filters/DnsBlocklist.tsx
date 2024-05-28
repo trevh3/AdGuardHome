@@ -12,10 +12,7 @@ import Actions from './Actions';
 import Table from './Table';
 import { MODAL_TYPE } from '../../helpers/constants';
 
-import {
-    getCurrentFilter,
-
-} from '../../helpers/helpers';
+import { getCurrentFilter } from '../../helpers/helpers';
 
 import filtersCatalog from '../../helpers/filters/filters';
 
@@ -42,7 +39,6 @@ class DnsBlocklist extends Component<DnsBlocklistProps> {
 
         switch (modalType) {
             case MODAL_TYPE.EDIT_FILTERS:
-
                 this.props.editFilter(modalFilterUrl, values);
                 break;
             case MODAL_TYPE.ADD_FILTERS: {
@@ -59,14 +55,13 @@ class DnsBlocklist extends Component<DnsBlocklistProps> {
                     return acc;
                 }, {});
 
-                Object.keys(changedValues)
-                    .forEach((fieldName) => {
-                        // filterId is actually in the field name
+                Object.keys(changedValues).forEach((fieldName) => {
+                    // filterId is actually in the field name
 
-                        const { source, name } = filtersCatalog.filters[fieldName];
+                    const { source, name } = filtersCatalog.filters[fieldName];
 
-                        this.props.addFilter(source, name);
-                    });
+                    this.props.addFilter(source, name);
+                });
                 break;
             }
             default:
@@ -94,7 +89,6 @@ class DnsBlocklist extends Component<DnsBlocklistProps> {
 
     render() {
         const {
-
             t,
 
             toggleFilteringModal,
@@ -115,31 +109,22 @@ class DnsBlocklist extends Component<DnsBlocklistProps> {
             },
         } = this.props;
         const currentFilterData = getCurrentFilter(modalFilterUrl, filters);
-        const loading = processingConfigFilter
-            || processingFilters
-            || processingAddFilter
-            || processingRemoveFilter
-            || processingRefreshFilters;
+        const loading =
+            processingConfigFilter ||
+            processingFilters ||
+            processingAddFilter ||
+            processingRemoveFilter ||
+            processingRefreshFilters;
 
         return (
-
             <>
-
-                <PageTitle
-                    title={t('dns_blocklists')}
-                    subtitle={t('dns_blocklists_desc')}
-                />
+                <PageTitle title={t('dns_blocklists')} subtitle={t('dns_blocklists_desc')} />
 
                 <div className="content">
-
                     <div className="row">
-
                         <div className="col-md-12">
-
                             <Card subtitle={t('filters_and_hosts_hint')}>
-
                                 <Table
-
                                     filters={filters}
                                     loading={loading}
                                     processingConfigFilter={processingConfigFilter}
@@ -159,7 +144,6 @@ class DnsBlocklist extends Component<DnsBlocklistProps> {
                 </div>
 
                 <Modal
-
                     filtersCatalog={filtersCatalog}
                     filters={filters}
                     isOpen={isModalOpen}

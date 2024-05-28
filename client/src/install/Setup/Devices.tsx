@@ -18,40 +18,31 @@ interface DevicesProps {
     dnsPort: number;
 }
 
-let Devices = (props: DevicesProps) => <div className="setup__step">
-
-    <div className="setup__group">
-
-        <div className="setup__subtitle">
-
-            <Trans>install_devices_title</Trans>
-        </div>
-
-        <div className="setup__desc">
-
-            <Trans>install_devices_desc</Trans>
-
-            <div className="mt-1">
-
-                <Trans>install_devices_address</Trans>:
+let Devices = (props: DevicesProps) => (
+    <div className="setup__step">
+        <div className="setup__group">
+            <div className="setup__subtitle">
+                <Trans>install_devices_title</Trans>
             </div>
 
-            <div className="mt-1">
+            <div className="setup__desc">
+                <Trans>install_devices_desc</Trans>
 
-                <AddressList
-                    interfaces={props.interfaces}
-                    address={props.dnsIp}
-                    port={props.dnsPort}
-                    isDns
-                />
+                <div className="mt-1">
+                    <Trans>install_devices_address</Trans>:
+                </div>
+
+                <div className="mt-1">
+                    <AddressList interfaces={props.interfaces} address={props.dnsIp} port={props.dnsPort} isDns />
+                </div>
             </div>
+
+            <Guide />
         </div>
 
-        <Guide />
+        <Controls />
     </div>
-
-    <Controls />
-</div>;
+);
 
 const selector = formValueSelector('install');
 

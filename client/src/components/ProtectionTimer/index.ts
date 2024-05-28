@@ -16,7 +16,7 @@ interface ProtectionTimerProps {
 const ProtectionTimer = ({
     protectionDisabledDuration,
     toggleProtectionSuccess,
-    setProtectionTimerTime
+    setProtectionTimerTime,
 }: ProtectionTimerProps) => {
     useEffect(() => {
         if (protectionDisabledDuration !== null && protectionDisabledDuration < ONE_SECOND_IN_MS) {
@@ -48,7 +48,4 @@ const mapDispatchToProps = {
     setProtectionTimerTime,
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(ProtectionTimer);
+export default connect(mapStateToProps, mapDispatchToProps)(ProtectionTimer);

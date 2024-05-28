@@ -17,9 +17,7 @@ const filtering = handleActions(
             processingRules: false,
         }),
 
-        [actions.handleRulesChange]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.handleRulesChange]: (state: any, { payload }: any) => {
             const { userRules } = payload;
             return { ...state, userRules };
         },
@@ -33,13 +31,7 @@ const filtering = handleActions(
             ...state,
             processingFilters: false,
         }),
-        [actions.getFilteringStatusSuccess]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.getFilteringStatusSuccess]: (state, { payload }: any) => ({
             ...state,
             ...payload,
             processingFilters: false,
@@ -61,9 +53,7 @@ const filtering = handleActions(
             isFilterAdded: true,
         }),
 
-        [actions.toggleFilteringModal]: (state: any, {
-            payload,
-        }: any) => {
+        [actions.toggleFilteringModal]: (state: any, { payload }: any) => {
             if (payload) {
                 const newState = {
                     ...state,
@@ -143,13 +133,7 @@ const filtering = handleActions(
             ...state,
             processingSetConfig: false,
         }),
-        [actions.setFiltersConfigSuccess]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.setFiltersConfigSuccess]: (state, { payload }: any) => ({
             ...state,
             ...payload,
             processingSetConfig: false,
@@ -163,13 +147,7 @@ const filtering = handleActions(
             ...state,
             processingCheck: false,
         }),
-        [actions.checkHostSuccess]: (
-
-            state,
-            {
-                payload,
-            }: any,
-        ) => ({
+        [actions.checkHostSuccess]: (state, { payload }: any) => ({
             ...state,
             check: payload,
             processingCheck: false,

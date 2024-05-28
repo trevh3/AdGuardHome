@@ -36,7 +36,6 @@ class Dropdown extends Component<DropdownProps> {
 
     render() {
         const {
-
             label,
 
             controlClassName,
@@ -64,18 +63,10 @@ class Dropdown extends Component<DropdownProps> {
         const ariaSettings = isOpen ? 'true' : 'false';
 
         return (
-
             <div className={dropdownClass}>
-
-                <a
-                    className={controlClassName}
-                    aria-expanded={ariaSettings}
-                    onClick={this.toggleDropdown}
-                >
+                <a className={controlClassName} aria-expanded={ariaSettings} onClick={this.toggleDropdown}>
                     {icon && (
-
                         <svg className="nav-icon">
-
                             <use xlinkHref={`#${icon}`} />
                         </svg>
                     )}

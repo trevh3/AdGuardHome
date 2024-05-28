@@ -11,19 +11,15 @@ const Toasts = () => {
     const toasts = useSelector((state) => state.toasts, shallowEqual);
 
     return (
-
         <TransitionGroup className="toasts">
             {toasts.notices?.map((toast: any) => {
                 const { id } = toast;
 
-                return <CSSTransition
-                        key={id}
-                        timeout={TOAST_TRANSITION_TIMEOUT}
-                        classNames="toast"
-                >
-
-                    <Toast {...toast} />
-                </CSSTransition>;
+                return (
+                    <CSSTransition key={id} timeout={TOAST_TRANSITION_TIMEOUT} classNames="toast">
+                        <Toast {...toast} />
+                    </CSSTransition>
+                );
             })}
         </TransitionGroup>
     );

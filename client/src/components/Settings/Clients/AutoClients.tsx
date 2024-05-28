@@ -26,7 +26,6 @@ interface AutoClientsProps {
 class AutoClients extends Component<AutoClientsProps> {
     columns = [
         {
-
             Header: this.props.t('table_client'),
             accessor: 'ip',
             minWidth: COLUMN_MIN_WIDTH,
@@ -34,21 +33,18 @@ class AutoClients extends Component<AutoClientsProps> {
             sortMethod: sortIp,
         },
         {
-
             Header: this.props.t('table_name'),
             accessor: 'name',
             minWidth: COLUMN_MIN_WIDTH,
             Cell: CellWrap,
         },
         {
-
             Header: this.props.t('source_label'),
             accessor: 'source',
             minWidth: COLUMN_MIN_WIDTH,
             Cell: CellWrap,
         },
         {
-
             Header: this.props.t('whois'),
             accessor: 'whois_info',
             minWidth: COLUMN_MIN_WIDTH,
@@ -56,7 +52,6 @@ class AutoClients extends Component<AutoClientsProps> {
             Cell: whoisCell(this.props.t),
         },
         {
-
             Header: this.props.t('requests_count'),
 
             accessor: (row: any) => this.props.normalizedTopClients.auto[row.ip] || 0,
@@ -68,14 +63,9 @@ class AutoClients extends Component<AutoClientsProps> {
 
                 if (clientStats) {
                     return (
-
                         <div className="logs__row">
-
                             <div className="logs__text" title={clientStats}>
-
-                                <LogsSearchLink search={row.original.ip}>
-                                    {clientStats}
-                                </LogsSearchLink>
+                                <LogsSearchLink search={row.original.ip}>{clientStats}</LogsSearchLink>
                             </div>
                         </div>
                     );
@@ -90,13 +80,10 @@ class AutoClients extends Component<AutoClientsProps> {
         const { t, autoClients } = this.props;
 
         return (
-
             <Card
                 title={t('auto_clients_title')}
                 subtitle={t('auto_clients_desc')}
-                bodyType="card-body box-body--settings"
-            >
-
+                bodyType="card-body box-body--settings">
                 <ReactTable
                     data={autoClients || []}
                     columns={this.columns}
@@ -109,7 +96,9 @@ class AutoClients extends Component<AutoClientsProps> {
                     className="-striped -highlight card-table-overflow"
                     showPagination
                     defaultPageSize={LocalStorageHelper.getItem(LOCAL_STORAGE_KEYS.AUTO_CLIENTS_PAGE_SIZE) || 10}
-                    onPageSizeChange={(size: any) => LocalStorageHelper.setItem(LOCAL_STORAGE_KEYS.AUTO_CLIENTS_PAGE_SIZE, size)}
+                    onPageSizeChange={(size: any) =>
+                        LocalStorageHelper.setItem(LOCAL_STORAGE_KEYS.AUTO_CLIENTS_PAGE_SIZE, size)
+                    }
                     minRows={TABLES_MIN_ROWS}
                     ofText="/"
                     previousText={t('previous_btn')}

@@ -1,8 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-    change, Field, formValueSelector, reduxForm,
-
-} from 'redux-form';
+import { change, Field, formValueSelector, reduxForm } from 'redux-form';
 import { Trans, withTranslation } from 'react-i18next';
 import flow from 'lodash/flow';
 import { connect } from 'react-redux';
@@ -14,7 +11,6 @@ import {
     renderTextareaField,
     toFloatNumber,
     renderInputField,
-
 } from '../../../helpers/form';
 import {
     FORM_NAME,
@@ -75,11 +71,8 @@ let Form = (props: FormProps) => {
     }, [interval]);
 
     return (
-
         <form onSubmit={handleSubmit}>
-
             <div className="form__group form__group--settings">
-
                 <Field
                     name="enabled"
                     type="checkbox"
@@ -90,39 +83,28 @@ let Form = (props: FormProps) => {
             </div>
 
             <label className="form__label form__label--with-desc">
-
                 <Trans>statistics_retention</Trans>
             </label>
 
             <div className="form__desc form__desc--top">
-
                 <Trans>statistics_retention_desc</Trans>
             </div>
 
             <div className="form__group form__group--settings mt-2">
-
                 <div className="custom-controls-stacked">
-
                     <Field
                         key={RETENTION_CUSTOM}
                         name="interval"
                         type="radio"
                         component={renderRadioField}
-                        value={STATS_INTERVALS_DAYS.includes(interval)
-                            ? RETENTION_CUSTOM
-                            : interval
-                        }
+                        value={STATS_INTERVALS_DAYS.includes(interval) ? RETENTION_CUSTOM : interval}
                         placeholder={getIntervalTitle(RETENTION_CUSTOM, t)}
                         normalize={toFloatNumber}
                         disabled={processing}
                     />
                     {!STATS_INTERVALS_DAYS.includes(interval) && (
-
                         <div className="form__group--input">
-
-                            <div className="form__desc form__desc--top">
-                                {t('custom_retention_input')}
-                            </div>
+                            <div className="form__desc form__desc--top">{t('custom_retention_input')}</div>
 
                             <Field
                                 key={RETENTION_CUSTOM_INPUT}
@@ -138,7 +120,6 @@ let Form = (props: FormProps) => {
                         </div>
                     )}
                     {STATS_INTERVALS_DAYS.map((interval) => (
-
                         <Field
                             key={interval}
                             name="interval"
@@ -154,17 +135,14 @@ let Form = (props: FormProps) => {
             </div>
 
             <label className="form__label form__label--with-desc">
-
                 <Trans>ignore_domains_title</Trans>
             </label>
 
             <div className="form__desc form__desc--top">
-
                 <Trans>ignore_domains_desc_stats</Trans>
             </div>
 
             <div className="form__group form__group--settings">
-
                 <Field
                     name="ignored"
                     type="textarea"
@@ -177,18 +155,15 @@ let Form = (props: FormProps) => {
             </div>
 
             <div className="mt-5">
-
                 <button
                     type="submit"
                     className="btn btn-success btn-standard btn-large"
                     disabled={
-                        submitting
-                        || invalid
-                        || processing
-                        || (!STATS_INTERVALS_DAYS.includes(interval) && !customInterval)
-                    }
-                >
-
+                        submitting ||
+                        invalid ||
+                        processing ||
+                        (!STATS_INTERVALS_DAYS.includes(interval) && !customInterval)
+                    }>
                     <Trans>save_btn</Trans>
                 </button>
 
@@ -196,9 +171,7 @@ let Form = (props: FormProps) => {
                     type="button"
                     className="btn btn-outline-secondary btn-standard form__button"
                     onClick={() => handleReset()}
-                    disabled={processingReset}
-                >
-
+                    disabled={processingReset}>
                     <Trans>statistics_clear</Trans>
                 </button>
             </div>
@@ -217,7 +190,4 @@ Form = connect((state) => {
     };
 })(Form);
 
-export default flow([
-    withTranslation(),
-    reduxForm({ form: FORM_NAME.STATS_CONFIG }),
-])(Form);
+export default flow([withTranslation(), reduxForm({ form: FORM_NAME.STATS_CONFIG })])(Form);

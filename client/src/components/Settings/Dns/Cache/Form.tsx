@@ -37,19 +37,12 @@ interface FormProps {
     invalid: boolean;
 }
 
-const Form = ({
-    handleSubmit,
-    submitting,
-    invalid
-}: FormProps) => {
+const Form = ({ handleSubmit, submitting, invalid }: FormProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const { processingSetConfig } = useSelector((state) => state.dnsConfig, shallowEqual);
-    const {
-        cache_ttl_max, cache_ttl_min,
-
-    } = useSelector((state) => state.form[FORM_NAME.CACHE].values, shallowEqual);
+    const { cache_ttl_max, cache_ttl_min } = useSelector((state) => state.form[FORM_NAME.CACHE].values, shallowEqual);
 
     const minExceedsMax = cache_ttl_min > 0 && cache_ttl_max > 0 && cache_ttl_min > cache_ttl_max;
 
@@ -59,88 +52,71 @@ const Form = ({
         }
     };
 
-    return <form onSubmit={handleSubmit}>
+    return (
+        <form onSubmit={handleSubmit}>
+            <div className="row">
+                {INPUTS_FIELDS.map(
+                    ({ name, title, description, placeholder, validate, min = 0, max = UINT32_RANGE.MAX }) => (
+                        <div className="col-12" key={name}>
+                            <div className="col-12 col-md-7 p-0">
+                                <div className="form__group form__group--settings">
+                                    <label htmlFor={name} className="form__label form__label--with-desc">
+                                        {t(title)}
+                                    </label>
 
-        <div className="row">
-            {INPUTS_FIELDS.map(({
+                                    <div className="form__desc form__desc--top">{t(description)}</div>
 
-                name, title, description, placeholder, validate, min = 0, max = UINT32_RANGE.MAX,
-
-            }) => <div className="col-12" key={name}>
-
-                    <div className="col-12 col-md-7 p-0">
-
-                        <div className="form__group form__group--settings">
-
-                            <label
-                                htmlFor={name}
-                                className="form__label form__label--with-desc"
-                            >
-                                {t(title)}
-                            </label>
-
-                            <div className="form__desc form__desc--top">{t(description)}</div>
-
-                            <Field
-                                name={name}
-                                type="number"
-                                component={renderInputField}
-                                placeholder={t(placeholder)}
-                                disabled={processingSetConfig}
-                                className="form-control"
-                                validate={validate}
-                                normalizeOnBlur={replaceZeroWithEmptyString}
-                                normalize={toNumber}
-                                min={min}
-                                max={max}
-                            />
+                                    <Field
+                                        name={name}
+                                        type="number"
+                                        component={renderInputField}
+                                        placeholder={t(placeholder)}
+                                        disabled={processingSetConfig}
+                                        className="form-control"
+                                        validate={validate}
+                                        normalizeOnBlur={replaceZeroWithEmptyString}
+                                        normalize={toNumber}
+                                        min={min}
+                                        max={max}
+                                    />
+                                </div>
+                            </div>
                         </div>
+                    ),
+                )}
+                {minExceedsMax && <span className="text-danger pl-3 pb-3">{t('ttl_cache_validation')}</span>}
+            </div>
+
+            <div className="row">
+                <div className="col-12 col-md-7">
+                    <div className="form__group form__group--settings">
+                        <Field
+                            name="cache_optimistic"
+                            type="checkbox"
+                            component={CheckboxField}
+                            placeholder={t('cache_optimistic')}
+                            disabled={processingSetConfig}
+                            subtitle={t('cache_optimistic_desc')}
+                        />
                     </div>
-                </div>)}
-            {minExceedsMax && (
-
-                <span className="text-danger pl-3 pb-3">
-                    {t('ttl_cache_validation')}
-                </span>
-            )}
-        </div>
-
-        <div className="row">
-
-            <div className="col-12 col-md-7">
-
-                <div className="form__group form__group--settings">
-
-                    <Field
-                        name="cache_optimistic"
-                        type="checkbox"
-                        component={CheckboxField}
-                        placeholder={t('cache_optimistic')}
-                        disabled={processingSetConfig}
-                        subtitle={t('cache_optimistic_desc')}
-                    />
                 </div>
             </div>
-        </div>
 
-        <button
-            type="submit"
-            className="btn btn-success btn-standard btn-large"
-            disabled={submitting || invalid || processingSetConfig || minExceedsMax}
-        >
+            <button
+                type="submit"
+                className="btn btn-success btn-standard btn-large"
+                disabled={submitting || invalid || processingSetConfig || minExceedsMax}>
+                <Trans>save_btn</Trans>
+            </button>
 
-            <Trans>save_btn</Trans>
-        </button>
-
-        <button
-            type="button"
-            className="btn btn-outline-secondary btn-standard form__button"
-            onClick={handleClearCache}
-        >
-
-            <Trans>clear_cache</Trans>
-        </button>
-    </form>;
+            <button
+                type="button"
+                className="btn btn-outline-secondary btn-standard form__button"
+                onClick={handleClearCache}>
+                <Trans>clear_cache</Trans>
+            </button>
+        </form>
+    );
 };
 
 export default reduxForm({ form: FORM_NAME.CACHE })(Form);

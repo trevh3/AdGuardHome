@@ -33,15 +33,7 @@ interface FormProps {
     isEdit?: boolean;
 }
 
-const Form = ({
-    handleSubmit,
-    reset,
-    pristine,
-    submitting,
-    processingAdding,
-    cidr,
-    isEdit
-}: FormProps) => {
+const Form = ({ handleSubmit, reset, pristine, submitting, processingAdding, cidr, isEdit }: FormProps) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -53,13 +45,9 @@ const Form = ({
     };
 
     return (
-
         <form onSubmit={handleSubmit}>
-
             <div className="modal-body">
-
                 <div className="form__group">
-
                     <Field
                         id="mac"
                         name="mac"
@@ -74,7 +62,6 @@ const Form = ({
                 </div>
 
                 <div className="form__group">
-
                     <Field
                         id="ip"
                         name="ip"
@@ -82,17 +69,11 @@ const Form = ({
                         type="text"
                         className="form-control"
                         placeholder={t('form_enter_subnet_ip', { cidr })}
-                        validate={[
-                            validateRequiredValue,
-                            validateIpv4,
-                            validateIpv4InCidr,
-                            validateIpGateway,
-                        ]}
+                        validate={[validateRequiredValue, validateIpv4, validateIpv4InCidr, validateIpGateway]}
                     />
                 </div>
 
                 <div className="form__group">
-
                     <Field
                         id="hostname"
                         name="hostname"
@@ -105,25 +86,19 @@ const Form = ({
             </div>
 
             <div className="modal-footer">
-
                 <div className="btn-list">
-
                     <button
                         type="button"
                         className="btn btn-secondary btn-standard"
                         disabled={submitting}
-                        onClick={onClick}
-                    >
-
+                        onClick={onClick}>
                         <Trans>cancel_btn</Trans>
                     </button>
 
                     <button
                         type="submit"
                         className="btn btn-success btn-standard"
-                        disabled={submitting || processingAdding || (pristine && !dynamicLease)}
-                    >
-
+                        disabled={submitting || processingAdding || (pristine && !dynamicLease)}>
                         <Trans>save_btn</Trans>
                     </button>
                 </div>

@@ -1,25 +1,11 @@
-import {
-    sortIp,
-    countClientsStatistics,
-    findAddressType,
-    subnetMaskToBitMask,
-
-} from '../helpers/helpers';
+import { sortIp, countClientsStatistics, findAddressType, subnetMaskToBitMask } from '../helpers/helpers';
 import { ADDRESS_TYPES } from '../helpers/constants';
 
 describe('sortIp', () => {
     describe('ipv4', () => {
         test('one octet differ', () => {
-            const arr = [
-                '127.0.2.0',
-                '127.0.3.0',
-                '127.0.1.0',
-            ];
-            const sortedArr = [
-                '127.0.1.0',
-                '127.0.2.0',
-                '127.0.3.0',
-            ];
+            const arr = ['127.0.2.0', '127.0.3.0', '127.0.1.0'];
+            const sortedArr = ['127.0.1.0', '127.0.2.0', '127.0.3.0'];
 
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
@@ -94,31 +80,15 @@ describe('sortIp', () => {
 
     describe('ipv6', () => {
         test('only long form', () => {
-            const arr = [
-                '2001:db8:11a3:9d7:0:0:0:2',
-                '2001:db8:11a3:9d7:0:0:0:3',
-                '2001:db8:11a3:9d7:0:0:0:1',
-            ];
-            const sortedArr = [
-                '2001:db8:11a3:9d7:0:0:0:1',
-                '2001:db8:11a3:9d7:0:0:0:2',
-                '2001:db8:11a3:9d7:0:0:0:3',
-            ];
+            const arr = ['2001:db8:11a3:9d7:0:0:0:2', '2001:db8:11a3:9d7:0:0:0:3', '2001:db8:11a3:9d7:0:0:0:1'];
+            const sortedArr = ['2001:db8:11a3:9d7:0:0:0:1', '2001:db8:11a3:9d7:0:0:0:2', '2001:db8:11a3:9d7:0:0:0:3'];
 
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
 
         test('only short form', () => {
-            const arr = [
-                '2001:db8::',
-                '2001:db7::',
-                '2001:db9::',
-            ];
-            const sortedArr = [
-                '2001:db7::',
-                '2001:db8::',
-                '2001:db9::',
-            ];
+            const arr = ['2001:db8::', '2001:db7::', '2001:db9::'];
+            const sortedArr = ['2001:db7::', '2001:db8::', '2001:db9::'];
 
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
@@ -235,35 +205,15 @@ describe('sortIp', () => {
 
     describe('cidr', () => {
         test('only ipv4 cidr', () => {
-            const arr = [
-                '192.168.0.1/9',
-                '192.168.0.1/7',
-                '192.168.0.1/8',
-            ];
-            const sortedArr = [
-                '192.168.0.1/7',
-                '192.168.0.1/8',
-                '192.168.0.1/9',
-            ];
+            const arr = ['192.168.0.1/9', '192.168.0.1/7', '192.168.0.1/8'];
+            const sortedArr = ['192.168.0.1/7', '192.168.0.1/8', '192.168.0.1/9'];
 
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
 
         test('ipv4 and cidr ipv4', () => {
-            const arr = [
-                '192.168.0.1/9',
-                '192.168.0.1',
-                '192.168.0.1/32',
-                '192.168.0.1/7',
-                '192.168.0.1/8',
-            ];
-            const sortedArr = [
-                '192.168.0.1/7',
-                '192.168.0.1/8',
-                '192.168.0.1/9',
-                '192.168.0.1/32',
-                '192.168.0.1',
-            ];
+            const arr = ['192.168.0.1/9', '192.168.0.1', '192.168.0.1/32', '192.168.0.1/7', '192.168.0.1/8'];
+            const sortedArr = ['192.168.0.1/7', '192.168.0.1/8', '192.168.0.1/9', '192.168.0.1/32', '192.168.0.1'];
 
             expect(arr.sort(sortIp)).toStrictEqual(sortedArr);
         });
@@ -412,47 +362,59 @@ describe('findAddressType', () => {
 
 describe('countClientsStatistics', () => {
     test('single ip', () => {
-        expect(countClientsStatistics(['127.0.0.1'], {
-            '127.0.0.1': 1,
-        })).toStrictEqual(1);
+        expect(
+            countClientsStatistics(['127.0.0.1'], {
+                '127.0.0.1': 1,
+            }),
+        ).toStrictEqual(1);
     });
 
     test('multiple ip', () => {
-        expect(countClientsStatistics(['127.0.0.1', '127.0.0.2'], {
-            '127.0.0.1': 1,
-            '127.0.0.2': 2,
-        })).toStrictEqual(1 + 2);
+        expect(
+            countClientsStatistics(['127.0.0.1', '127.0.0.2'], {
+                '127.0.0.1': 1,
+                '127.0.0.2': 2,
+            }),
+        ).toStrictEqual(1 + 2);
     });
 
     test('cidr', () => {
-        expect(countClientsStatistics(['127.0.0.0/8'], {
-            '127.0.0.1': 1,
-            '127.0.0.2': 2,
-        })).toStrictEqual(1 + 2);
+        expect(
+            countClientsStatistics(['127.0.0.0/8'], {
+                '127.0.0.1': 1,
+                '127.0.0.2': 2,
+            }),
+        ).toStrictEqual(1 + 2);
     });
 
     test('cidr and multiple ip', () => {
-        expect(countClientsStatistics(['1.1.1.1', '2.2.2.2', '3.3.3.0/24'], {
-            '1.1.1.1': 1,
-            '2.2.2.2': 2,
-            '3.3.3.3': 3,
-        })).toStrictEqual(1 + 2 + 3);
+        expect(
+            countClientsStatistics(['1.1.1.1', '2.2.2.2', '3.3.3.0/24'], {
+                '1.1.1.1': 1,
+                '2.2.2.2': 2,
+                '3.3.3.3': 3,
+            }),
+        ).toStrictEqual(1 + 2 + 3);
     });
 
     test('mac', () => {
-        expect(countClientsStatistics(['00:1B:44:11:3A:B7', '2.2.2.2', '3.3.3.0/24'], {
-            '1.1.1.1': 1,
-            '2.2.2.2': 2,
-            '3.3.3.3': 3,
-        })).toStrictEqual(2 + 3);
+        expect(
+            countClientsStatistics(['00:1B:44:11:3A:B7', '2.2.2.2', '3.3.3.0/24'], {
+                '1.1.1.1': 1,
+                '2.2.2.2': 2,
+                '3.3.3.3': 3,
+            }),
+        ).toStrictEqual(2 + 3);
     });
 
     test('not found', () => {
-        expect(countClientsStatistics(['4.4.4.4', '5.5.5.5', '6.6.6.6'], {
-            '1.1.1.1': 1,
-            '2.2.2.2': 2,
-            '3.3.3.3': 3,
-        })).toStrictEqual(0);
+        expect(
+            countClientsStatistics(['4.4.4.4', '5.5.5.5', '6.6.6.6'], {
+                '1.1.1.1': 1,
+                '2.2.2.2': 2,
+                '3.3.3.3': 3,
+            }),
+        ).toStrictEqual(0);
     });
 });
 
@@ -495,10 +457,12 @@ describe('subnetMaskToBitMask', () => {
 
     test('correct for all subnetMasks', () => {
         expect(
-            subnetMasks.map((subnetMask) => {
-                const bitmask = subnetMaskToBitMask(subnetMask);
-                return subnetMasks[bitmask] === subnetMask;
-            }).every((res) => res === true),
+            subnetMasks
+                .map((subnetMask) => {
+                    const bitmask = subnetMaskToBitMask(subnetMask);
+                    return subnetMasks[bitmask] === subnetMask;
+                })
+                .every((res) => res === true),
         ).toEqual(true);
     });
 });

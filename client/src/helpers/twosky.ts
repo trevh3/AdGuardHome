@@ -1,6 +1,4 @@
-import twosky from 'html-sanitizer/adguard-home/.twosky.json';
+// eslint-disable-next-line import/no-relative-packages
+import twosky from '../../../.twosky.json';
 
-export const {
-    languages: LANGUAGES,
-    base_locale: BASE_LOCALE,
-} = twosky[0];
+export const { languages: LANGUAGES, base_locale: BASE_LOCALE } = twosky[0];

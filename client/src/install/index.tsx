@@ -12,9 +12,7 @@ import Setup from './Setup';
 
 const store = configureStore(reducers, {}); // set initial state
 ReactDOM.render(
-
     <Provider store={store}>
-
         <Setup />
     </Provider>,
     document.getElementById('root'),
