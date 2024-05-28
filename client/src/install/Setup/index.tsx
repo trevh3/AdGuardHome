@@ -27,7 +27,7 @@ import Footer from '../../components/ui/Footer';
 
 import Icons from '../../components/ui/Icons';
 
-import logo from '../../components/ui/svg/logo';
+import { Logo } from '../../components/ui/svg/logo';
 
 import './Setup.css';
 import '../../components/ui/Tabler.css';
@@ -125,9 +125,8 @@ class Setup extends Component<SetupProps> {
                     <Fragment>
                         <div className="setup">
                             <div className="setup__container">
-                                <img src={logo} className="setup__logo" alt="logo" />
+                                <Logo className="setup__logo" />
                                 {this.renderPage(step, { web, dns, staticIp }, interfaces)}
-
                                 <Progress step={step} />
                             </div>
                         </div>

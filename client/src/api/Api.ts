@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { BASE_URL } from 'constants';
+import { BASE_URL } from '../../constants';
 
 import { getPathWithQueryString } from '../helpers/helpers';
 import { QUERY_LOGS_PAGE_LIMIT, HTML_PAGES, R_PATH_LAST_PART, THEMES } from '../helpers/constants';
