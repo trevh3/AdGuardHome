@@ -17,7 +17,9 @@ const INITIAL_START_TIME_MS = 0;
 const INITIAL_END_TIME_MS = 86340000;
 
 interface ModalProps {
-    schedule: object;
+    schedule: {
+        time_zone: string;
+    };
     currentDay?: string;
     isOpen: boolean;
     onClose: (...args: unknown[]) => unknown;

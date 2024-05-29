@@ -10,7 +10,7 @@ import { LANGUAGES } from '../helpers/twosky';
 class Api {
     baseUrl = BASE_URL;
 
-    async makeRequest(path: any, method = 'POST', config: any) {
+    async makeRequest(path: any, method = 'POST', config: any = {}) {
         const url = `${this.baseUrl}/${path}`;
 
         const axiosConfig = config || {};

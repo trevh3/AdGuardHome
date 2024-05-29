@@ -38,7 +38,14 @@ interface SetupProps {
     checkConfig: (...args: unknown[]) => unknown;
     nextStep: (...args: unknown[]) => unknown;
     prevStep: (...args: unknown[]) => unknown;
-    install: object;
+    install: {
+        step: number;
+        processingDefault: boolean;
+        web;
+        dns;
+        staticIp;
+        interfaces;
+    };
     step?: number;
     web?: object;
     dns?: object;

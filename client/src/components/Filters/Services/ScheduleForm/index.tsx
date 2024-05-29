@@ -10,7 +10,9 @@ import { TimePeriod } from './TimePeriod';
 import './styles.css';
 
 interface ScheduleFormProps {
-    schedule?: object;
+    schedule?: {
+        time_zone: string;
+    };
     onScheduleSubmit: (...args: unknown[]) => unknown;
     clientForm?: boolean;
 }
