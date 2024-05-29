@@ -216,9 +216,9 @@ export const getInterfaceIp = (option: any) => {
     return interfaceIP;
 };
 
-export const getIpList = (interfaces: any) =>
+export const getIpList = (interfaces: { ip_addresses: string[] }[]) =>
     Object.values(interfaces)
-        .reduce((acc: any, curr: any) => acc.concat(curr.ip_addresses), [])
+        .reduce((acc: string[], curr: { ip_addresses: string[] }) => acc.concat(curr.ip_addresses), [] as string[])
         .sort();
 
 /**
@@ -261,7 +261,7 @@ export const getWebAddress = (ip: any, port = 0) => {
     return address;
 };
 
-export const checkRedirect = (url: any, attempts: any) => {
+export const checkRedirect = (url: any, attempts: number = 1) => {
     let count = attempts || 1;
 
     if (count > 10) {
@@ -755,11 +755,9 @@ export const processContent = (content: any) =>
  * @returns {string[]}
  */
 
-export const getObjectKeysSorted = (object: any, sortKey: any) =>
+export const getObjectKeysSorted = (object: any, sortKey: string) =>
     Object.entries(object)
-
         .sort(([, { [sortKey]: order1 }], [, { [sortKey]: order2 }]) => order1 - order2)
-
         .map(([key]) => key);
 
 /**

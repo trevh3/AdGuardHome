@@ -358,7 +358,7 @@ export const DEFAULT_DATE_FORMAT_OPTIONS = {
     hour: 'numeric',
     hourCycle: 'h23',
     minute: 'numeric',
-};
+} as const;
 
 export const DETAILED_DATE_FORMAT_OPTIONS = {
     ...DEFAULT_DATE_FORMAT_OPTIONS,
